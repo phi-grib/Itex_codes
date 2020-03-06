@@ -10,7 +10,7 @@ import pandas as pd
 import pubchempy as pcp
 
 from Connect_CII import Connector
-from functions_to_process import get_cas, get_ec, get_index_number
+from CreateDB.functions_to_process import get_cas, get_ec, get_index_number
 from phitools import moleculeHelper as mh
 from typing import *
 
