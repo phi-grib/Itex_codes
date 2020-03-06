@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pubchempy as pcp
 
-from Connect_CII import Connector
+from UpdateDB.Connect_CII import Connector
 from CreateDB.functions_to_process import get_cas, get_ec, get_index_number
 from phitools import moleculeHelper as mh
 from typing import *
