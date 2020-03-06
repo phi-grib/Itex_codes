@@ -133,7 +133,6 @@ dependencies:
   - pytz=2019.1=py_0
   - pyyaml=5.1=py37h7b6447c_0
   - pyzmq=18.0.0=py37he6710b0_0
-  - qt=5.9.7=h52cfd70_1
   - qtconsole=4.4.3=py37_0
   - rdkit=2019.03.1=py37h9c20d5c_0
   - readline=7.0=h7b6447c_5
@@ -182,6 +181,7 @@ dependencies:
     - pdfminer==20191125
     - phidb==0.1
     - pycryptodome==3.9.4
+    - qt=5.9.7=h52cfd70_1
     - standardiser==0.1.7
     - tabula-py==1.4.1
 prefix: /home/emarch/miniconda3/envs/inditex
