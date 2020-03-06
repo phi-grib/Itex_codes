@@ -1,0 +1,4 @@
+git+https://github.com/bet-gregori/phitools.git
+git+https://github.com/phi-grib/compoundDB
+pubchempy
+psycopg2
