@@ -182,9 +182,5 @@ dependencies:
     - qt==5.9.7
     - standardiser==0.1.7
     - tabula-py==1.4.1
-    - git+https://github.com/phi-grib/phitools.git
-    - git+https://github.com/phi-grib/compoundDB
-    - git+https://github.com/phi-grib/standardiser
-    - git+https://github.com/phi-grib/EPA_simplified.git
 prefix: /home/emarch/miniconda3/envs/inditex
 
