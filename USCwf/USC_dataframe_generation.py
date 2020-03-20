@@ -6,12 +6,12 @@ from typing import Optional, Union, Tuple, Callable
 
 def add_info_dict(empty_dict: dict, id_:int, endpoint: str, regulation: Optional[str], element: str):
     """
-    This functions adds the different information into the dictionary
+        This functions adds the different information into the dictionary
 
-    :param empty_dict: dictionary to store the annotations. Will be converted into a dataframe
-    :param id_: substance id
-    :param endpoint: endpoint we're working on (CMR, PBT, vPvB, Endocrine disruptor, Sensitiser, Other)
-    :param element: regulation obtained from the database
+        :param empty_dict: dictionary to store the annotations. Will be converted into a dataframe
+        :param id_: substance id
+        :param endpoint: endpoint we're working on (CMR, PBT, vPvB, Endocrine disruptor, Sensitiser, Other)
+        :param element: regulation obtained from the database
     """
 
     empty_dict['subs_id'].append(id_)
@@ -21,14 +21,14 @@ def add_info_dict(empty_dict: dict, id_:int, endpoint: str, regulation: Optional
 
 def fixed_generate_dataframe(substance_id_list: np.ndarray, endpoint: str, regulations_df: pd.DataFrame, endpoint_annotations: pd.DataFrame) -> dict:
     """
-    General function that replicate HEH annotations from Excel
+        General function that replicate HEH annotations from Excel
 
-    :param substance_id_list: list with substances id
-    :param endpoint: endpoint we're working on (CMR, PBT, vPvB, Endocrine disruptor, Sensitiser, Other)
-    :param regulation_df: datafame with regulations from the dataframe
-    :param endpoint_annotations: dataframe with annotations for each endpoint coming from HEH in the database
+        :param substance_id_list: list with substances id
+        :param endpoint: endpoint we're working on (CMR, PBT, vPvB, Endocrine disruptor, Sensitiser, Other)
+        :param regulation_df: datafame with regulations from the dataframe
+        :param endpoint_annotations: dataframe with annotations for each endpoint coming from HEH in the database
 
-    :returns captured_ann_dict: dataframe containing annotations that replicates original HEH
+        :returns captured_ann_dict: dataframe containing annotations that replicates original HEH
     """
 
     captured_ann_dict = {'subs_id':[],'endpoint_type':[],'regulation':[],'name':[]}
@@ -202,20 +202,20 @@ def fixed_generate_dataframe(substance_id_list: np.ndarray, endpoint: str, regul
 
 def compare_heh_dataframes(original_heh_df: pd.DataFrame, created_heh_df: pd.DataFrame, substance_id_list: np.ndarray, endpoint: Optional[str] = None) -> dict:
     """
-    function that compares HEH dataframes annotations and created a dict with the results of the comparison
+        function that compares HEH dataframes annotations and created a dict with the results of the comparison
 
-    :param original_heh_df: HEH dataframe from Inditex Excel/CII database
-    :param created_heh_df: HEH dataframe obtained from implementing manually USC workflow
-    :param substance_id_list: list with substance id's
-    :param endpoint: option to obtain a comparison dict by specific enpodint. Endpoints available are:
-                    - CMR
-                    - PBT
-                    - vPvB
-                    - Endocrine_disruptor
-                    - Sensitiser 
-                    - Other
+        :param original_heh_df: HEH dataframe from Inditex Excel/CII database
+        :param created_heh_df: HEH dataframe obtained from implementing manually USC workflow
+        :param substance_id_list: list with substance id's
+        :param endpoint: option to obtain a comparison dict by specific enpodint. Endpoints available are:
+                        - CMR
+                        - PBT
+                        - vPvB
+                        - Endocrine_disruptor
+                        - Sensitiser 
+                        - Other
 
-    :returns comparison_dict: dictionary containing comparison informaton. To be converted into pandas DataFrame
+        :returns comparison_dict: dictionary containing comparison informaton. To be converted into pandas DataFrame
     """
 
     comparison_dict = {'subs_id':[],'heh_excel_annotation_number':[], 'heh_generated_annotation_number':[], 'shared_annotations':[],'%_recuperation':[],
@@ -305,19 +305,19 @@ def compare_heh_dataframes(original_heh_df: pd.DataFrame, created_heh_df: pd.Dat
 
 def compare_unique_annotations_dataframes(original_heh_df: pd.DataFrame, created_heh_df: pd.DataFrame, endpoint: Optional[str] = None) -> dict:
     """
-    Compares which unique annotations are shared between full dataframes instead of compound per compound
+        Compares which unique annotations are shared between full dataframes instead of compound per compound
 
-    :param original_heh_df: HEH dataframe from Inditex Excel/CII database
-    :param created_heh_df: HEH dataframe obtained from implementing manually USC workflow
-    :param endpoint: option to obtain a comparison dict by specific enpodint. Endpoints available are:
-                    - CMR
-                    - PBT
-                    - vPvB
-                    - Endocrine_disruptor
-                    - Sensitiser 
-                    - Other
+        :param original_heh_df: HEH dataframe from Inditex Excel/CII database
+        :param created_heh_df: HEH dataframe obtained from implementing manually USC workflow
+        :param endpoint: option to obtain a comparison dict by specific enpodint. Endpoints available are:
+                        - CMR
+                        - PBT
+                        - vPvB
+                        - Endocrine_disruptor
+                        - Sensitiser 
+                        - Other
 
-    :returns comparison_dict: dictionary containing comparison informaton. To be converted into pandas DataFrame
+        :returns comparison_dict: dictionary containing comparison informaton. To be converted into pandas DataFrame
     """
 
     comparison_dict = {'dataframe':[],'heh_excel_annotation_number':[], 'heh_generated_annotation_number':[], 'shared_annotations':[], '%_recuperation':[],
@@ -365,20 +365,20 @@ def compare_unique_annotations_dataframes(original_heh_df: pd.DataFrame, created
 def confusion_matrix_subs(original_heh_df: pd.DataFrame, created_heh_df: pd.DataFrame, substance_id_list: Optional[np.ndarray] = None,
                             endpoint: Optional[str] = None) -> dict:
     """
-    function that compares HEH dataframes annotations and created a dict with the results of the comparison
+        function that compares HEH dataframes annotations and created a dict with the results of the comparison
 
-    :param original_heh_df: HEH dataframe from Inditex Excel/CII database
-    :param created_heh_df: HEH dataframe obtained from implementing manually USC workflow
-    :param substance_id_list: list with substance id's
-    :param endpoint: option to obtain a comparison dict by specific enpodint. Endpoints available are:
-                    - CMR
-                    - PBT
-                    - vPvB
-                    - Endocrine_disruptor
-                    - Sensitiser 
-                    - Other
+        :param original_heh_df: HEH dataframe from Inditex Excel/CII database
+        :param created_heh_df: HEH dataframe obtained from implementing manually USC workflow
+        :param substance_id_list: list with substance id's
+        :param endpoint: option to obtain a comparison dict by specific enpodint. Endpoints available are:
+                        - CMR
+                        - PBT
+                        - vPvB
+                        - Endocrine_disruptor
+                        - Sensitiser 
+                        - Other
 
-    :returns comparison_dict: dictionary containing comparison informaton. To be converted into pandas DataFrame
+        :returns comparison_dict: dictionary containing comparison informaton. To be converted into pandas DataFrame
     """
 
     if substance_id_list:
@@ -432,20 +432,20 @@ def confusion_matrix_subs(original_heh_df: pd.DataFrame, created_heh_df: pd.Data
 def confusion_matrix_pos_neg(original_heh_df: pd.DataFrame, created_heh_df: pd.DataFrame, substance_id_list: Optional[np.ndarray] = None,
                         endpoint: Optional[str] = None) -> dict:
     """
-    function that compares HEH dataframes annotations and created a dict with the results of the comparison
+        function that compares HEH dataframes annotations and created a dict with the results of the comparison
 
-    :param original_heh_df: HEH dataframe from Inditex Excel/CII database
-    :param created_heh_df: HEH dataframe obtained from implementing manually USC workflow
-    :param substance_id_list: list with substance id's
-    :param endpoint: option to obtain a comparison dict by specific enpodint. Endpoints available are:
-                    - CMR
-                    - PBT
-                    - vPvB
-                    - Endocrine_disruptor
-                    - Sensitiser 
-                    - Other
+        :param original_heh_df: HEH dataframe from Inditex Excel/CII database
+        :param created_heh_df: HEH dataframe obtained from implementing manually USC workflow
+        :param substance_id_list: list with substance id's
+        :param endpoint: option to obtain a comparison dict by specific enpodint. Endpoints available are:
+                        - CMR
+                        - PBT
+                        - vPvB
+                        - Endocrine_disruptor
+                        - Sensitiser 
+                        - Other
 
-    :returns comparison_dict: dictionary containing comparison informaton. To be converted into pandas DataFrame
+        :returns comparison_dict: dictionary containing comparison informaton. To be converted into pandas DataFrame
     """
     ann_info_list = ['YES','NO','No information','Pending', 'Pending (1)','Pending (2)',
                     'Pending (3)', 'Pending (3a)','Pending (3b)','Pending (3c)','Pending (4)']
