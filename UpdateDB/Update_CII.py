@@ -32,7 +32,7 @@ class UpdateDB(Connector):
 
     #### Main function that iterates through the input dataframe
 
-    def add_substance_from_dataframe(self, dataframe: pd.DataFrame, preferred_name_field: str, chem_id_field: str, 
+    def add_all_information_from_dataframe(self, dataframe: pd.DataFrame, preferred_name_field: str, chem_id_field: str, 
                                     chem_id_type: str, sourceName_field: str, regulation_field: str, class_name_field: Optional[str] = None):
         """
             Extracts the information from a Pandas Dataframe and adds it into the database.
