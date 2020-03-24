@@ -1,8 +1,6 @@
 """
-Child class of Connector. Allows to update the database with new information
-
-Created by: Eric March Vila (eric.march@upf.edu)
-On: 14/02/2020, 10:00 AM
+    Created by: Eric March Vila (eric.march@upf.edu)
+    On: 14/02/2020, 10:00 AM
 """
 
 import numpy as np
@@ -15,6 +13,18 @@ from phitools import moleculeHelper as mh
 from typing import *
 
 class UpdateDB(Connector):
+    """
+        Child class of Connector. Allows to update the database with new information.
+
+        Main functions iterate through the input dataframe
+        and updates CII records depending on what we want to add:
+            - all the information
+            - only the substances
+            - only chemical identifiers
+            - only structures
+            - only sources
+            - only annotations
+    """
 
     def __init__(self, host: str, dbname: str, user: str, password: str):
         """
@@ -30,7 +40,7 @@ class UpdateDB(Connector):
         super().open_connection()
         super().compoundDB_connection()
 
-    #### Main function that iterates through the input dataframe
+    #### Main functions
 
     def add_all_information_from_dataframe(self, dataframe: pd.DataFrame, preferred_name_field: str, chem_id_field: str, 
                                     chem_id_type: str, sourceName_field: str, regulation_field: str, class_name_field: Optional[str] = None):
@@ -98,6 +108,57 @@ class UpdateDB(Connector):
                 # Big regulations table updating
                 big_reg_id = self.add_regulations_and_annotaitons(substance_id, sourceID, annotationID)
     
+    def add_substances_from_dataframe(self, dataframe: pd.DataFrame, preferred_name_field: str, class_name_field: Optional[str] = None):
+        """
+            Adds new substances from dataframe
+
+            :param dataframe:
+            :param preferred_name_field:
+            :param class_name_field:
+        """
+
+        for idx, row in dataframe.iterrows():
+
+            if class_name_field:
+                class_name = row[class_name_field]
+            else:
+                class_name = None
+
+            preferred_name = row[preferred_name_field]
+
+            self.add_substance(class_name,preferred_name)
+    
+    def add_chemical_identifier_from_dataframe(self, dataframe: pd.DataFrame, chem_id_field: str, chem_id_type: str, preferred_name_field: str,
+                                                class_name_field: Optional[str] = None):
+        """
+            Adds new chemical identifiers (CAS/EC/Index) from dataframe
+
+            :param dataframe:
+            :param chem_id_field:
+            :param chem_id_type:
+        """
+
+         for idx, row in dataframe.iterrows():
+
+            # Substance names and CAS/EC/Index numbers processing
+
+            if class_name_field:
+                class_name = row[class_name_field]
+            else:
+                class_name = None
+
+            preferred_name = row[preferred_name_field]
+
+            chem_identifier = self.process_string_or_list_from_pandas(row[chem_id_field])
+            
+            if self.match_chemical_identifier_pattern(chem_identifier, chem_id_type):
+                chem_id, substance_id = self.add_substance_chemical_identifier(class_name,preferred_name,chem_identifier, chem_id_type)
+            else:
+                chem_id = substance_id = None
+
+            if not substance_id:
+                substance_id = self.add_substance(class_name,preferred_name)
+
     #### Input string processing
 
     def process_string_or_list_from_pandas(self, str_: str) -> Union[str,list]:
