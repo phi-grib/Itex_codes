@@ -1,8 +1,6 @@
 """
-Main class to connect to the CII database
-
-Created by: Eric March Vila (eric.march@upf.edu)
-On: 14/02/2020, 10:00 AM
+    Created by: Eric March Vila (eric.march@upf.edu)
+    On: 14/02/2020, 10:00 AM
 """
 
 import numpy as np
@@ -10,15 +8,18 @@ import pandas as pd
 import psycopg2
 
 from compoundDB import inputtools as it
-from typing import *
+from typing import Tuple, Union, Optional
 from psycopg2.extensions import register_adapter, AsIs, Float
 
 class Connector():
+    """
+       Main class to connect to the CII database.
+    """
 
     def __init__(self, host: str, dbname: str, user: str, password: str):
         """
-            Initializes class with main arguments for psycopg2 connection to the database
-
+            Initializes class with main arguments for psycopg2 connection to the database.
+            
             :param host:
             :param dbname:
             :param user:

@@ -10,7 +10,7 @@ import pubchempy as pcp
 from UpdateDB.Connect_CII import Connector
 from CreateDB.functions_to_process import get_cas, get_ec, get_index_number
 from phitools import moleculeHelper as mh
-from typing import *
+from typing import Tuple, Union, Optional
 
 class UpdateDB(Connector):
     """
@@ -18,12 +18,12 @@ class UpdateDB(Connector):
 
         Main functions iterate through the input dataframe
         and updates CII records depending on what we want to add:
-            - all the information
-            - only the substances
-            - only chemical identifiers
-            - only structures
-            - only sources
-            - only annotations
+            - all the information (done)
+            - only the substances (TODO)
+            - only chemical identifiers (TODO)
+            - only structures (TODO)
+            - only sources (TODO)
+            - only annotations (TODO)
     """
 
     def __init__(self, host: str, dbname: str, user: str, password: str):
@@ -138,7 +138,7 @@ class UpdateDB(Connector):
             :param chem_id_type:
         """
 
-         for idx, row in dataframe.iterrows():
+        for idx, row in dataframe.iterrows():
 
             # Substance names and CAS/EC/Index numbers processing
 
@@ -548,3 +548,29 @@ class UpdateDB(Connector):
         self.conn.commit()
         
         return ID_number
+    
+    #### Delete data from the database
+
+    def delete_records_larger_than_id(self, checkpoint_df: pd.DataFrame = None, table: str = None, id_: int = None):
+        """
+            Deletes the records from tables that are larger than the ID provided. Can be executed either for 
+            a whole dataframe with table names and ids or for a single table with a selected id
+
+            :param checkpoint_df:
+            :param table:
+            :param id_:
+        """
+
+        delete_cmd = """DELETE FROM {0} WHERE id > {1}"""
+
+        if isinstance(checkpoint_df, pd.DataFrame):
+            for idx, row in checkpoint_df.iterrows():
+                tab = row[0]
+                max_id = row[1]
+                del_cmd_format = delete_cmd.format(tab,max_id)
+                self.curs.execute(del_cmd_format)
+                self.conn.commit()
+        elif table and id_:
+            del_cmd_format = delete_cmd.format(table, id_)
+            self.curs.execute(del_cmd_format)
+            self.conn.commit()
