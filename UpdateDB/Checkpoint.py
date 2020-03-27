@@ -44,7 +44,7 @@ class Checkpoint(Connector):
             id_tab_df.loc[id_tab_df.index == i, 'max_id'] = max_id
 
         id_tab_df = self.sort_dataframe(id_tab_df)
-        
+
         return id_tab_df
 
     def get_list_of_tables(self) -> pd.DataFrame:
@@ -87,8 +87,8 @@ class Checkpoint(Connector):
             :return sorted_table_dataframe:
         """
         
-        reg_row = table_dataframe[table_dataframe['Table_name'] == 'regulations'].reset_index(drop=True)
-        new_tab_df = table_dataframe.drop(index=table_dataframe[table_dataframe['Table_name'] == 'regulations'].index).reset_index(drop=True)
+        reg_row = table_dataframe[table_dataframe['Table_name'] == 'regulations']
+        new_tab_df = table_dataframe.drop(index=table_dataframe[table_dataframe['Table_name'] == 'regulations'].index)
         sorted_table_dataframe = pd.concat([reg_row,new_tab_df]).reset_index(drop=True)
 
         return sorted_table_dataframe
