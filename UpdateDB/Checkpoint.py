@@ -5,7 +5,6 @@
 
 import pandas as pd
 
-from typing import Tuple, Union, Optional
 from UpdateDB.Connect_CII import Connector
 
 class Checkpoint(Connector):
@@ -44,11 +43,13 @@ class Checkpoint(Connector):
             id_tab_df.loc[id_tab_df.index == i, 'Table_name'] = table
             id_tab_df.loc[id_tab_df.index == i, 'max_id'] = max_id
 
+        id_tab_df = self.sort_dataframe(id_tab_df)
+        
         return id_tab_df
 
     def get_list_of_tables(self) -> pd.DataFrame:
         """
-            Gets a list of all the tables in the database
+            Gets a list of all the tables in the database.
 
             :returns list_of_tables:
         """
@@ -73,3 +74,21 @@ class Checkpoint(Connector):
         self.conn.commit()
         
         return id_
+    
+    def sort_dataframe(self, table_dataframe: pd.DataFrame) -> pd.DataFrame:
+        """
+            Puts regulations table the first one because if afterwards we try to delete
+            a row from that table, code will break because of Referential Integrity, since there are other tables with foreign key constraints
+            that refer to table regulations. Instead of applying ON DELETE CASCADE, we prefer to just remove first the referenced rows and then the
+            rows that are used as foreign keys.
+
+            :param table_dataframe:
+
+            :return sorted_table_dataframe:
+        """
+        
+        reg_row = table_dataframe[table_dataframe['Table_name'] == 'regulations'].reset_index(drop=True)
+        new_tab_df = table_dataframe.drop(index=table_dataframe[table_dataframe['Table_name'] == 'regulations'].index).reset_index(drop=True)
+        sorted_table_dataframe = pd.concat([reg_row,new_tab_df]).reset_index(drop=True)
+
+        return sorted_table_dataframe

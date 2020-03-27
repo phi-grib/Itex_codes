@@ -10,7 +10,7 @@ import pubchempy as pcp
 from UpdateDB.Connect_CII import Connector
 from CreateDB.functions_to_process import get_cas, get_ec, get_index_number
 from phitools import moleculeHelper as mh
-from typing import Tuple, Union, Optional
+from typing import Union, Optional
 
 class UpdateDB(Connector):
     """
@@ -392,7 +392,7 @@ class UpdateDB(Connector):
 
     #### Big table with regulations and annotations
 
-    def add_regulations_and_annotaitons(self, subs_id: int, source_id: list, ann_id: int):
+    def add_regulations_and_annotaitons(self, subs_id: int, source_id: list, ann_id: int) -> int:
         """
             Adds annotation with regulations in big table if it's not present
 

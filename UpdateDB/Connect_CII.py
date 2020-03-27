@@ -8,8 +8,8 @@ import pandas as pd
 import psycopg2
 
 from compoundDB import inputtools as it
-from typing import Tuple, Union, Optional
 from psycopg2.extensions import register_adapter, AsIs, Float
+from typing import Union
 
 class Connector():
     """
