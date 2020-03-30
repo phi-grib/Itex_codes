@@ -47,7 +47,7 @@ class Connector():
 
     def compoundDB_connection(self) -> psycopg2.extensions.connection:
         """
-            Connects to compoundDB to generate SMILES using moleculeHelper module
+            Connects to compoundDB (CR)
 
             :return self.compounddb_conn:
         """
