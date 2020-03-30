@@ -265,7 +265,7 @@ class UpdateDB(Connector):
             insert_cmd = """INSERT INTO public.substance (id, class_name, preferred_name, mol_formula)
                     VALUES ('{}','{}','{}','{}')"""
             substanceID = self.insert_in_database(max_id_cmd, insert_cmd, class_name, preferred_name, None)
-            
+
         return substanceID
 
     #### Structure table
@@ -336,7 +336,7 @@ class UpdateDB(Connector):
         """
 
         sourceID = self.check_presence_or_absence_of_regulation(sourceName)
-        
+
         if not sourceID:
             format_sourcename = sourceName.lower()
             max_id_cmd = """select max(id) from general_regulation"""
@@ -400,64 +400,80 @@ class UpdateDB(Connector):
             :param source_id:
             :param ann_id:
 
-            I used 'NULL' instead of None as said in the second answer in
-            https://stackoverflow.com/questions/4231491/how-to-insert-null-values-into-postgresql-database-using-python
-
             I put 1 in regulation country id which correspond to europe because 
             most annotations come from EU
 
-            :return big_reg_id:
+            :return reg_id:
         """
+        
+        sources_dict_query = self.create_sources_dict(source_id)
+        
+        new_cmd = """SELECT id FROM public.regulations where subs_id = {} {} and regulation_id = {}""".format(subs_id,
+                                                                                            ' '.join(sources_dict_query['check_query']), ann_id)
+        
+        reg_id = self.check_presence_or_absence(new_cmd)
 
-        sources_id_list, sources_for_query_list = self.create_sources_id_list(source_id)
-        
-        cmd = """SELECT id FROM public.regulations where subs_id = {} and gen_reg_id {} and spec_reg_id {}
-                and subspec_reg_id {} and special_cases_id {} and regulation_id = {}""".format(subs_id, sources_for_query_list[0],
-                sources_for_query_list[1], sources_for_query_list[2], sources_for_query_list[3], ann_id)
-        
-        big_reg_id = self.check_presence_or_absence(cmd)
-        
-        if not big_reg_id:
+        print('regulation id checked',reg_id)
+    
+        if not reg_id:
             max_id_cmd = """SELECT max(id) FROM regulations;"""
-            insert_cmd = """INSERT INTO public.regulations (id, subs_id, reg_country_id, gen_reg_id, 
-                            spec_reg_id, subspec_reg_id, special_cases_id, regulation_id) 
-                            VALUES({}, {}, {}, {}, {}, {}, {}, {});"""
-            big_reg_id = self.insert_in_database(max_id_cmd, insert_cmd, subs_id, 1, sources_id_list[0], sources_id_list[1],
-                                                sources_id_list[2], sources_id_list[3], ann_id)
+            values_str = ''.join(["VALUES ({}, {}, {}, {}",''.join([", {}" for i in range(len(sources_dict_query['insert_query']))]),");"])
+            insert_cmd = """INSERT INTO public.regulations (id, subs_id, reg_country_id, 
+                        {} regulation_id) {}""".format(' '.join(sources_dict_query['insert_query']),values_str)
+            reg_id = self.insert_in_database(max_id_cmd, insert_cmd, subs_id, 1, 
+                    str(sources_dict_query['id']).replace('[','').replace(']',''), ann_id)
 
-        return big_reg_id
-
-    def create_sources_id_list(self, sources:list) -> np.array:
+        return reg_id
+    
+    def create_sources_dict(self, sources:list) -> dict:
         """
-            Creates a list with the id's of the different sources obtained from the new substance
+            Creates a dictionary with different formatted strings for the queries to CII db.
 
-            :param sources:
+            :param sources: list of sources obtained from dataframe
 
-            :return sources_format_list:
-            :return sources_for_query_list: gives a special format to handle NULL values when checking in database as explained
-            in https://stackoverflow.com/questions/32473264/how-can-i-find-null-values-with-select-query-in-psycopg
+            :return sources_dict:
         """
+        
+        sources_dict = {'check_query':[],'insert_query':[],'id':[]}
 
-        source_id_list = np.full(4,np.nan)
-
-        for source in sources:
+        for i, source in enumerate(sources):
             if 'general_regulation' in source[1]:
                 gen_reg_id = source[0]
-                source_id_list[0] = gen_reg_id
+                check_query = 'and gen_reg_id = {}'.format(gen_reg_id)
+                insert_query = 'gen_reg_id,'
+                
+                sources_dict['check_query'].append(check_query)
+                sources_dict['insert_query'].append(insert_query)
+                sources_dict['id'].append(gen_reg_id)
+
             elif 'specific_regulation' in source[1]:
                 spec_reg_id = source[0]
-                source_id_list[1] = spec_reg_id
+                check_query = 'and spec_reg_id = {}'.format(spec_reg_id)
+                insert_query = 'spec_reg_id,'
+                
+                sources_dict['check_query'].append(check_query)
+                sources_dict['insert_query'].append(insert_query)
+                sources_dict['id'].append(spec_reg_id)
+
             elif 'subspecific_regulation' in source[1]:
                 subspec_reg_id = source[0]
-                source_id_list[2] = subspec_reg_id
+                check_query = 'and subspec_reg_id = {}'.format(subspec_reg_id)
+                insert_query = 'subspec_reg_id,'
+                
+                sources_dict['check_query'].append(check_query)
+                sources_dict['insert_query'].append(insert_query)
+                sources_dict['id'].append(subspec_reg_id)
+    
             elif 'special_cases_names' in source[1]:
                 special_cases_id = source[0]
-                source_id_list[3] = special_cases_id
-
-        sources_format_list = ['NULL' if str(source) == 'nan' else int(source) for source in source_id_list]
-        sources_for_query_list = ['IS NULL' if str(source) == 'nan' else ' '.join(['=',str(int(source))]) for source in source_id_list]
-
-        return sources_format_list, sources_for_query_list
+                check_query = 'and special_cases_id = {}'.format(special_cases_id)
+                insert_query = 'special_cases_id,'
+                
+                sources_dict['check_query'].append(check_query)
+                sources_dict['insert_query'].append(insert_query)
+                sources_dict['id'].append(special_cases_id)
+                
+        return sources_dict
 
     #### Check presence in database. If ID is returned, then is used to update DB for the new compound.
     #### If not, a new one is generated while new regulation is added
