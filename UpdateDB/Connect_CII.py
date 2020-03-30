@@ -13,10 +13,10 @@ from typing import Union
 
 class Connector():
     """
-       Main class to connect to the CII database.
+       Main class to connect to CII and CR database.
     """
 
-    def __init__(self, host: str, dbname: str, user: str, password: str):
+    def __init__(self, host: str = None, dbname: str = None, user: str = None, password: str = None):
         """
             Initializes class with main arguments for psycopg2 connection to the database.
             
