@@ -413,15 +413,19 @@ class UpdateDB(Connector):
         
         reg_id = self.check_presence_or_absence(new_cmd)
 
-        print('regulation id checked',reg_id)
-    
         if not reg_id:
             max_id_cmd = """SELECT max(id) FROM regulations;"""
-            values_str = ''.join(["VALUES ({}, {}, {}, {}",''.join([", {}" for i in range(len(sources_dict_query['insert_query']))]),");"])
+            #### values_to_add: I made it like this to overcome an error of tuple index out of range in insert_in_database function, since
+            #### sources_dict_query['id'] is a list and when it had more than one element, the function wasn't capturing it well
+            values_to_add = [subs_id, 1]
+            values_to_add.extend(sources_dict_query['id'])
+            values_to_add.append(ann_id)
+
+            values_str = ''.join(["VALUES ({},",','.join(["{}".format(str(element)) for element in values_to_add]),");"])
             insert_cmd = """INSERT INTO public.regulations (id, subs_id, reg_country_id, 
                         {} regulation_id) {}""".format(' '.join(sources_dict_query['insert_query']),values_str)
-            reg_id = self.insert_in_database(max_id_cmd, insert_cmd, subs_id, 1, 
-                    str(sources_dict_query['id']).replace('[','').replace(']',''), ann_id)
+           
+            reg_id = self.insert_in_database(max_id_cmd, insert_cmd, values_to_add)
 
         return reg_id
     
@@ -472,7 +476,7 @@ class UpdateDB(Connector):
                 sources_dict['check_query'].append(check_query)
                 sources_dict['insert_query'].append(insert_query)
                 sources_dict['id'].append(special_cases_id)
-                
+        
         return sources_dict
 
     #### Check presence in database. If ID is returned, then is used to update DB for the new compound.
@@ -560,6 +564,7 @@ class UpdateDB(Connector):
         self.curs.execute(max_db_cmd)
         ID_number = self.curs.fetchone()[0] + 1
         self.conn.commit()
+        
         self.curs.execute(insert_cmd.format(ID_number, *args))
         self.conn.commit()
         
