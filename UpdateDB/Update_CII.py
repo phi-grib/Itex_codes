@@ -343,7 +343,7 @@ class UpdateDB(Connector):
             insert_cmd = """INSERT INTO public.general_regulation (id, general_regulation_name)
                             VALUES ('{}','{}')"""
             sourceID_number = self.insert_in_database(max_id_cmd, insert_cmd, format_sourcename)
-            sourceID = sourceID_number
+            sourceID = [sourceID_number,'general_regulation']
 
         elif 'annex' in sourceName.lower():
             reach_, annex = sourceName.lower().split(' ',1)
@@ -366,7 +366,7 @@ class UpdateDB(Connector):
             reg_dos = '_'.join([reg,'dossier'])
             reg_source_id = self.check_presence_or_absence_of_regulation(reg_dos)
             sourceID.extend(reg_source_id)
-
+        
         return sourceID
     
     #### Annotation (regulation names) table
@@ -407,7 +407,7 @@ class UpdateDB(Connector):
         """
         
         sources_dict_query = self.create_sources_dict(source_id)
-        
+       
         new_cmd = """SELECT id FROM public.regulations where subs_id = {} {} and regulation_id = {}""".format(subs_id,
                                                                                             ' '.join(sources_dict_query['check_query']), ann_id)
         
@@ -439,7 +439,7 @@ class UpdateDB(Connector):
         """
         
         sources_dict = {'check_query':[],'insert_query':[],'id':[]}
-
+        
         for i, source in enumerate(sources):
             if 'general_regulation' in source[1]:
                 gen_reg_id = source[0]
@@ -545,7 +545,7 @@ class UpdateDB(Connector):
         #     source_id_list.append((subspec_reg_id,'subspecific_regulation'))
         # if special_cases_id:
         #     source_id_list.append((special_cases_id,'special_cases_names'))
-
+        
         return source_id_list
 
     #### Insert new data into the database
