@@ -101,6 +101,21 @@ class Connector():
                                                 left join chem_type ct on ct.id = cid.chem_type_id""",self.conn)
 
         return substances_chem_id
+    
+    def get_substances_with_structure(self) -> pd.DataFrame:
+        """
+            Get substances with SMILES from database
+
+            :return substance_structures:
+        """
+
+        substance_structures = pd.read_sql_query("""SELECT s.class_name, s.preferred_name, cid."name" , "structure"
+                                                FROM substance_structure struc
+                                                left join substance s on s.id = struc.subs_id
+                                                left join chem_id cid on cid.id  = struc.chem_id
+                                                order by struc.subs_id ASC""", self.conn)
+
+        return substance_structures
 
     #### Chemical Identifier block (CAS/EC/Index)
     #### Functions that interact with chem id tables and extract them as dataframes
