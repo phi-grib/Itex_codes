@@ -69,13 +69,19 @@ def fixed_generate_dataframe(substance_id_list: np.ndarray, endpoint: str, regul
                 if element in reg_dos_not.names.values:
                     reg_rd = reg_dos_not.loc[reg_dos_not['names'] == element, 'additional_information_name'].iat[0]
                     cmr_flag = 1
-                    format_reg_rd = ' '.join([reg_rd,'(RD)'])
+                    if reg_rd:
+                        format_reg_rd = ' '.join([reg_rd,'(RD)'])
+                    else:
+                        format_reg_rd = 'Self-classification (RD)'
                     add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_rd, element)
                     
                 elif element in not_df.names.values :
                     reg_n = not_df.loc[not_df['names'] == element, 'additional_information_name'].iat[0]
                     cmr_flag = 1
-                    format_reg_n = ' '.join([reg_n,'(N)'])
+                    if reg_n:
+                        format_reg_n = ' '.join([reg_n,'(N)'])
+                    else:
+                        format_reg_n = 'Self-classification (N)'
                     add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_n, element)
                     
         if cmr_flag == 1:
@@ -100,13 +106,19 @@ def fixed_generate_dataframe(substance_id_list: np.ndarray, endpoint: str, regul
                     if element in reg_dos_not.names.values:
                         reg_rd = reg_dos_not.loc[reg_dos_not['names'] == element, 'additional_information_name'].iat[0]
                         cmr_flag = 1
-                        format_reg_rd = ' '.join([reg_rd,'(RD)'])
+                        if reg_rd:
+                            format_reg_rd = ' '.join([reg_rd,'(RD)'])
+                        else:
+                            format_reg_rd = 'Self-classification (RD)'
                         add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_rd, element)
 
                     elif element in not_df.names.values:
                         reg_n = not_df.loc[not_df['names'] == element, 'additional_information_name'].iat[0]
                         cmr_flag = 1
-                        format_reg_n = ' '.join([reg_n,'(N)'])
+                        if reg_n:
+                            format_reg_n = ' '.join([reg_n,'(N)'])
+                        else:
+                            format_reg_n = 'Self-classification (N)'
                         add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_n, element)
                         
             if cmr_flag == 1:
@@ -124,8 +136,14 @@ def fixed_generate_dataframe(substance_id_list: np.ndarray, endpoint: str, regul
                     if element in not_df.names.values and element in reg_dos_not.names.values:
                         reg_rd = reg_dos_not.loc[reg_dos_not['names'] == element, 'additional_information_name'].iat[0]
                         reg_n = not_df.loc[not_df['names'] == element, 'additional_information_name'].iat[0]
-                        format_reg_rd = ' '.join([reg_rd,'(RD)'])
-                        format_reg_n = ' '.join([reg_n,'(N)'])
+                        if reg_rd:
+                            format_reg_rd = ' '.join([reg_rd,'(RD)'])
+                        else:
+                            format_reg_rd = 'Self-classification (RD)'
+                        if reg_n:
+                            format_reg_n = ' '.join([reg_n,'(N)'])
+                        else:
+                            format_reg_n = 'Self-classification (N)'
                         add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_rd, element)
                         add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_n, element)
                         pending_flag = 'Pending (3b)'
@@ -134,7 +152,10 @@ def fixed_generate_dataframe(substance_id_list: np.ndarray, endpoint: str, regul
                     and 'Not information available' in not_df.names.values:
                         regulation = reg_dos_not.loc[reg_dos_not['names'] == element, 'additional_information_name'].iat[0]
                         cmr_flag = 1
-                        format_reg_rd = ' '.join([regulation,'(RD)'])
+                        if regulation:
+                            format_reg_rd = ' '.join([regulation,'(RD)'])
+                        else:
+                            format_reg_rd = 'Self-classification (RD)'
                         add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_rd, element)
                         pending_flag = 'Pending (2)'
                     
@@ -142,21 +163,30 @@ def fixed_generate_dataframe(substance_id_list: np.ndarray, endpoint: str, regul
                     and 'Not information available' in reg_dos_not.names.values:
                         regulation = not_df.loc[not_df['names'] == element, 'additional_information_name'].iat[0]
                         cmr_flag = 1
-                        format_reg_n = ' '.join([regulation,'(N)'])
+                        if regulation:
+                            format_reg_n = ' '.join([regulation,'(N)'])
+                        else:
+                            format_reg_n = 'Self-classification (N)'
                         add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_n, element)
                         pending_flag = 'Pending (4)'
                         
                     elif element in reg_dos_not.names.values and element not in not_df.names.values:
                         reg_rd = reg_dos_not.loc[reg_dos_not['names'] == element, 'additional_information_name'].iat[0]
                         cmr_flag = 1
-                        format_reg_rd = ' '.join([reg_rd,'(RD)'])
+                        if reg_rd:
+                            format_reg_rd = ' '.join([reg_rd,'(RD)'])
+                        else:
+                            format_reg_rd = 'Self-classification (RD)'
                         add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_rd, element)
                         pending_flag = 'Pending (3a)'
                         
                     elif element in not_df.names.values and element not in reg_dos_not.names.values:
                         reg_n = not_df.loc[not_df['names'] == element, 'additional_information_name'].iat[0]
                         cmr_flag = 1
-                        format_reg_n = ' '.join([reg_n,'(N)'])
+                        if reg_n:
+                            format_reg_n = ' '.join([reg_n,'(N)'])
+                        else:
+                            format_reg_n = 'Self-classification (N)'
                         add_info_dict(captured_ann_dict, substance_id, endpoint, format_reg_n, element)
                         pending_flag = 'Pending (3c)'
 
