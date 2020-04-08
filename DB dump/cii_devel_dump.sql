@@ -2,39 +2,19 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.4
--- Dumped by pg_dump version 9.5.4
+-- Dumped from database version 11.7 (Ubuntu 11.7-2.pgdg18.04+1)
+-- Dumped by pg_dump version 11.7 (Ubuntu 11.7-2.pgdg18.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: inventory; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON DATABASE inventory IS 'inditex compound inventory from HMExcel';
-
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
-SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
 
@@ -44,19 +24,19 @@ SET default_with_oids = false;
 -- Name: additional_information_regulation; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE additional_information_regulation (
+CREATE TABLE public.additional_information_regulation (
     id integer NOT NULL,
     additional_information_name character varying
 );
 
 
-ALTER TABLE additional_information_regulation OWNER TO postgres;
+ALTER TABLE public.additional_information_regulation OWNER TO postgres;
 
 --
 -- Name: analysis_method; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE analysis_method (
+CREATE TABLE public.analysis_method (
     id integer NOT NULL,
     subs_id integer NOT NULL,
     an_met_type_id integer NOT NULL,
@@ -65,51 +45,51 @@ CREATE TABLE analysis_method (
 );
 
 
-ALTER TABLE analysis_method OWNER TO postgres;
+ALTER TABLE public.analysis_method OWNER TO postgres;
 
 --
 -- Name: analysis_method_subtype; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE analysis_method_subtype (
+CREATE TABLE public.analysis_method_subtype (
     id integer NOT NULL,
     an_met_subtype character varying NOT NULL,
     an_met_type_id integer NOT NULL
 );
 
 
-ALTER TABLE analysis_method_subtype OWNER TO postgres;
+ALTER TABLE public.analysis_method_subtype OWNER TO postgres;
 
 --
 -- Name: analysis_method_subtype_names; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE analysis_method_subtype_names (
+CREATE TABLE public.analysis_method_subtype_names (
     id integer NOT NULL,
     an_met_subtype_id integer NOT NULL,
     names character varying NOT NULL
 );
 
 
-ALTER TABLE analysis_method_subtype_names OWNER TO postgres;
+ALTER TABLE public.analysis_method_subtype_names OWNER TO postgres;
 
 --
 -- Name: analysis_method_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE analysis_method_type (
+CREATE TABLE public.analysis_method_type (
     id integer NOT NULL,
     an_met_type character varying NOT NULL
 );
 
 
-ALTER TABLE analysis_method_type OWNER TO postgres;
+ALTER TABLE public.analysis_method_type OWNER TO postgres;
 
 --
 -- Name: chem_id; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE chem_id (
+CREATE TABLE public.chem_id (
     id integer NOT NULL,
     name character varying NOT NULL,
     chem_type_id integer NOT NULL,
@@ -117,13 +97,13 @@ CREATE TABLE chem_id (
 );
 
 
-ALTER TABLE chem_id OWNER TO postgres;
+ALTER TABLE public.chem_id OWNER TO postgres;
 
 --
 -- Name: chem_id_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE chem_id_id_seq
+CREATE SEQUENCE public.chem_id_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -131,32 +111,32 @@ CREATE SEQUENCE chem_id_id_seq
     CACHE 1;
 
 
-ALTER TABLE chem_id_id_seq OWNER TO postgres;
+ALTER TABLE public.chem_id_id_seq OWNER TO postgres;
 
 --
 -- Name: chem_id_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE chem_id_id_seq OWNED BY chem_id.id;
+ALTER SEQUENCE public.chem_id_id_seq OWNED BY public.chem_id.id;
 
 
 --
 -- Name: chem_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE chem_type (
+CREATE TABLE public.chem_type (
     id integer NOT NULL,
     type character varying NOT NULL
 );
 
 
-ALTER TABLE chem_type OWNER TO postgres;
+ALTER TABLE public.chem_type OWNER TO postgres;
 
 --
 -- Name: chem_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE chem_type_id_seq
+CREATE SEQUENCE public.chem_type_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -164,20 +144,20 @@ CREATE SEQUENCE chem_type_id_seq
     CACHE 1;
 
 
-ALTER TABLE chem_type_id_seq OWNER TO postgres;
+ALTER TABLE public.chem_type_id_seq OWNER TO postgres;
 
 --
 -- Name: chem_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE chem_type_id_seq OWNED BY chem_type.id;
+ALTER SEQUENCE public.chem_type_id_seq OWNED BY public.chem_type.id;
 
 
 --
 -- Name: chemical_names; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE chemical_names (
+CREATE TABLE public.chemical_names (
     name character varying NOT NULL,
     id integer NOT NULL,
     subs_id integer NOT NULL,
@@ -185,25 +165,25 @@ CREATE TABLE chemical_names (
 );
 
 
-ALTER TABLE chemical_names OWNER TO postgres;
+ALTER TABLE public.chemical_names OWNER TO postgres;
 
 --
 -- Name: general_regulation; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE general_regulation (
+CREATE TABLE public.general_regulation (
     id integer NOT NULL,
     general_regulation_name character varying NOT NULL
 );
 
 
-ALTER TABLE general_regulation OWNER TO postgres;
+ALTER TABLE public.general_regulation OWNER TO postgres;
 
 --
 -- Name: heh; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE heh (
+CREATE TABLE public.heh (
     id integer NOT NULL,
     subs_id integer,
     casr_number character varying,
@@ -215,112 +195,112 @@ CREATE TABLE heh (
 );
 
 
-ALTER TABLE heh OWNER TO postgres;
+ALTER TABLE public.heh OWNER TO postgres;
 
 --
 -- Name: heh_classification; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE heh_classification (
+CREATE TABLE public.heh_classification (
     id integer NOT NULL,
     classification character varying NOT NULL
 );
 
 
-ALTER TABLE heh_classification OWNER TO postgres;
+ALTER TABLE public.heh_classification OWNER TO postgres;
 
 --
 -- Name: heh_name; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE heh_name (
+CREATE TABLE public.heh_name (
     id integer NOT NULL,
     name character varying NOT NULL
 );
 
 
-ALTER TABLE heh_name OWNER TO postgres;
+ALTER TABLE public.heh_name OWNER TO postgres;
 
 --
 -- Name: heh_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE heh_type (
+CREATE TABLE public.heh_type (
     id integer NOT NULL,
     type character varying NOT NULL
 );
 
 
-ALTER TABLE heh_type OWNER TO postgres;
+ALTER TABLE public.heh_type OWNER TO postgres;
 
 --
 -- Name: man_proc_name; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE man_proc_name (
+CREATE TABLE public.man_proc_name (
     id integer NOT NULL,
     man_proc_type_id integer NOT NULL,
     name character varying
 );
 
 
-ALTER TABLE man_proc_name OWNER TO postgres;
+ALTER TABLE public.man_proc_name OWNER TO postgres;
 
 --
 -- Name: man_proc_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE man_proc_type (
+CREATE TABLE public.man_proc_type (
     id integer NOT NULL,
     type character varying
 );
 
 
-ALTER TABLE man_proc_type OWNER TO postgres;
+ALTER TABLE public.man_proc_type OWNER TO postgres;
 
 --
 -- Name: manufacturing_process; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE manufacturing_process (
+CREATE TABLE public.manufacturing_process (
     id integer NOT NULL,
     subs_id integer NOT NULL,
     man_proc_name_id integer NOT NULL
 );
 
 
-ALTER TABLE manufacturing_process OWNER TO postgres;
+ALTER TABLE public.manufacturing_process OWNER TO postgres;
 
 --
 -- Name: mrsl; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE mrsl (
+CREATE TABLE public.mrsl (
     id integer NOT NULL,
     subs_id integer NOT NULL,
     name character varying
 );
 
 
-ALTER TABLE mrsl OWNER TO postgres;
+ALTER TABLE public.mrsl OWNER TO postgres;
 
 --
 -- Name: name_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE name_type (
+CREATE TABLE public.name_type (
     id integer NOT NULL,
     type character varying NOT NULL
 );
 
 
-ALTER TABLE name_type OWNER TO postgres;
+ALTER TABLE public.name_type OWNER TO postgres;
 
 --
 -- Name: name_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE name_type_id_seq
+CREATE SEQUENCE public.name_type_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -328,20 +308,20 @@ CREATE SEQUENCE name_type_id_seq
     CACHE 1;
 
 
-ALTER TABLE name_type_id_seq OWNER TO postgres;
+ALTER TABLE public.name_type_id_seq OWNER TO postgres;
 
 --
 -- Name: name_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE name_type_id_seq OWNED BY name_type.id;
+ALTER SEQUENCE public.name_type_id_seq OWNED BY public.name_type.id;
 
 
 --
 -- Name: other_names_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE other_names_id_seq
+CREATE SEQUENCE public.other_names_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -349,56 +329,56 @@ CREATE SEQUENCE other_names_id_seq
     CACHE 1;
 
 
-ALTER TABLE other_names_id_seq OWNER TO postgres;
+ALTER TABLE public.other_names_id_seq OWNER TO postgres;
 
 --
 -- Name: other_names_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE other_names_id_seq OWNED BY chemical_names.id;
+ALTER SEQUENCE public.other_names_id_seq OWNED BY public.chemical_names.id;
 
 
 --
 -- Name: regulation_country; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE regulation_country (
+CREATE TABLE public.regulation_country (
     id integer NOT NULL,
     country character varying NOT NULL
 );
 
 
-ALTER TABLE regulation_country OWNER TO postgres;
+ALTER TABLE public.regulation_country OWNER TO postgres;
 
 --
 -- Name: regulation_names; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE regulation_names (
+CREATE TABLE public.regulation_names (
     id integer NOT NULL,
     names character varying NOT NULL
 );
 
 
-ALTER TABLE regulation_names OWNER TO postgres;
+ALTER TABLE public.regulation_names OWNER TO postgres;
 
 --
 -- Name: regulation_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE regulation_type (
+CREATE TABLE public.regulation_type (
     id integer NOT NULL,
     type character varying NOT NULL
 );
 
 
-ALTER TABLE regulation_type OWNER TO postgres;
+ALTER TABLE public.regulation_type OWNER TO postgres;
 
 --
 -- Name: regulations; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE regulations (
+CREATE TABLE public.regulations (
     id integer NOT NULL,
     subs_id integer NOT NULL,
     reg_country_id integer NOT NULL,
@@ -414,49 +394,49 @@ CREATE TABLE regulations (
 );
 
 
-ALTER TABLE regulations OWNER TO postgres;
+ALTER TABLE public.regulations OWNER TO postgres;
 
 --
 -- Name: special_cases_regulation; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE special_cases_regulation (
+CREATE TABLE public.special_cases_regulation (
     id integer NOT NULL,
     special_cases_name character varying
 );
 
 
-ALTER TABLE special_cases_regulation OWNER TO postgres;
+ALTER TABLE public.special_cases_regulation OWNER TO postgres;
 
 --
 -- Name: specific_regulation; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE specific_regulation (
+CREATE TABLE public.specific_regulation (
     id integer NOT NULL,
     specific_regulation_name character varying NOT NULL
 );
 
 
-ALTER TABLE specific_regulation OWNER TO postgres;
+ALTER TABLE public.specific_regulation OWNER TO postgres;
 
 --
 -- Name: subspecific_regulation; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE subspecific_regulation (
+CREATE TABLE public.subspecific_regulation (
     id integer NOT NULL,
     subspecific_regulation_name character varying
 );
 
 
-ALTER TABLE subspecific_regulation OWNER TO postgres;
+ALTER TABLE public.subspecific_regulation OWNER TO postgres;
 
 --
 -- Name: substance; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE substance (
+CREATE TABLE public.substance (
     id integer NOT NULL,
     class_name character varying,
     preferred_name character varying,
@@ -464,13 +444,13 @@ CREATE TABLE substance (
 );
 
 
-ALTER TABLE substance OWNER TO postgres;
+ALTER TABLE public.substance OWNER TO postgres;
 
 --
 -- Name: substance_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE substance_id_seq
+CREATE SEQUENCE public.substance_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -478,20 +458,20 @@ CREATE SEQUENCE substance_id_seq
     CACHE 1;
 
 
-ALTER TABLE substance_id_seq OWNER TO postgres;
+ALTER TABLE public.substance_id_seq OWNER TO postgres;
 
 --
 -- Name: substance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE substance_id_seq OWNED BY substance.id;
+ALTER SEQUENCE public.substance_id_seq OWNED BY public.substance.id;
 
 
 --
 -- Name: substance_structure; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE substance_structure (
+CREATE TABLE public.substance_structure (
     id integer NOT NULL,
     subs_id integer NOT NULL,
     chem_type_id integer NOT NULL,
@@ -500,48 +480,48 @@ CREATE TABLE substance_structure (
 );
 
 
-ALTER TABLE substance_structure OWNER TO postgres;
+ALTER TABLE public.substance_structure OWNER TO postgres;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: chem_id id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY chem_id ALTER COLUMN id SET DEFAULT nextval('chem_id_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY chem_type ALTER COLUMN id SET DEFAULT nextval('chem_type_id_seq'::regclass);
+ALTER TABLE ONLY public.chem_id ALTER COLUMN id SET DEFAULT nextval('public.chem_id_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: chem_type id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY chemical_names ALTER COLUMN id SET DEFAULT nextval('other_names_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY name_type ALTER COLUMN id SET DEFAULT nextval('name_type_id_seq'::regclass);
+ALTER TABLE ONLY public.chem_type ALTER COLUMN id SET DEFAULT nextval('public.chem_type_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: chemical_names id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY substance ALTER COLUMN id SET DEFAULT nextval('substance_id_seq'::regclass);
+ALTER TABLE ONLY public.chemical_names ALTER COLUMN id SET DEFAULT nextval('public.other_names_id_seq'::regclass);
+
+
+--
+-- Name: name_type id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.name_type ALTER COLUMN id SET DEFAULT nextval('public.name_type_id_seq'::regclass);
+
+
+--
+-- Name: substance id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.substance ALTER COLUMN id SET DEFAULT nextval('public.substance_id_seq'::regclass);
 
 
 --
 -- Data for Name: additional_information_regulation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY additional_information_regulation (id, additional_information_name) FROM stdin;
+COPY public.additional_information_regulation (id, additional_information_name) FROM stdin;
 1	Draft Commission Regulation amending Annex XVII perfluorooctanoic acid (PFOA), its salts and PFOA-related substances  ( WTO, G/TBT/N/EU/411)
 2	Entry 34
 3	Entry 8
@@ -653,7 +633,7 @@ COPY additional_information_regulation (id, additional_information_name) FROM st
 -- Data for Name: analysis_method; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY analysis_method (id, subs_id, an_met_type_id, an_met_subtype_id, an_met_subtype_name_id) FROM stdin;
+COPY public.analysis_method (id, subs_id, an_met_type_id, an_met_subtype_id, an_met_subtype_name_id) FROM stdin;
 1	1	1	2	2
 2	1	1	2	3
 3	1	1	2	4
@@ -851,7 +831,7 @@ COPY analysis_method (id, subs_id, an_met_type_id, an_met_subtype_id, an_met_sub
 -- Data for Name: analysis_method_subtype; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY analysis_method_subtype (id, an_met_subtype, an_met_type_id) FROM stdin;
+COPY public.analysis_method_subtype (id, an_met_subtype, an_met_type_id) FROM stdin;
 1	Water quality	1
 2	Leather	1
 3	Plastics	1
@@ -871,7 +851,7 @@ COPY analysis_method_subtype (id, an_met_subtype, an_met_type_id) FROM stdin;
 -- Data for Name: analysis_method_subtype_names; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY analysis_method_subtype_names (id, an_met_subtype_id, names) FROM stdin;
+COPY public.analysis_method_subtype_names (id, an_met_subtype_id, names) FROM stdin;
 1	1	EN ISO 18856:2005
 2	2	2a. Formaldehyde content
 3	2	EN ISO 17226-1 (HPLC)
@@ -915,7 +895,7 @@ COPY analysis_method_subtype_names (id, an_met_subtype_id, names) FROM stdin;
 -- Data for Name: analysis_method_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY analysis_method_type (id, an_met_type) FROM stdin;
+COPY public.analysis_method_type (id, an_met_type) FROM stdin;
 1	in articles
 2	chemical products
 3	waste waters
@@ -926,7 +906,7 @@ COPY analysis_method_type (id, an_met_type) FROM stdin;
 -- Data for Name: chem_id; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY chem_id (id, name, chem_type_id, subs_id) FROM stdin;
+COPY public.chem_id (id, name, chem_type_id, subs_id) FROM stdin;
 2134	1746-01-6	1	1107
 2135	217-122-7	2	1107
 2136	40321-76-4	1	1108
@@ -3334,17 +3314,10 @@ COPY chem_id (id, name, chem_type_id, subs_id) FROM stdin;
 
 
 --
--- Name: chem_id_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('chem_id_id_seq', 1, true);
-
-
---
 -- Data for Name: chem_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY chem_type (id, type) FROM stdin;
+COPY public.chem_type (id, type) FROM stdin;
 1	casr_number
 2	ec_number
 3	index_number
@@ -3352,17 +3325,10 @@ COPY chem_type (id, type) FROM stdin;
 
 
 --
--- Name: chem_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('chem_type_id_seq', 1, true);
-
-
---
 -- Data for Name: chemical_names; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY chemical_names (name, id, subs_id, name_type_id) FROM stdin;
+COPY public.chemical_names (name, id, subs_id, name_type_id) FROM stdin;
 2,3,7,8-TeCDD	8019	1107	1
 1,2,3,7,8-PeCDD	8020	1108	1
 1,2,3,4,7,8-HxCDD	8021	1109	1
@@ -11412,7 +11378,7 @@ Walloxen SP 20 PF	8018	1106	2
 -- Data for Name: general_regulation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY general_regulation (id, general_regulation_name) FROM stdin;
+COPY public.general_regulation (id, general_regulation_name) FROM stdin;
 1	reach
 2	clp
 3	pops
@@ -11433,7 +11399,7 @@ COPY general_regulation (id, general_regulation_name) FROM stdin;
 -- Data for Name: heh; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY heh (id, subs_id, casr_number, index_number, heh_type_id, heh_classif_id, heh_name_id, ec_number) FROM stdin;
+COPY public.heh (id, subs_id, casr_number, index_number, heh_type_id, heh_classif_id, heh_name_id, ec_number) FROM stdin;
 12496	1107	\N	\N	1	\N	268	\N
 12497	1107	\N	\N	2	\N	130	\N
 12498	1107	\N	\N	2	\N	363	\N
@@ -24142,7 +24108,7 @@ COPY heh (id, subs_id, casr_number, index_number, heh_type_id, heh_classif_id, h
 -- Data for Name: heh_classification; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY heh_classification (id, classification) FROM stdin;
+COPY public.heh_classification (id, classification) FROM stdin;
 1	Harmonised C&L Intentions
 2	Self-classification (DR)
 3	Self-classification (n)
@@ -24156,7 +24122,7 @@ COPY heh_classification (id, classification) FROM stdin;
 -- Data for Name: heh_name; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY heh_name (id, name) FROM stdin;
+COPY public.heh_name (id, name) FROM stdin;
 1	Acute Tox. 4 (Inhalkation)
 2	Skin Corr. 1A
 3	Acute Tox. 3 *(Oral)
@@ -24584,7 +24550,7 @@ COPY heh_name (id, name) FROM stdin;
 -- Data for Name: heh_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY heh_type (id, type) FROM stdin;
+COPY public.heh_type (id, type) FROM stdin;
 1	CMR
 2	PBT
 3	vPvB
@@ -24598,7 +24564,7 @@ COPY heh_type (id, type) FROM stdin;
 -- Data for Name: man_proc_name; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY man_proc_name (id, man_proc_type_id, name) FROM stdin;
+COPY public.man_proc_name (id, man_proc_type_id, name) FROM stdin;
 1	1	Printing fixative
 386	1	Phosphoric: printing auxiliary
 2	1	Swelling agent for wool/ Swelling agent
@@ -25333,7 +25299,7 @@ COPY man_proc_name (id, man_proc_type_id, name) FROM stdin;
 -- Data for Name: man_proc_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY man_proc_type (id, type) FROM stdin;
+COPY public.man_proc_type (id, type) FROM stdin;
 1	function
 2	process
 \.
@@ -25343,7 +25309,7 @@ COPY man_proc_type (id, type) FROM stdin;
 -- Data for Name: manufacturing_process; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY manufacturing_process (id, subs_id, man_proc_name_id) FROM stdin;
+COPY public.manufacturing_process (id, subs_id, man_proc_name_id) FROM stdin;
 2837	1076	666
 2838	1077	280
 2839	1077	653
@@ -28250,7 +28216,7 @@ COPY manufacturing_process (id, subs_id, man_proc_name_id) FROM stdin;
 -- Data for Name: mrsl; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY mrsl (id, subs_id, name) FROM stdin;
+COPY public.mrsl (id, subs_id, name) FROM stdin;
 1	1	YES
 2	2	YES
 3	3	NO  (Proposal dyStar)
@@ -29311,31 +29277,17 @@ COPY mrsl (id, subs_id, name) FROM stdin;
 -- Data for Name: name_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY name_type (id, type) FROM stdin;
+COPY public.name_type (id, type) FROM stdin;
 1	common_name
 2	trade_name
 \.
 
 
 --
--- Name: name_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('name_type_id_seq', 1, true);
-
-
---
--- Name: other_names_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('other_names_id_seq', 1, true);
-
-
---
 -- Data for Name: regulation_country; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY regulation_country (id, country) FROM stdin;
+COPY public.regulation_country (id, country) FROM stdin;
 1	eu
 2	sweden
 3	germany
@@ -29346,7 +29298,7 @@ COPY regulation_country (id, country) FROM stdin;
 -- Data for Name: regulation_names; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY regulation_names (id, names) FROM stdin;
+COPY public.regulation_names (id, names) FROM stdin;
 1	STOT RE 1 (The central nervous system and systems for reproduction)
 2	Skin Sens. 1A
 3	H317 to Skin sens. 1B
@@ -29941,6 +29893,8 @@ COPY regulation_names (id, names) FROM stdin;
 591	STOT RE 2 (liver, kidneys) (Oral)
 592	unsaturated polyesters (UP) [3907 91]
 593	AA-EQS Inland surface waters: 0.02
+781	Aquatic Chronic 3
+782	H318: 3% ≤ C < 5%
 595	H373: May cause damage to organs through prolonged or repeated exposure (Gastro- intestinal tract, Liver, immune system)
 596	H400 M-factor 10 Aquatic Chronic 1
 597	H372**: Causes damage to organs through prolonged or repeated exposure exposure cause the hazard
@@ -30127,8 +30081,6 @@ COPY regulation_names (id, names) FROM stdin;
 777	STOT SE 2 (Respiratory effects)
 778	H341: Suspected of causing genetic defects
 779	Rapporteur: Austria
-781	Aquatic Chronic 3
-782	H318: 3% ≤ C < 5%
 783	H335: C ≥ 0,5%
 784	M-factor=100 000
 785	AA-EQS Other surface waters: 1.3 × 10–4
@@ -30235,6 +30187,7 @@ COPY regulation_names (id, names) FROM stdin;
 886	Aquatic Acute 1, M-factor=1
 887	Acute Tox. 3 *(Oral)
 888	H314: 10% ≤ C < 50%
+1053	Included in 30/03/2010
 889	Mercury and Mercury compounds may not be placed on the Swedish market and used in Sweden
 890	Skin Irrit. 2
 891	No relevant application for authorisation
@@ -30399,7 +30352,6 @@ COPY regulation_names (id, names) FROM stdin;
 1050	This substance may not require a label according to Article 17 (see section 1.3 of Annex I) (Table 3.1)
 1051	Authority: Germany
 1052	STOT RE 2 (Blood)
-1053	Included in 30/03/2010
 1054	MAC-EQS Other surface waters: 0.0015
 1055	No harmonised classification
 1056	H334: C ≥ 0,1%
@@ -30497,6 +30449,7 @@ COPY regulation_names (id, names) FROM stdin;
 1148	Classification for eye irritation
 1149	[containing ≥ 0,1 % (w/w) of particles with an aerodynamic diameter of below 50 μm]
 1150	NO
+1244	zinc powder -zinc dust (pyro­ phoric)
 1151	By way of derogation, paragraph 1.1 shall not apply to jewellery articles placed on the market for the first time before 9 October 2013 and jewellery articles produced before 10 December 1961.
 1152	MAC-EQS  Inland surface waters: 0.5
 1153	non-stabilised form. In this case, the supplier must state on the label
@@ -30591,7 +30544,6 @@ COPY regulation_names (id, names) FROM stdin;
 1242	EUH044
 1243	the relevant specific concentration limit  (≥ 8,5 %)  specified in Part 3 of Annex I of Regulation (EC) No 1272/2008
 1355	Suspected skin sensitiser
-1244	zinc powder -zinc dust (pyro­ phoric)
 1245	Reason for restriction: Shall not be placed on the market or used in articles or parts thereof produced from polymers or copolymers of vinyl chloride (PVC) if the concentration of lead (expressed as metal) is equal to or greater than 0.1% by weight of the PVC material
 1246	Scope: Placing on the market of articles containing BBP for indoor environments and direct exposure
 1247	Scope: vPvB (Article 57 e)
@@ -30866,7 +30818,7 @@ COPY regulation_names (id, names) FROM stdin;
 -- Data for Name: regulation_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY regulation_type (id, type) FROM stdin;
+COPY public.regulation_type (id, type) FROM stdin;
 1	substance_regulations
 2	labelling
 3	substance_classification
@@ -30877,7 +30829,7 @@ COPY regulation_type (id, type) FROM stdin;
 -- Data for Name: regulations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY regulations (id, subs_id, reg_country_id, reg_type_id, gen_reg_id, spec_reg_id, subspec_reg_id, special_cases_id, additional_information_id, chem_id_name, chem_type_id, regulation_id) FROM stdin;
+COPY public.regulations (id, subs_id, reg_country_id, reg_type_id, gen_reg_id, spec_reg_id, subspec_reg_id, special_cases_id, additional_information_id, chem_id_name, chem_type_id, regulation_id) FROM stdin;
 1	1	1	1	1	1	1	\N	\N	\N	\N	248
 2	1	1	1	1	1	2	\N	40	\N	\N	153
 3	1	1	1	1	1	2	\N	40	\N	\N	188
@@ -105018,7 +104970,7 @@ COPY regulations (id, subs_id, reg_country_id, reg_type_id, gen_reg_id, spec_reg
 -- Data for Name: special_cases_regulation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY special_cases_regulation (id, special_cases_name) FROM stdin;
+COPY public.special_cases_regulation (id, special_cases_name) FROM stdin;
 1	preliminary_stages_inclusion_candidate_list
 2	candidate_list
 3	preliminary_stages_inclusion_annex_xiv
@@ -105035,7 +104987,7 @@ COPY special_cases_regulation (id, special_cases_name) FROM stdin;
 -- Data for Name: specific_regulation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY specific_regulation (id, specific_regulation_name) FROM stdin;
+COPY public.specific_regulation (id, specific_regulation_name) FROM stdin;
 1	substance_evaluation
 2	svhc
 3	restricted_substances_annex_xvii
@@ -105067,7 +105019,7 @@ COPY specific_regulation (id, specific_regulation_name) FROM stdin;
 -- Data for Name: subspecific_regulation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY subspecific_regulation (id, subspecific_regulation_name) FROM stdin;
+COPY public.subspecific_regulation (id, subspecific_regulation_name) FROM stdin;
 1	annex_xiii
 2	general_evaluaiton
 3	candidate_list
@@ -105096,7 +105048,7 @@ COPY subspecific_regulation (id, subspecific_regulation_name) FROM stdin;
 -- Data for Name: substance; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
+COPY public.substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 1107	\N	2,3,7,8-Tetrachlorodibenzo[b,e][1,4]dioxin	C12H4Cl4O2
 1108	\N	1,2,3,7,8-Pentachlorodibenzo-p-dioxin	C12H3Cl5O2
 1109	\N	1,2,3,4,7,8-Hexachlorodibenzo-p-dioxin (HxCDD)	C12H2Cl6O2
@@ -105134,32 +105086,16 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 11	N-nitrosamines	N-Nitroso-N-methylaniline	C7H8N2O
 12	N-nitrosamines	N-Nitroso-N-ethylaniline	\N
 13	Phthalates	Di-(2-ethyhexyl)-phthalate (DEHP)	C24H38O4
-14	Phthalates	Benzyl butyl phthalate (BBP)\n1,2-Benzenedicarboxylic acid, butyl phenylmethyl ester\n1-O-butyl 2-O-(phenylmethyl) benzene-1,2-dicarboxylate	C19H20O4
 15	Phthalates	Diisobutyl phthalate (DIBP)	C16H22O4
 16	Phthalates	Di-n-hexyl phthalate (DNHP)	C20H30O4
-17	Phthalates	Dibutyl phthalate (DBP) \n1,2-Benzenedicarboxylic acid, dibutyl ester\nBenzene-1,2-dicarboxylic acid dibutyl ester\nDibutyl benzene-1,2-dicarboxylate	C16H22O4
-18	Phthalates	Diisodecyl phthalate (DIDP)\n1,2-Benzenedi-carboxylic acid, diisodecyl ester\nBis(7,7-dimethyloctyl) phthalate	C28H46O4
-19	Phthalates	Di-isononyl phthalate (DINP) \n1,2-Benzenedicarboxylic acid, diisononyl ester (9CI)\nPhthalsaeure-di-isononylester\nBis(7-methyloctyl) benzene-1,2-dicarboxylate\nBis(7-methyloctyl) phthalate	C26H42O4
 20	Phthalates	Di-n-octyl phthalate (DNOP)	C24H38O4
-21	Phthalates	Diethyl phthalate (DEP)\n1,2-Benzenedicarboxylic acid, 1,2-diethyl ester\nDiethyl benzene-1,2-dicarboxylate	C12H14O4
-22	Phthalates	Dimethyl phthalate (DMP)\n1,2 - Benzenedicarboxylic acid, dimethyl ester\n1,2-Benzenedicarboxylic acid, dimethyl ester (9CI)\nDimethyl 1,2 - benzenedicarboxylate	C10H10O4
 23	Phthalates	Di-n-propylphthalate	C14H18O4
 24	Phthalates	Di-n-pentylphthalate (DPP)	C18H26O4
-25	Phthalates	Dicyclohexyl phthalate (DCHP)\n1,2-Benzenedicarboxylic acid, dicyclohexyl ester	C20H26O4
 26	Phthalates	Tributyltinnaphthalate	\N
-27	Phthalates	2-(Butoxycarbonyl) benzoic acid\nMono-n-butylphthalate	C12H14O4
 28	Phthalates	Mono 2 ethyl hexylphthalate (MEHP)	C16H22O4
-29	PFCs	Pentadecafluorooctanoic acid\nOctanoic acid, 2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-pentadecafluoro	C8HF15O2
-30	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluorooctane-1-sulfonic acid\nHeptadecafluorooctane-1-sulphonic acid	 C8HF17O3S
 31	PFCs	Potassium 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluorooctane-1-sulfonate	C8F17O3S.K
-32	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-Heptadecafluorooctane-1-sulfonamide\nHeptadecafluorooctanesulphonamide	C8H2F17NO2S
 33	PFCs	Undecafluorohexanoic acid	C6HF11O2
-34	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,6-tridecafluorohexane-1-sulfonic acid\nPerfluorohexane-1-sulphonic acid	C6HF13O3S
 35	PFCs	Heptafluorobutyric acid	C4HF7O2
-36	PFCs	1,1,2,2,3,3,4,4,4-Nonafluorobutane-1-sulphonic acid\n1-Butanesulfonic acid, 1,1,2,2,3,3,4,4,4-Nonafluoro\nNonafluoro-1-butanesulfonic Acid	C4HF9O3S
-37	PFCs	3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-heptadecafluorodecan-1-ol\n1H,1H,2H,2H-Perfluorodecan-1-ol	C10H5F17O
-38	PFCs	3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluoro-1-octanol\n3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluorooctan-1-ol\n1H,1H,2H,2H-Perfluorooctan-1-ol	C8H5F13O
-39	PFCs	3,3,4,4,5,5,6,6,6-Nonafluorohexanol\n3,3,4,4,5,5,6,6,6-Nonafluorohexan-1-ol\n1-Hexanol, 3,3,4,4,5,5,6,6,6-nonafluoro\n1,1,2,2-Tetrahydroperfluoro-1-hexanol	 C6H5F9O
 40	PFCs	Nonafluorovaleric Acid	C5HF9O2
 41	PFCs	Tridecafluoroheptanoic Acid	C7HF13O2
 42	PFCs	Heptadecafluorononanoic Acid	C9HF17O2
@@ -105168,22 +105104,11 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 45	PFCs	Tricosafluorododecanoic acid (PFDoA)	C12HF23O2
 46	PFCs	Pentacosafluorotridecanoic acid	C13HF25O2
 47	PFCs	Heptacosafluorotetradecanoic acid (PFteA)	C14HF27O2
-48	PFCs	Henicosafluorodecanesulphonic acid \n1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-henicosafluorodecane-1-sulfonic acid	C10HF21O3S
-49	PFCs	3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-henicosafluorododecanol\n3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-Henicosafluorododecan-1-ol\n1H,1H,2H,2H-Perfluorododecan-1-ol\n1,1,2,2-Tetrahydroperfluoro dodecanol	C12H5F21O
-50	PFCs	1,1,2,2-Tetrahydroperfluorooctyl acrylate\n3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluorooctyl acrylate\n 3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluorooctan-1-yl acrylate\n1H,1H,2H,2H-Tridecafluoro-n-octyl Acrylate	C11H7F13O2
 116	Chlorinated Aromatic Compounds	1,2,3,5-Tetrachlorobenzene	C6H2Cl4
 117	Chlorinated Aromatic Compounds	1,2,4,5-Tetrachlorobenzene	C6H2Cl4
-51	PFCs	1,1,2,2-Tetrahydroperfluorodecyl acrylate\n3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-Heptadecafluorodecyl acrylate\n3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-heptadecafluorodecyl prop-2-enoate\n2-Propenoic acid, 3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-heptadecafluorodecyl ester	C13H7F17O2
-52	PFCs	2-(Perfluorodecyl) ethyl acrylate\n3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-Henicosafluorododecyl acrylate\n1H,1H,2H,2H-Perfluorododecyl acrylate	C15H7F21O2
-53	PFCs	Heptadecafluorooctanesulphonyl fluoride\n1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-Heptadecafluorooctane-1-sulfonyl fluoride\nPerfluoro-1-octanesulfonyl fluoride	C8F18O2S
-54	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-Heptadecafluoro-N-methyloctane-1-sulfonamide\n1-Octanesulfonamide, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-N-methyl	C9H4F17NO2S
-55	PFCs	N-ethylheptadecafluorooctanesulphonamide\nN-ethyl-1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluorooctane-1-sulfonamide\n1-Octanesulfonamide, N-ethyl-1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-	C10H6F17NO2S
 56	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-N-(2-hydroxyethyl)-N-methyloctane-1-sulfonamide	C11H8F17NO3S
 57	PFCs	1-Octanesulfonamide, N-ethyl-1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-N-(2-hydroxyethyl)-	C12H10F17NO3S
 58	PFCs	2,2,3,4,4,5,5,6,6,7,8,8,8-tridecafluoro-3,7-bis(trifluoromethyl)octanoic acid	C10HF19O2
-59	PFCs	2,2,3,3,4,4,5,5,6,6,7,7-Dodecafluoroheptanoic acid\nHeptanoic acid, 2,2,3,3,4,4,5,5,6,6,7,7-dodecafluoro	C7H2F12O2
-60	PFCs	4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,11-Heptadecafluoroundecanoic acid\n2H,2H,3H,3H-Heptadecafluoroundecanoic Acid	C11H5F17O2
-61	PFCs	3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluorooctanesulphonic acid\n1-Octanesulfonic acid, 3,3,4,4,5,5,6,6,7,7,8,8,8-tridecafluoro	C8H5F13O3S
 62	Chlorinated and Other Phenols	Pentachlorophenol (PCP)	C6HCl5O
 63	Chlorinated and Other Phenols	2,3,4,6-Tetrachlorophenol	C6H2Cl4O
 64	Chlorinated and Other Phenols	2,3,5,6-Tetrachlorophenol (2,3,5,6-TeCP)	C6H2Cl4O
@@ -105202,14 +105127,12 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 77	Chlorinated and Other Phenols	2,5-Dichlorophenol	C6H4Cl2O
 78	Chlorinated and Other Phenols	3,4-dichlorophenol	C6H4Cl2O
 79	Chlorinated and Other Phenols	3,5-dichlorophenol	C6H4Cl2O
-80	Chlorinated and Other Phenols	Chlorophenol \n2-Chlorophenol\n3-chlorophenol\n4-chlorophenol	C6H5ClO
 81	Chlorinated and Other Phenols	4-Chloro-3-methylphenol	C7H7ClO
 82	Chlorinated and Other Phenols	4-Benzylphenol	C13H12O
 83	Chlorinated and Other Phenols	4-Hydroxybiphenyl	 C12H10O
 84	Chlorinated and Other Phenols	6-Sec-butyl-2,4-dinitrophenol	C10H12N2O5
 85	Chlorinated and Other Phenols	p-Nitrophenol	 C6H5NO3
 86	Chlorinated and Other Phenols	1,3-Benzenediol	C6H6O2
-87	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	p-Octylphenol\n4-n-Octylphenol	C14H22O
 88	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	p-Isooctylphenol	C14H22O
 89	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	p-sec-Octylphenol	C14H22O
 90	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	4-(1,1,3,3-Tetramethylbutyl)phenol	C14H22O
@@ -105217,12 +105140,10 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 92	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	2-Octylphenol	C14H22O
 93	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	Isooctylphenol	C14H22O
 94	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	o-sec-Octylphenol	C14H22O
-95	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	Nonylphenol C6H4(OH)C9H19\n2-Nonylphenol\no-nonylphenol	C15H24O
 96	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	o-Isononylphenol	C15H24O
 97	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	p-Nonylphenol	C15H24O
 98	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	Phenol, 4-nonyl-, branched	\N
 99	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	m-Nonylphenol	C15H24O
-100	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	Ethoxylated octylphenole\n2-[4-(2,4,4-Trimethylpentan-2-yl)phenoxy]ethanol	C16H26O2
 101	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	2-(p-Octylphenoxy)ethanol	C16H26O2
 102	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	2-(Octylphenoxy)ethanol	C16H26O2
 103	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	2-(Isooctylphenoxy)ethanol	C16H26O2
@@ -105265,79 +105186,20 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 141	Chlorinated Aromatic Compounds	Octachloronaphthalene	C10Cl8
 142	Chlorinated Aromatic Compounds	(2,2',4,4'-Tetrachlorobiphenyl)	C12H6Cl4
 143	Chlorinated Aromatic Compounds	1,1'-Biphenyl, chloro derivs.	C12H4Cl6
-144	Pesticides\nand\nHerbicides	(1α,4α,4aβ,5β,8β8aβ)-1,2,3,4,10,10-Hexachloro-1,4,4a,5,8,8a-hexahydro-1,4:5,8-dimethanonaphthalene\n1,2,3,4,10,10-hexachloro-1,4,4a,5,8,8a-Hexahydro-1,4:5,8-dimethanonaphthalene	C12H8Cl6
-145	Pesticides\nand\nHerbicides	Ethyl 5-(perchloro-5-hydroxy­ penta­ cyclo[5,3,0,02,6,03,9,04,8]decan- 5-yl)-4-oxopentanoate\nEthyl 5-(1,2,3,5,6,7,8,9,10,10- decachloro-4-hydroxypenta­ cyclo(5,2,1,02,6,03,9,05,8)dec-4- yl)-4-oxovalerate	C17H12Cl10O4
-146	Pesticides\nand\nHerbicides	1,3,4,5,6,7,8,8-Octachloro-1,3,3a,4,7,7a-hexahydro-4,7- methanoisobenzofuran	C9H4Cl8O
-147	Pesticides\nand\nHerbicides	\N	\N
-148	Pesticides\nand\nHerbicides	2,2',3,4'-Tetrachlorobiphenyl	C12H6Cl4
-149	Pesticides\nand\nHerbicides	Dichloro[(dichlorophenyl)methyl]methylbenzene\nDichloro [(dichlorophe­ nyl)methyl]methylbenzene, reaction mass of isomers\n(Dichlorophenyl)(dichloroto­ lyl)methane, reaction mass of isomers	C14H10Cl4
-150	Pesticides\nand\nHerbicides	\N	\N
-151	Pesticides\nand\nHerbicides	Bromobenzylbromotoluene, reaction mass of isomers\nA mixture of isomers of: bromobenzylbromotoluene	C14H12Br2
-152	Pesticides\nand\nHerbicides	1,1-Dichloro-2,2-bis(4-ethylphenyl)ethane	C18H20Cl2
-153	Pesticides\nand\nHerbicides	Pentachloronitrobenzene	C6Cl5NO2
-154	Pesticides\nand\nHerbicides	O,O-Dimethyl-4-oxobenzo­ triazin-3-ylmethyl phosphorodi­ thioate	C10H12N3O3PS2
-155	Pesticides\nand\nHerbicides	O,O-diethyl 4-oxobenzotriazin- 3-ylmethyl phosphorodithioate	\N
-156	Pesticides\nand\nHerbicides	O-4-Bromo-2,5-dichlorophenyl O,O-diethyl phosphorothioate	C10H12BrCl2O3PS
-157	Pesticides\nand\nHerbicides	1,2,3,6-Tetrahydro-N-(1,1,2,2- tetrachloroethylthio)phthalimide	C10H9Cl4NO2S
-158	Pesticides\nand\nHerbicides	N2-(4-chloro-o-tolyl)-N1,N1- dimethylformamidine	C10H13ClN2
-159	Pesticides\nand\nHerbicides	O-3-Chloro-4-methylcoumarin- 7-yl O,O-diethyl phosphoro­ thioate	C14H16ClO5PS
-160	Pesticides\nand\nHerbicides	α-Cyano-4-fluoro-3-phenoxy­ benzyl-3-(2,2-dichlorovinyl)- 2,2-dimethylcyclopropanecar­ boxylate	C22H18Cl2FNO3\n\n
-161	Pesticides\nand\nHerbicides	2-(2,4-Dichlorophenoxy)\npropionic acid	C9H8Cl2O3
-162	Pesticides\nand\nHerbicides	3-(Dimethylamino)-1-methyl-3-oxoprop-1-enyl dimethyl phosphate	C8H16NO5P\n
-163	Pesticides\nand\nHerbicides	(4-Chloro-2-methylphenoxy)acetic acid	C9H9ClO3
-164	Pesticides\nand\nHerbicides	4-(4-Chloro-o-tolyloxy) butyric\nacid	C11H13ClO3
-165	Pesticides\nand\nHerbicides	2-(4-Chloro-2-methylphenoxy)propionic acid	C10H11ClO3
-166	Pesticides\nand\nHerbicides	O,S-Dimethyl phosphoramid­ othioate	C2H8NO2PS
-167	Pesticides\nand\nHerbicides	Dimethyl-1-methyl-2-(methyl­ carbamoyl)vinyl phosphate	C7H14NO5P
-168	Pesticides\nand\nHerbicides	2-Methoxycarbonyl-1- methylvinyl dimethyl phosphate	C7H13O6P
-169	Pesticides\nand\nHerbicides	Aldrin	C12H8Cl6
-170	Pesticides\nand\nHerbicides	Dieldrin	C12H8Cl6O
-171	Pesticides\nand\nHerbicides	Endrin	C12H8Cl6O
-172	Pesticides\nand\nHerbicides	Chlordane (cis- and trans-)	C10H6Cl8
-173	Pesticides\nand\nHerbicides	Chlordecone	C10Cl10O
-174	Pesticides\nand\nHerbicides	Endosulfan	C9H6Cl6O3S
-175	Pesticides\nand\nHerbicides	Endosulfan (alpha)	C9H6Cl6O3S
-176	Pesticides\nand\nHerbicides	Endosulfan (beta)	C9H6Cl6O3S
-177	Pesticides\nand\nHerbicides	Toxaphene	C10H8Cl8
-178	Pesticides\nand\nHerbicides	Dodecachloropentacyclo[5.2.1.0^2.6.0^3.9.0^5.8] decane	C10Cl12
-179	Pesticides\nand\nHerbicides	2,4,5-T	C8H5Cl3O3
-180	Pesticides\nand\nHerbicides	2,4-D	C8H6Cl2O3
-181	Pesticides\nand\nHerbicides	Prochloraz	C15H16Cl3N3O2
-182	Pesticides\nand\nHerbicides	1,1,1-Trichloro-2,2-bis(4-chloro  phenyl)ethane	C14H9Cl5
-183	Pesticides\nand\nHerbicides	2,2,2,o,p'-Pentachloroethylidenebisbenzene	C14H9Cl5
-184	Pesticides\nand\nHerbicides	(2,4′-Dichlorodiphenyl)dichloroethane\n1-(2-Chlorophenyl)-1-(4-chlorophenyl)-2,2-dichloroethane	C14H10Cl4
-185	Pesticides\nand\nHerbicides	1,1-Dichloro-2,2-bis(4-chlorophenyl) ethane	C14H10Cl4
-186	Pesticides\nand\nHerbicides	2,4'-2-(2-Chlorophenyl)-2-(4-chlorophenyl)-1,1-dichloroethene	C14H8Cl4
-187	Pesticides\nand\nHerbicides	1,1-Dichloro-2,2-bis(4-chlorophenyl) ethene\n2,2-Bis(p-Chlorophenyl)-1,1-dichloroethylene	C14H8Cl4
 245	 Organotin Compounds	Dibutyltin di(acetate)	C12H24O4Sn
-188	Pesticides\nand\nHerbicides	1,2,3,4,5,6-Hexachlorocyclohexane\nGamma-Hexachlorcyclohexan (gamma-HCH)	C6H6Cl6
-189	Pesticides\nand\nHerbicides	γ-HCH or γ-BHC\nγ-1,2,3,4,5,6-hexachlorocyclohexane	C6H6Cl6
-190	Pesticides\nand\nHerbicides	(1α,2β,3α,4β,5α,6β)-1,2,3,4,5,6-Hexachlorocyclohexane	C6H6Cl6
-191	Pesticides\nand\nHerbicides	(1α,2α,3α,4β,5α,6β)-1,2,3,4,5,6-Hexachlorocyclohexane	C6H6Cl6
-192	Pesticides\nand\nHerbicides	3-(3,4-Dichlorophenyl)-1,1- dimethylurea	C9H10Cl2N2O
-193	Pesticides\nand\nHerbicides	Methoxychlor	C16H15Cl3O2
-194	Pesticides\nand\nHerbicides	1,4,5,6,7,8,8-Heptachloro-3a,4,7,7a-tetrahydro-4,7-metha  noindene	C10H5Cl7
-195	Pesticides\nand\nHerbicides	2,3-Epoxy-1,4,5,6,7,8,8-heptachloro-3a,4,7,7a- tetrahydro-4,7-methanoindane	C10H5Cl7O
-196	Pesticides\nand\nHerbicides	α,α,α-Trifluoro-2,6-dinitro-N,N- dipropyl-p-toluidine (containing < 0,5 ppm NPDA)\n2,6-Dinitro-N,N-dipropyl-4-trifluoromethylaniline (containing < 0,5 ppm NPDA)\nN,N-dipropyl-2,6-dinitro-4-trifluoromethylaniline (containing < 0,5 ppm NPDA)	C13H16F3N3O4
-197	Pesticides\nand\nHerbicides	A mixture of: α-cyano-3-phenoxybenzyl (Z)-(1R,3R)-[(S)-3-(2-chloro-3,3,3-trifluoro-prop-1-enyl)]-2,2-dimethylcyclopropanecarboxylate; α-cyano-3-phenoxybenzyl (Z)-(1S,3S)-[(R)-3-(2-chloro-3,3,3-trifluoro-prop-1-enyl)]-2,2-dimethylcyclopropanecarboxylate\n\nReaction mass of (S)-α-cyano-3- phenoxybenzyl(Z)-(1R)-cis-3-(2- chloro-3,3,3-trifluoropropenyl)- 2,2-dimethylcyclopropanecar  boxylate and (R)-α-cyano-3- phenoxybenzyl (Z)-(1S)-cis-3- (2-chloro-3,3,3-trifluor  opropenyl)-2,2-dimethylcyclo  propanecarboxylate (1:1)	\N
-198	Pesticides\nand\nHerbicides	(1R,3R)-3-((Z)-2-Chloro-3,3,3-trifluoro-propenyl)-2,2-dimethyl-cyclopropanecarboxylic acid (S)-cyano-(3-phenoxy-phenyl)-methyl ester	\N
-199	Pesticides\nand\nHerbicides	α-cyano-3-phenoxybenzyl 3-(2-chloro-3,3,3-trifluoroprop-1-enyl)-2,2-dimethylcyclopropanecarboxylate\n↓Other names: Regulatory process names [3] IUPAC names [1]\nPrint infocard	C23H19ClF3NO3\n\n
-200	Pesticides\nand\nHerbicides	2-Methyl-4-oxo-3-(penta-2,4-dienyl)cyclopent-2-enyl [1R-[1α[S*(Z)](3β)-3-(3-methoxy-2-methyl-3-oxoprop-1-enyl)-2,2 dimethylcyclopropanecarboxylate	C22H28O5
-201	Pesticides\nand\nHerbicides	Cypermethrin cis/trans +/- 40/60\n(RS)-α-cyano-3-phenoxybenzyl (1RS,3RS;1RS,3SR)-3-(2,2-dich lorovinyl)-2,2-dimethylcyclopro  panecarboxylate\n\n\n\n\nα-cypermethrin (ISO)\nRacemate comprising (R)-α-cyano-3-phenoxybenzyl (1S, 3S)-3-(2,2-dichlorovinyl)-2,2- dimethylcyclopropanecar  boxylate\n(S)-α-cyano-3-phenoxybenzyl (1R, 3R)-3-(2,2-dichlorovinyl)- 2,2-dimethylcyclopropanecar  boxylate\n\n\n\n\n\n\nCypermethrin cis/trans +/- 80/20\n(RS)-α-cyano-3-phenoxybenzyl (1RS; 3RS; 1RS, 3SR)-3-(2,2- dichlorovinyl)-2,2-dimethyl  cyclopropanecarboxylate	C22H19Cl2NO3
-202	Pesticides\nand\nHerbicides	α-Cyano-3-phenoxybenzyl [1R-[1α(S*),3α]]-3-(2,2-dibromovinyl)-2,2 dimethylcyclopropanecarboxylate\n\n(S)-α-cyano-3-phenoxybenzyl (1R, 3R)-3-(2,2-dibromovinyl)- 2,2-dimethylcyclopropanecar  boxylate	C22H19Br2NO3
-203	Pesticides\nand\nHerbicides	(S)-α-cyano-3-phenoxybenzyl-(S)-2-(4-chlorophenyl)-3-methylbutyrate	C25H22ClNO3
-204	Pesticides\nand\nHerbicides	Cyano (3-phenoxybenzyl)-2-(4-chlorophenyl)-3-methylbutyrate	C25H22ClNO3
-205	Pesticides\nand\nHerbicides	m-Phenoxybenzyl 3-(2,2-dichlorovinyl)-2,2-dimethylcyclopropanecarboxylate	C21H20Cl2O3
-206	Pesticides\nand\nHerbicides	Zinc bis dimethyldithiocarbamate	C6H12N2S4Zn
-207	Pesticides\nand\nHerbicides	2-Chloro-4-ethylamine-6- isopropylamine-1,3,5-triazine	 C8H14ClN5
-208	Pesticides\nand\nHerbicides	6-Chloro-N,N'-diethyl-1,3,5- triazine-2,4-diamine	C7H12ClN5
-209	Pesticides\nand\nHerbicides	2-Chloro-2',6'-diethyl-N-(methoxy  methyl)acetanilide	C14H20ClNO2
-210	Pesticides\nand\nHerbicides	Methyl benzimidazol-2-ylcarbamate\n1H-Benzimidazol-2-ylcarbamic acid, methyl ester	C9H9N3O2
-211	Pesticides\nand\nHerbicides	Carbaryl (ISO)	C12H11NO2
-212	Pesticides\nand\nHerbicides	2-Methyl-2-(methylthio)propanal-O-(N-methylcarbamoyl)oxime	C7H14N2O2S
-213	Pesticides\nand\nHerbicides	1-(Methylthio) ethylideneamino N-methylcarbamate	C5H10N2O2S
-214	 Isocyanates	Toluene-2,6-di-isocyanate\n4-Methyl-m-phenylene diisocyanate\n2,4-Diisocyanato-1-methylbenzene\n2,4-Toluene diisocyanate	C9H6N2O2
-215	 Isocyanates	4,4'-Methylenediphenyl diisocyanate\nDiphenylmethane-4,4'- diisocyanate	C15H10N2O2
+146	PesticidesandHerbicides	1,3,4,5,6,7,8,8-Octachloro-1,3,3a,4,7,7a-hexahydro-4,7- methanoisobenzofuran	C9H4Cl8O
+147	PesticidesandHerbicides	\N	\N
+148	PesticidesandHerbicides	2,2',3,4'-Tetrachlorobiphenyl	C12H6Cl4
+150	PesticidesandHerbicides	\N	\N
+152	PesticidesandHerbicides	1,1-Dichloro-2,2-bis(4-ethylphenyl)ethane	C18H20Cl2
+153	PesticidesandHerbicides	Pentachloronitrobenzene	C6Cl5NO2
+154	PesticidesandHerbicides	O,O-Dimethyl-4-oxobenzo­ triazin-3-ylmethyl phosphorodi­ thioate	C10H12N3O3PS2
+155	PesticidesandHerbicides	O,O-diethyl 4-oxobenzotriazin- 3-ylmethyl phosphorodithioate	\N
+156	PesticidesandHerbicides	O-4-Bromo-2,5-dichlorophenyl O,O-diethyl phosphorothioate	C10H12BrCl2O3PS
+157	PesticidesandHerbicides	1,2,3,6-Tetrahydro-N-(1,1,2,2- tetrachloroethylthio)phthalimide	C10H9Cl4NO2S
+158	PesticidesandHerbicides	N2-(4-chloro-o-tolyl)-N1,N1- dimethylformamidine	C10H13ClN2
+159	PesticidesandHerbicides	O-3-Chloro-4-methylcoumarin- 7-yl O,O-diethyl phosphoro­ thioate	C14H16ClO5PS
+162	PesticidesandHerbicides	3-(Dimethylamino)-1-methyl-3-oxoprop-1-enyl dimethyl phosphate	C8H16NO5P\n
 216	 Isocyanates	Hexamethylene-di-isocyanate	C8H12N2O2
 217	 Isocyanates	3-Isocyanatomethyl-3,5,5-trimethylcyclohexyl isocyanate	C12H18N2O2
 218	 Isocyanates	1,3-Bis(1-isocyanato-1-methylethyl)benzene	C14H16N2O2
@@ -105367,6 +105229,24 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 242	 Organotin Compounds	Dibutyltin dilaurate	C32H64O4Sn
 243	 Organotin Compounds	Dibutyltin maleate	C12H20O4Sn
 244	 Organotin Compounds	Dioctyltin oxide	C16H34OSn
+190	PesticidesandHerbicides	(1α,2β,3α,4β,5α,6β)-1,2,3,4,5,6-Hexachlorocyclohexane	C6H6Cl6
+191	PesticidesandHerbicides	(1α,2α,3α,4β,5α,6β)-1,2,3,4,5,6-Hexachlorocyclohexane	C6H6Cl6
+192	PesticidesandHerbicides	3-(3,4-Dichlorophenyl)-1,1- dimethylurea	C9H10Cl2N2O
+193	PesticidesandHerbicides	Methoxychlor	C16H15Cl3O2
+194	PesticidesandHerbicides	1,4,5,6,7,8,8-Heptachloro-3a,4,7,7a-tetrahydro-4,7-metha  noindene	C10H5Cl7
+195	PesticidesandHerbicides	2,3-Epoxy-1,4,5,6,7,8,8-heptachloro-3a,4,7,7a- tetrahydro-4,7-methanoindane	C10H5Cl7O
+198	PesticidesandHerbicides	(1R,3R)-3-((Z)-2-Chloro-3,3,3-trifluoro-propenyl)-2,2-dimethyl-cyclopropanecarboxylic acid (S)-cyano-(3-phenoxy-phenyl)-methyl ester	\N
+200	PesticidesandHerbicides	2-Methyl-4-oxo-3-(penta-2,4-dienyl)cyclopent-2-enyl [1R-[1α[S*(Z)](3β)-3-(3-methoxy-2-methyl-3-oxoprop-1-enyl)-2,2 dimethylcyclopropanecarboxylate	C22H28O5
+203	PesticidesandHerbicides	(S)-α-cyano-3-phenoxybenzyl-(S)-2-(4-chlorophenyl)-3-methylbutyrate	C25H22ClNO3
+204	PesticidesandHerbicides	Cyano (3-phenoxybenzyl)-2-(4-chlorophenyl)-3-methylbutyrate	C25H22ClNO3
+205	PesticidesandHerbicides	m-Phenoxybenzyl 3-(2,2-dichlorovinyl)-2,2-dimethylcyclopropanecarboxylate	C21H20Cl2O3
+206	PesticidesandHerbicides	Zinc bis dimethyldithiocarbamate	C6H12N2S4Zn
+207	PesticidesandHerbicides	2-Chloro-4-ethylamine-6- isopropylamine-1,3,5-triazine	 C8H14ClN5
+208	PesticidesandHerbicides	6-Chloro-N,N'-diethyl-1,3,5- triazine-2,4-diamine	C7H12ClN5
+209	PesticidesandHerbicides	2-Chloro-2',6'-diethyl-N-(methoxy  methyl)acetanilide	C14H20ClNO2
+211	PesticidesandHerbicides	Carbaryl (ISO)	C12H11NO2
+212	PesticidesandHerbicides	2-Methyl-2-(methylthio)propanal-O-(N-methylcarbamoyl)oxime	C7H14N2O2S
+213	PesticidesandHerbicides	1-(Methylthio) ethylideneamino N-methylcarbamate	C5H10N2O2S
 246	 Organotin Compounds	Dibutyltin bis(2-ethylhexanoate)	C24H48O4Sn
 247	Chlorinated Solvents	1,1,2-Trichloroethene	C2HCl3
 248	Chlorinated Solvents	Dichloromethane	CH2Cl2
@@ -105399,8 +105279,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 275	 Flame Retardants	Bis-(2,3-dibromopropyl)-phosphate (BDBPP)	C6H11Br4O4P
 276	 Flame Retardants	Tris-(2,3-dibromopropyl)-phosphate (TRIS) / (TDBPP)	C9H15Br6O4P
 277	 Flame Retardants	Tris-(2-chloroethyl)phosphate (TCEP)	C6H12Cl3O4P
-278	 Flame Retardants	Tris-(1,3-dichloro-2-propyl)phosphate (TDCPP)\nTris[2-chloro-1-(chloromethyl)ethyl] phosphate	C9H15Cl6O4P
-279	 Flame Retardants	Tris-(1-chloro-2-propyl) phosphate (TCPP)\nTris (2-chloro-1-methylethyl) phosphate	C9H18Cl3O4P
 280	 Flame Retardants	2,2',6,6'-Tetrabromo-4,4'-isopropylidenediphenol	C15H12Br4O2
 281	Disperse Dyes	1,4,5,8-Tetraaminoanthraquinone	C14H12N4O2
 282	Disperse Dyes	9,10-Anthracenedione, 1,4-diamino-, N,N'-mixed 2-hydroxyethyl and methyl derivatives	C17H16N2O3
@@ -105475,12 +105353,10 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 351	Asbestos	Crocidolite	Na2Fe2+3Fe3+2Si8O22 (OH)2
 352	Asbestos	Tremolite	Ca2Mg5Si8O22(OH)2
 353	Organophosphates 	O,O-Diethyl O-3,5,6-trichloro-2- pyridyl phosphorothioate	C9H11Cl3NO3PS
-354	Organophosphates 	O,O-Dimethyl O-4-nitrophenyl phosphorothioate\nParathion-methyl	C8H10NO5PS
 355	Organophosphates 	2-Methoxycarbonyl-1- methylvinyl dimethyl phosphate	 C7H13O6P
 356	Organophosphates 	2-Chloro-1-(2,4 dichlorophenyl) vinyl diethyl phosphate	C12H14Cl3O4P
 357	Organophosphates 	Diazinon	C12H21N2O3PS
 358	Organophosphates 	O,O-Dimethyl methylcarbamoylmethyl phosphorodithioate	C5H12NO3PS2
-359	Organophosphates 	1,2-Bis(ethoxycarbonyl)ethyl O,O-dimethyl phosphorodi  thioate \n[containing   0,03 % isomal  athion]	C10H19O6PS2
 360	Organophosphates 	O,O-Diethyl O-4-nitrophenyl phosphorothioate	C10H14NO5PS
 361	Organophosphates 	O,O-Diethyl-O-quinoxalin-2-yl phosphorothioate	C12H15N2O3PS
 362	Textile chemicals	Acetic acid	C2H4O2
@@ -105499,7 +105375,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 375	Textile chemicals	2-Propenoic acid, 2-methyl-, polymer with ethyl 2-propenoate	\N
 376	Textile chemicals	\N	\N
 377	Textile chemicals	Acrylonitrile	C3H3N
-378	Textile chemicals	Butadiene-Acrylonitrile Copolymers\n2-Propenenitrile, polymer with 1,3-butadiene	(C4H6C3H3N)x-
 379	Textile chemicals	Alcohol C13-C15 poly (3) ethoxylated	\N
 380	Textile chemicals	Alcohols C10-C14 ethoxylated	\N
 381	Textile chemicals	Alcohols C12-C13 ethoxylated	\N
@@ -105548,7 +105423,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 425	Textile chemicals	Methyl 1-(butylcarbamoyl)ben­ zimidazol-2-ylcarbamate	C14H18N4O3
 426	Textile chemicals	Benzalkonium chloride	C22H42ClNO
 427	Textile chemicals	Benzene	C6H6
-428	Textile chemicals	1,2-Benzenedicarboxylic acid,\nmono[2[[( heptadecafluorooctyl) sulfonyl]\nmethylamino]ethyl] ester	\N
 429	Textile chemicals	1,4-Benzenedisulfonic acid, 2-[[4-[butyI(2,2,6,6-tetramethyI-4-piperidinyl) amino]-6 [4methylphenyl) amino]-1,3,5 triazin-2-yl]amino]	\N
 430	Textile chemicals	1,4-Benzenedisulfonic acid, 2-[[4-butyl (2,2,6,6,-tetramethyl-4-piperidinyl)amino]-6-(phenylamino)-1,3,5-triazin-2-yl]amino]	\N
 431	Textile chemicals	1,4-Benzenedisulfonic acid, 2-[[4-butyl (2,2,6,6,-tetramethyl-4-piperidinyl)amino]-6-(1-piperidinyl)-1,3,5-triazin--2-yl]amino]	\N
@@ -105559,7 +105433,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 436	Textile chemicals	78	\N
 437	Textile chemicals	Benzimidazolecarbamic acid, ester of diethylene glycol monoethyl ether	\N
 438	Textile chemicals	Benzimidazolecarbamic acid,1-((2-(methylthio) ethyl)carbamoyl), methyl ester	\N
-439	Textile chemicals	1,2-Benzisothiazol-3(2H)-one\n1,2-Benzisothiazolin-3-one	C7H5NOS
 440	Textile chemicals	Benzoic acid, 4-chloro-,4-(2H-benzotriazol-2-yl)-3-hydroxyphenyl-ester	\N
 441	Textile chemicals	Benzoic acid, 4-methyl-,4-(5-chloro-2H-benzotriazol-2-yl)-3-hydroxyphenyl-ester	\N
 442	Textile chemicals	Benzoic acid, 4-methyl-, 4-(5-chloro-2H-benzotriazol-2-yl)-3-hydroxyphenyl-ester	\N
@@ -105579,11 +105452,9 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 456	Textile chemicals	Boric Acid	BH3O3
 457	Textile chemicals	Brominated polystyrene (BrPS)	\N
 458	Textile chemicals	Bromine	Br2
-459	Textile chemicals	2-Bromo-2-nitropropane-1,3-dioI\n2-Bromo-2-nitro-1,3-propanediol	C3H6BrNO4
 460	Textile chemicals	Butane tetracarboxylic acid (BTCA)	C8H10O8
 461	Textile chemicals	1-Butanol	C4H10O
 462	Textile chemicals	Butanone	C4H8O
-463	Textile chemicals	Butane-1,2,4-triol\n1,2,4-Butantriol	C4H10O3
 464	Textile chemicals	2-(2-Butoxyethoxy) ethanol	C8H18O3
 465	Textile chemicals	2-Butoxyethyl acetate	C8H16O3
 466	Textile chemicals	Butyl acrylate	C7H12O2
@@ -105609,10 +105480,8 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 486	Textile chemicals	Castor oil	\N
 487	Textile chemicals	Catalase	\N
 488	Textile chemicals	C14-C16-Alkanehydroxysulfonic acids and C14-C16-alkene derivatives, sodium salts	\N
-489	Textile chemicals	Cesium sulfate\nCaesium sulphate	Cs.1/2H2O4S
 490	Textile chemicals	2-Acetamido-1,5-anhydro-2-deoxyhexitol	\N
 491	Textile chemicals	Chitosan	\N
-492	Textile chemicals	2-Chlor-(1,3)-butadiene polymer\n1,3-Butadiene, 2-chloro-, homopolymer	\N
 493	Textile chemicals	Chlorhexidine	C22H30Cl2N10
 494	Textile chemicals	Chlorine	Cl2
 495	Textile chemicals	(4-Chlorobenzyl)-3(2H)-isothiazolone	C10H8ClNOS
@@ -105623,11 +105492,9 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 499	Textile chemicals	Bumetrizole	C17H18ClN3O
 500	Textile chemicals	Chloro-2-methyl-3(2H)-isothiazolone, calcium chloride complex	C4H4CaCl3NOS
 501	Textile chemicals	5-Chloro-2-methyl-2H-isothiazol-3-one	C4H4ClNOS
-502	Textile chemicals	Sodium 4-chloro-3-methylphenolate\n 4-Chloro-3-methylphenole, sodium salt	C7H7ClO.Na
 503	Textile chemicals	1-Chloronaphthalene	C10H7Cl
 504	Textile chemicals	2-Ethylnaphthalene	C12H12
 505	Textile chemicals	4-Chloro-2-octyl-2H-isothiazol-3-one	C11H18ClNOS
-506	Textile chemicals	2-(4-Chlorophenoxy)ethanol\n(2-Chlorophenoxy)ethanol	C8H9ClO2
 507	Textile chemicals	Chromic acid	CrH2O4
 508	Textile chemicals	Chromium (III) oxide	Cr2O3
 509	Textile chemicals	Chromium	Cr
@@ -105636,20 +105503,17 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 512	Textile chemicals	Chromium, ion (Cr6+)	Cr
 513	Textile chemicals	Citric acid	C6H8O7
 514	Textile chemicals	Cobalt	Co
-515	Textile chemicals	Cobalt monoxide\nCobalt(II) oxide	CoO
 516	Textile chemicals	Copper	 Cu
 517	Textile chemicals	Copper di(acetate)	C2H4O2.1/2Cu
 518	Textile chemicals	Cooper naphtenate	2(C11H7O2).Cu
 519	Textile chemicals	Copper dinitrate	Cu.2HNO3
 520	Textile chemicals	Oxine-copper	C18H12CuN2O2
-521	Textile chemicals	Copper (II) Sulfate\nCopper (II) Sulphate pentahydrated	Cu.H2O4S
 522	Textile chemicals	Copper(II) oxide	CuO
 523	Textile chemicals	Copper (II)chloride	Cl2Cu
 524	Textile chemicals	Copper (I) iodide	CuI2
 525	Textile chemicals	Copper(I) oxide	Cu2O
 526	Textile chemicals	Cuprate(3), [C-[[[4-[[2-[bis(2-hydroxyethyl)amino]ethyl]sulfonyl]phenyl]amino] sulfonyl]phenyl]amino]sulfonyl]-29H,31H-phthalocyanine-C,C,C-trisulfonato(5-)-KN29,KN30,KN31,KN32]-tripotassium	\N
 527	Textile chemicals	Cuprate(2-),[C,C-bis[[[4-[[2-[bis(2-hydroxyethyl)amino]ethyl]sulfonyl]phenyl]amino] sulfonyl]-29H,31H-phthalocyanine-C,C-disulfonato(4-)-KN29,KN30,KN31,KN32]-,disodium	\N
-528	Textile chemicals	Cuprate(2-), [C,C-bis(chlorosulfonyl)-29H,31H-phthalocyanine- C,C-disulfonato(4-) -kN29,kN30,kN31,kN32]-,dihydrogen\n\nDihydrogen [bis(chlorosulphonyl)-29H,31H-phthalocyaninedisulphonato(4-)-N29,N30,N31,N32]cuprate(2-)	\N
 529	Textile chemicals	Cuprate(2-),[C,C-bis[[[4-[[2-[(1,2-dihydroxyethyl)thio]ethyl]sulfonyl]phenyl]amino] sulfonyl]-29H,31H-phthalocyanine-C,C-disulfonato(4-)-KN29,KN30,KN31,KN32]-dipotassium	\N
 530	Textile chemicals	Cuprate(2-), [C,C-bis[[[4-[[2-[[2-(2-hydroxyethoxy)ethyl]amino]ethyl]sulfonyl]phenyl]amino]sulfonyl]-29H,31H-phthalocyanine-C,C-disulfonato(4-)-KN29,KN30,KN31,KN32]-disodium	\N
 531	Textile chemicals	Cuprate (2-),[C,C-bis[[[4-[[2-[(2-hydroxyethyl)amino]ethyl]sulfonyl]phenyl]amino]  sulfonyl]-29H,31H-phthalocyanine-C,C-disulfonato(4-)-KN29,KN30,KN31,KN32]-disodium	\N
@@ -105674,7 +105538,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 550	Textile chemicals	N-Cyclopropyl-1,3,5-triazine-2,4,6-triamine	C6H10N6
 551	Textile chemicals	Decabromo-1,1'-biphenyl	C12Br10
 552	Textile chemicals	Dextrin	C18H32O16
-553	Textile chemicals	D-Glucit\nD-Glucitol	C6H14O6\n\n
 554	Textile chemicals	D-GluGOse	 C6H12O6
 555	Textile chemicals	Diammonium sulfate	H3N.1/2H2O4S
 1137	nan	4-Chloroaniline	None
@@ -105688,7 +105551,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 563	Textile chemicals	Dichloro(diphenyl)methane	C13H10Cl2
 564	Textile chemicals	Dichloro-1,3,5-triazinetrione	C3HCl2N3O3
 565	Textile chemicals	α,α-Dichlorotoluene	C7H6Cl2
-566	Textile chemicals	4,5-Dichloro-2-octyl-2H-isothiazol-3-one\n4,5-Dichloro-2-octylisothiazol-3(2H)-one\n4,5-Dichloro-2-octyl-3(2H)-isothiazolone	C11H17Cl2NOS
 567	Textile chemicals	2,2'-Methylenebis(4-chlorophenol)	C13H10Cl2O2
 568	Textile chemicals	1,3-Dichloro-2-propanol	C3H6Cl2O
 569	Textile chemicals	1,3-Dichloro-1,3,5-triazinetrione, sodim salt	C3HCl2N3O3.Na
@@ -105725,7 +105587,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 600	KEMI Reports 	1,2-Benzenedicarbo1ylic acid, 3,4,5,6- tetrabromo-	\N
 601	KEMI Reports 	Dipotassium hexafluorotitanate	F6Ti.2K
 602	KEMI Reports 	Dipotassium hexafluorozirconate	F6Zr.2K
-603	KEMI Reports 	2,2-(1,4-Phenylene)bis((4H-3,1-benzoxazine-4-one)\n2,2'-p-Phenylene-bis-benzo[d][1,3]oxazin-4-one	C22H12N2O4
 604	KEMI Reports 	Dimethyl [3-[(hydroxymethyl)amino]-3- oxopropyl]phosphonate	C6H14NO5P
 605	KEMI Reports 	Formaldehyde, polymer with 4-(1,1- dimethylethyl)phenol	(C6H3ORS2)N
 606	KEMI Reports 	Trixylyl phosphate	C24H27O4P
@@ -105766,7 +105627,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 640	Textile Chemicals	4,5-Dihydroxy-1,3-bis(hydroxymethyl) imidazolidin-2-one	C5H10N2O5
 641	Textile Chemicals	Tetrahydro-3,5-bis(hydroxymethyl)-4H-1,3,5-oxadiazin-4-one	C5H10N2O4
 642	Textile Chemicals	Dimethyl-polysiloxane	(C2H6OSi)n
-643	Textile Chemicals	Bis(2-ethylhexyl) sebacate\nDecanedioic acid, bis(2-ethylhexyl) ester	C26H50O4
 644	Textile Chemicals	9,12-Dioxa-2,6-diazatetradecan-14-ol,6-[3-(dimethylamino)propyl]-2,7,10,13-tetramethyl	\N
 645	Textile Chemicals	4-Isopropenyl-1-methylcyclohexene	C10H16
 646	Textile Chemicals	Diphenyloxide	C12H10O
@@ -105804,7 +105664,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 678	Textile Chemicals	Formic acid	CH2O2\n\n
 679	Textile Chemicals	2-(2-Furyl)-1H-benzimidazole	C11H8N2O
 680	Textile Chemicals	Dipotassium 7-hydroxynaphthalene-1,3-disulphonate	C10H8O7S2.2K
-681	Textile Chemicals	Galactomannan,\nCarboxymethyl derivative	\N
 682	Textile Chemicals	Gamma-Cyclodextrin	C48H80O40
 683	Textile Chemicals	Gentamicin	\N
 684	Textile Chemicals	Gluconic acid	C6H12O7
@@ -105837,14 +105696,12 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 711	Textile Chemicals	Imidazolium compounds, 4,5-dihydro-1-methyl-2-nortallow alkyl-3-(2-tallow amidoethyl), Me sulfates	\N
 712	Textile Chemicals	Diiron trioxide	Fe2O3
 713	Textile Chemicals	Triiron tetraoxide	Fe3O4
-715	Textile Chemicals	Alkanes, C7-10-iso-\n\n\n\n\nNaphtha (petroleum), light alkylate\nLow boiling point modified naphtha\n[A complex combination of hydrocarbons produced by distillation of the reaction products of isobutane with monoolefinic hydrocarbons usually ranging in carbon numbers from C3 through C5. It consists of predominantly	\N
 716	Textile Chemicals	Isophthaloyl dichloride	C8H4Cl2O2
 717	Textile Chemicals	Lactic acid	C3H6O3
 718	Textile Chemicals	Lanolin	\N
 719	Textile Chemicals	Lauryldimethylamine oxide	C14H31NO
 720	Textile Chemicals	Lead di(acetate)	C2H4O2.1/2Pb
 721	Textile Chemicals	Lecithine	C42H80NO8P
-722	Textile Chemicals	Lignosulfonic acid, ammonium salt\nAmmonium lignosulfonate	\N
 723	Textile Chemicals	Ligninsulfonate-sodium salt	C20H24Na2O10S2
 724	Textile Chemicals	L-(+)-Tartaric acid	C4H6O6
 725	Textile Chemicals	Magnesium oxide	\N
@@ -105878,21 +105735,15 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 753	Textile Chemicals	2-Methyl-2,4-pentanediol	C6H14O2
 754	Textile Chemicals	Methyl salicylate	C8H8O3
 755	Textile Chemicals	2-(Methylthio) benzothiazole	C8H7NS2
-756	Textile Chemicals	2,2'-[6-(Methylthio)-1,3,5 triazine-\n2,4-diyl]bis[5-methoxy]phenol	C18H17N3O4S
-757	Textile Chemicals	2,2'-[6-(Methylthio)-1,3,5 triazine-\n2,4-diyl]bis[5-propoxy] phenol	\N
 758	Textile Chemicals	Molybdenum trioxide	MoO3
 759	Textile Chemicals	Mono(C10-16)alkylbenzenesulfonic acid ammonium salt	C19H35NO3S
 760	Textile Chemicals	Mono(C10-16)alkylbenzenesulfonic acid sodium salt	C17H27NaO3S
 761	Textile Chemicals	Monochloro acetic acid, sodium salt	C2H3ClO2.Na
 762	Textile Chemicals	2-Aminoethanol	C2H7NO
 763	Textile Chemicals	2,4-Imidazolidinedione, (hydroxymethyl)-5,5-dimethyl-	C6H10N2O3
-764	Textile Chemicals	2,7-Naphthalenedisulfonic acid, 5-(acetylamino)-3-[[4-(acetylamino) phenyI)azo)-4-hydroxy-,\ndisodium salt	C20H18N4O9S2.2Na
 765	Textile Chemicals	1,5-Naphthalenedisulfonic acid,3-[[4,6-bis[(2,2,6,6-tetramethyl-4-piperidinyl)amino]-1,3,5-triazin-2-yl]amino]	\N
 766	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-chloro-6-[(2,2,6,6 tetramethyl- 4-piperidinyl)amino)-1,3,5-triazin--2-yl]amino]	\N
 767	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-chloro-6-[(2,2,6,6 tetramethyl- 4-piperidinyl)amino)-1,3,5-triazin--2-yl]amino]- disodium salt	\N
-768	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(4-morpholinyl)-6-[(2,2,6,6 tetramethyl-\n4-piperidinyl)amino]-1,3,5- triazin-2-yl]amino]-	\N
-769	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(4-morpholinyl)-6-[(2,2,6,6 tetramethyl-\n4-piperidinyl) amino] 1,3,5- triazin-2-yl)amino]-, disodium salt	\N
-770	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(phenylamino)-6-[(2,2,6,6 tetramethyl-\n4-piperidinyl)amino) 1,3,5- triazin-2-yl] amino]-	\N
 771	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(phenylamino)-6-[(2,2,6,6 tetramethyl-4-piperidinyl)amino) 1,3,5- triazin-2-yl] amino]-,disodium salt	\N
 772	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(phenyl)-6-[(2,2,6,6 tetramethyl-4-piperidinyl) amino) 1,3,5- triazin-2-yl] amino]-	\N
 773	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(phenyl)-6-[(2,2,6,6 tetramethyl-4-piperidinyl) amino) 1,3,5- triazin-2-yl] amino]-disodium salt	\N
@@ -105958,34 +105809,24 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 831	Textile Chemicals	Perchloric acid	ClHO4
 832	Textile Chemicals	Peroxydisulfuric acid	H2O8S2
 833	Textile Chemicals	Peroxymonosulfuric acid	06S
-834	Textile Chemicals	Naphtha (petroleum), heavy straight-run\nLow boiling point naphtha\n[A complex combination of hydrocarbons produced by distillation of crude oil. It consists of hydrocarbons having carbon numbers predominantly in the range of C6 through C12 and boiling in the range of approximately 65 °C to 230 °C (149 °F to 446 °F).]	\N
 835	Textile Chemicals	Phenol	C6H6O
-836	Textile Chemicals	Phenol, 2,2'-[6-[2-[2-(2 ethoxyethoxy)\nethoxy]ethoxy]1,3,5- triazine-2,4-diyl]bis[5- ethoxy	\N
-837	Textile Chemicals	Phenol, 2,2'-[6-[2-[2-(2 -ethoxyethoxy)ethoxy]ethoxy]-1,3,5-\ntriazine-2,4-diyl]bis[5-methoxy	\N
 838	Textile Chemicals	Phenol, 2,2'-[6-[2-(2-ethoxyethoxy)ethoxy]-1,3,5- triazine- 2,4-diyl]bis[5-ethoxy]	\N
 839	Textile Chemicals	Phenol, 2,2'-[6-[2-(2- ethoxyethoxy) ethoxy]-1,3,5 triazine- 2,4-diyl]bis[5-methoxy]	\N
 840	Textile Chemicals	Phenol,2,2'-[6-(2-ethoxyethoxy)-1,3,5-triazine-2,4- diyl] bis[5-ethoxy]	\N
 841	Textile Chemicals	Phenol,2,2'-[6-(2-ethoxyethoxy)-1,3,5-triazine-2,4- diyl] bis[5-methoxy]	\N
-842	Textile Chemicals	Phenol,2,2'-[6-(2-methoxyethoxy)-1,3,5-triazine-2,4-\ndiyl)bis[5-methoxy]	\N
-843	Textile Chemicals	Phenol, 2,2'-[6-(2-methoxyethoxy)-1,3,5-triazine,4-\ndiyl)bis[5-propoxy]	\N
 844	Textile Chemicals	Phenol, 2,2'-[6-(octyloxy)-1 ,3,5-triazine-2,4-diyl]bis[5-ethoxy]	\N
 845	Textile Chemicals	Phenol, 2,2'-[6-(octyloxy)-1,3,5-triazine-2,4-diyl]bis[5-methoxy-	\N
 846	Textile Chemicals	Phenol, 2,2'-[6-(octyloxy)-1,3,5-triazine-2,4-diyl]bis[5-methoxy]	\N
-847	Textile Chemicals	Phenol, 2,2'-[6-(2-Propoxyethoxy)-\n1,3,5-triazine-2,4- diyl)bis[5-ethoxy]	\N
-848	Textile Chemicals	Phenol, 2,2'-[6-(2-propoxyethoxy)-1,3,5-triazine-2,4-\ndiyl)bis[5-methoxy]	\N
 849	Textile Chemicals	2-Phenoxyethanol	C8H10O2\n\n
 850	Textile Chemicals	Phosphonic acid	H3O3P
 851	Textile Chemicals	Phosphonic acid, disodium salt	H3O3P.2Na
-852	Textile Chemicals	Orthophosphoric acid\n\nPhosphoric acid	 H3O4P
 853	Textile Chemicals	Phosphoric acid, ammonium salt	H3N.xH3O4P
 854	Textile Chemicals	Phosphoric acid methylphenyl diphenyl ester	C19H17O4P
 855	Textile Chemicals	Phosphoric acid, 1,3-phenylene tetraphenyl ester	C30H24O8P2
 856	Textile Chemicals	1,2-Benzenedicarboxylic acid	C8H6O4
 1134	nan	2-Naphthylamine	None
-857	Textile Chemicals	N-(5-chloro-2-methoxyphenyl)-3-hydroxy-4-[[2-methoxy-5 [(phenylamino)carbonyl]phenyl]\nazo]naphthalene-2-carboxamide	C32H25ClN4O5
 858	Textile Chemicals	1-Methyl-4-isopropyl-1-cyclo-hexen-8-ol	\N
 859	Textile Chemicals	Platinum(IV) oxide	PtO2
-860	Textile Chemicals	2-Methyloxirane\nOxirane, 2-methyl-, polymer with oxirane	(C3H6O.C2H4O)n
 861	Textile Chemicals	2-Propenamide, homopolymer	(C3H5NO)n
 862	Textile Chemicals	2-Propenoic acid, homopolymer	(C3H4O2)n
 863	Textile Chemicals	Polyacrylonitrile	(C3H3N)n
@@ -106031,22 +105872,18 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 903	Textile Chemicals	1,2,3-Propanetriol	C3H8O3
 904	Textile Chemicals	1-Propanol	C3H8O
 905	Textile Chemicals	2- Propanol	C3H8O
-906	Textile Chemicals	1- Propene, homopolymer,\nIsotactic	(C3-H6)n-
 907	Textile Chemicals	2- Propenoic acid, 2- (dimethylamino)ethyl ester, polymer with dimethylsilanediol and (3-mercaptopropyl)methylsilanediol, graft, acetate (salt)	\N
-908	Textile Chemicals	Trans-isopropyl-3-[[(ethylamino)methoxyfosfinothioyl]oxy]crotonate\nIsopropyl 3-[[(ethylamino)me­ thoxyphosphinothioyl]oxy]iso­ crotonate	C10H20NO4PS
 909	Textile Chemicals	Propylbenzene	C9H12
 910	Textile Chemicals	Propylene glycol	C3H8O2
 911	Textile Chemicals	4-methylimidazolidin-2-one	C4H8N2O
 912	Textile Chemicals	Toluene-4-sulphonic acid	C7H8O3S
 913	Textile Chemicals	Pumice	\N
 914	Textile Chemicals	Quaternary ammonium compounds	\N
-915	Textile Chemicals	Quaternary ammonium\ncompounds, bis(hydrogenated\nallow alkyl)dimethyl, chlorides	\N
 916	Textile Chemicals	3-Hydroxy-4-[(2-methoxy-5-nitrophenyl)azo]-N-(3-nitrophenyl)naphthalene-2-carboxamide	C24H17N5O7
 917	Textile Chemicals	2-Hydroxy-N-phenylbenzamide	C13H11NO2
 918	Textile Chemicals	Silanediol, dimethyl-, polymer with methyl [3-[(2,2,6,6-tetramethyl-4-piperidinyl)oxy]propyl]silanediol	\N
 919	Textile Chemicals	Silicon dioxide	O2Si
 920	Textile Chemicals	Silica (crystalline-cristobalite)	O2-Si
-921	Textile Chemicals	Silicic acid\n\n\n\n\n\n\nMetasilicic acid	H2O3Si
 922	Textile Chemicals	Silicium dioxide	O2Si
 923	Textile Chemicals	Silicon	Si
 924	Textile Chemicals	Silver	Ag
@@ -106057,7 +105894,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 929	Textile Chemicals	Sodium benzoate	C7H6O2.Na
 930	Textile Chemicals	Sodium bisulfite	H2O3S.Na
 931	Textile Chemicals	2-Dodecoxyethyl hydrogen sulfate	C12H25NaO3S
-932	Textile Chemicals	Sodium carbonate\n\n\n\n\nSodium carbonate, decahydrate	CH2O3.2Na
 933	Textile Chemicals	Sodium chlorate	ClHO3.Na
 934	Textile Chemicals	Sodium chloride	ClNa
 935	Textile Chemicals	Sodium chlorite	ClHO2.Na
@@ -106097,8 +105933,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 971	Textile Chemicals	Sodium-2-phenylphenolate	C12H10O.Na
 972	Textile Chemicals	Sodium polyphosphate	\N
 973	Textile Chemicals	Sodium trichloroacetate	C2HCl3O2.Na\n\n
-974	Textile Chemicals	Solvent naphtha (petroleum), light arom.\nLow boiling point naphtha - unspecified\n[A complex combination of hydrocarbons obtained from distillation of aromatic streams. It consists predominantly of aromatic hydrocarbons having carbon numbers predominantly in the range of C8 through C10 and boiling in the range of approximately 135 °C to 210 °C (275 °F to 410 °F).]	\N
-975	Textile Chemicals	Distillates (petroleum), solvent-refined heavy paraffinic\nDistillates (petroleum), solvent- refined heavy paraffinic\nBaseoil- unspecified\n[A complex combination of hydrocarbons obtained as the raffinate from a solvent extraction process. It consists predominantly of saturated hydrocarbons having carbon numbers predominantly in the range of C20 through C50 and produces a finished oil with a viscosity of at least 100 SUS at 100 oF (19cSt at 40 oC).]	\N
 976	Textile Chemicals	Starch	\N
 977	Textile Chemicals	Starch, 2-Hydroxyethyl ether	\N
 978	Textile Chemicals	1-[(Stearoylamino)methyl]pyridinium chloride	C24H43N2O.Cl
@@ -106108,7 +105942,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 982	Textile Chemicals	Stearic acid tridecyl ester	C31H62O2
 983	Textile Chemicals	N,N-Dimethyloctadecylamine N-oxide	C20H43NO
 984	Textile Chemicals	Trimethyloctadecylammonium chloride	C21H46N.Cl
-985	Textile Chemicals	Ceramic materials and wares, chemicals\n\nSteatite ceramic	\N
 986	Textile Chemicals	Styrene polymer	\N
 987	Textile Chemicals	Sucrose	C12H22O11
 988	Textile Chemicals	Sulphamidic acid	H3NO3S
@@ -106160,7 +105993,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 1033	Textile Chemicals	Tri-n-butyltin hydride	C12H28Sn\n
 1034	Textile Chemicals	Tributyltin methacrylate comethacrylate polymer	(C16H32O2Sn·C5H8O2)x
 1035	Textile Chemicals	Trichlorocarbanilide	C13H9Cl3N2O\n\n
-1036	Textile Chemicals	2,4,4'-Trichloro-2'-hydroxy-dip­ henyl-ether\n5-Chloro-2-(2,4-dichlorophe­ noxy)phenol	C12H7Cl3O2
 1037	Textile Chemicals	2,2',2''-Nitrilotriethanol	C6H15NO3\n\n
 1038	Textile Chemicals	Triethanolamine abietoyl hydrolised collagen	\N
 1039	Textile Chemicals	2-Chloro-N-[[[4-(trifluoromethoxy)phenyl] amino]carbonyl]benzamide	C15H10ClF3N2O3
@@ -106169,12 +106001,8 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 1042	Textile Chemicals	2,6,8-Trimethyl-4-nonylpolyethylene glycolether (10 EO)	(C2H4O)mult-C12H26O
 1043	Textile Chemicals	1,2,4-Trimethylbenzene	C9H12\n\n
 1044	Textile Chemicals	1,3,5-Triazine-2,4,6-triyltriiminotrimethanol	C6H12N6O3
-1045	Textile Chemicals	2,2,4-Trimethyl-1,3-pentanediol diisobutyrate\n1-Isopropyl-2,2-dimethyltrimethylene diisobutyrate	C16H30O4
 1046	Textile Chemicals	9,12,15-Trioxa-2,6-diazahentriacontan-17-ol,6-[3-(dimethylamino)propyl]-2,7,10,13-tetramethyl	\N
 1047	Textile Chemicals	9,12,15-Trioxa-2,6-diazaheptacosan-17-ol,6-[3-(dimethylamino)propyl]-2,7,10,13-tetramethyl	\N
-1048	Textile Chemicals	Tris (1-aziridinyl) phosphine oxide\nTri (aziridin-1-yl) phosphine oxide	C6H12N3OP
-1049	Textile Chemicals	Tris (bromoethyl) phosphate\nTris(2-bromoethyl) phosphate	\N
-1050	Textile Chemicals	Tris(1,3-dichloroisopropyl) phosphate (TDCP)\nTris[2-chloro-1-(chloromethyl)ethyl] phosphate	C9H15Cl6O4P
 1051	Textile Chemicals	Phenol, isopropylated, phosphate (3:1)	\N
 1052	Textile Chemicals	Trisodium phosphate	H3O4P.3Na
 1053	Textile Chemicals	Trypsin (from bovine pancreas, type II)	\N
@@ -106191,7 +106019,6 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 1064	Textile Chemicals	Xylenes	C8H10\n\n
 1065	Textile Chemicals	4-[(5-Carbamoyl-o-tolyl) azo]-3-hydroxynaphth-2-anilide	C25H20N4O3
 1066	Textile Chemicals	Zinc	 Zn
-1067	Textile Chemicals	Zinc acetate\nZinc di(acetate)	C2H4O2.1/2Zn\n\n
 1068	Textile Chemicals	Zinc dichloride	Cl2Zn
 1069	Textile Chemicals	Zinc bis(tetrafluoroborate)	BF4.1/2Zn
 1070	Textile Chemicals	Naphthenic acids, zinc salts	C22H14O4Zn
@@ -106464,21 +106291,139 @@ COPY substance (id, class_name, preferred_name, mol_formula) FROM stdin;
 1364	None	Direct Brown 51                                          	None
 1365	None	Direct Brown 59                                           	None
 1366	None	Direct Black 29                                           	None
+14	Phthalates	Benzyl butyl phthalate (BBP)1,2-Benzenedicarboxylic acid, butyl phenylmethyl ester1-O-butyl 2-O-(phenylmethyl) benzene-1,2-dicarboxylate	C19H20O4
+17	Phthalates	Dibutyl phthalate (DBP) 1,2-Benzenedicarboxylic acid, dibutyl esterBenzene-1,2-dicarboxylic acid dibutyl esterDibutyl benzene-1,2-dicarboxylate	C16H22O4
+18	Phthalates	Diisodecyl phthalate (DIDP)1,2-Benzenedi-carboxylic acid, diisodecyl esterBis(7,7-dimethyloctyl) phthalate	C28H46O4
+19	Phthalates	Di-isononyl phthalate (DINP) 1,2-Benzenedicarboxylic acid, diisononyl ester (9CI)Phthalsaeure-di-isononylesterBis(7-methyloctyl) benzene-1,2-dicarboxylateBis(7-methyloctyl) phthalate	C26H42O4
+21	Phthalates	Diethyl phthalate (DEP)1,2-Benzenedicarboxylic acid, 1,2-diethyl esterDiethyl benzene-1,2-dicarboxylate	C12H14O4
+22	Phthalates	Dimethyl phthalate (DMP)1,2 - Benzenedicarboxylic acid, dimethyl ester1,2-Benzenedicarboxylic acid, dimethyl ester (9CI)Dimethyl 1,2 - benzenedicarboxylate	C10H10O4
+25	Phthalates	Dicyclohexyl phthalate (DCHP)1,2-Benzenedicarboxylic acid, dicyclohexyl ester	C20H26O4
+27	Phthalates	2-(Butoxycarbonyl) benzoic acidMono-n-butylphthalate	C12H14O4
+29	PFCs	Pentadecafluorooctanoic acidOctanoic acid, 2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-pentadecafluoro	C8HF15O2
+30	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluorooctane-1-sulfonic acidHeptadecafluorooctane-1-sulphonic acid	 C8HF17O3S
+32	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-Heptadecafluorooctane-1-sulfonamideHeptadecafluorooctanesulphonamide	C8H2F17NO2S
+34	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,6-tridecafluorohexane-1-sulfonic acidPerfluorohexane-1-sulphonic acid	C6HF13O3S
+36	PFCs	1,1,2,2,3,3,4,4,4-Nonafluorobutane-1-sulphonic acid1-Butanesulfonic acid, 1,1,2,2,3,3,4,4,4-NonafluoroNonafluoro-1-butanesulfonic Acid	C4HF9O3S
+37	PFCs	3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-heptadecafluorodecan-1-ol1H,1H,2H,2H-Perfluorodecan-1-ol	C10H5F17O
+38	PFCs	3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluoro-1-octanol3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluorooctan-1-ol1H,1H,2H,2H-Perfluorooctan-1-ol	C8H5F13O
+39	PFCs	3,3,4,4,5,5,6,6,6-Nonafluorohexanol3,3,4,4,5,5,6,6,6-Nonafluorohexan-1-ol1-Hexanol, 3,3,4,4,5,5,6,6,6-nonafluoro1,1,2,2-Tetrahydroperfluoro-1-hexanol	 C6H5F9O
+48	PFCs	Henicosafluorodecanesulphonic acid 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-henicosafluorodecane-1-sulfonic acid	C10HF21O3S
+49	PFCs	3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-henicosafluorododecanol3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-Henicosafluorododecan-1-ol1H,1H,2H,2H-Perfluorododecan-1-ol1,1,2,2-Tetrahydroperfluoro dodecanol	C12H5F21O
+50	PFCs	1,1,2,2-Tetrahydroperfluorooctyl acrylate3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluorooctyl acrylate 3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluorooctan-1-yl acrylate1H,1H,2H,2H-Tridecafluoro-n-octyl Acrylate	C11H7F13O2
+51	PFCs	1,1,2,2-Tetrahydroperfluorodecyl acrylate3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-Heptadecafluorodecyl acrylate3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-heptadecafluorodecyl prop-2-enoate2-Propenoic acid, 3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-heptadecafluorodecyl ester	C13H7F17O2
+52	PFCs	2-(Perfluorodecyl) ethyl acrylate3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-Henicosafluorododecyl acrylate1H,1H,2H,2H-Perfluorododecyl acrylate	C15H7F21O2
+53	PFCs	Heptadecafluorooctanesulphonyl fluoride1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-Heptadecafluorooctane-1-sulfonyl fluoridePerfluoro-1-octanesulfonyl fluoride	C8F18O2S
+54	PFCs	1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-Heptadecafluoro-N-methyloctane-1-sulfonamide1-Octanesulfonamide, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-N-methyl	C9H4F17NO2S
+55	PFCs	N-ethylheptadecafluorooctanesulphonamideN-ethyl-1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluorooctane-1-sulfonamide1-Octanesulfonamide, N-ethyl-1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-	C10H6F17NO2S
+59	PFCs	2,2,3,3,4,4,5,5,6,6,7,7-Dodecafluoroheptanoic acidHeptanoic acid, 2,2,3,3,4,4,5,5,6,6,7,7-dodecafluoro	C7H2F12O2
+60	PFCs	4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,11-Heptadecafluoroundecanoic acid2H,2H,3H,3H-Heptadecafluoroundecanoic Acid	C11H5F17O2
+61	PFCs	3,3,4,4,5,5,6,6,7,7,8,8,8-Tridecafluorooctanesulphonic acid1-Octanesulfonic acid, 3,3,4,4,5,5,6,6,7,7,8,8,8-tridecafluoro	C8H5F13O3S
+80	Chlorinated and Other Phenols	Chlorophenol 2-Chlorophenol3-chlorophenol4-chlorophenol	C6H5ClO
+87	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	p-Octylphenol4-n-Octylphenol	C14H22O
+95	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	Nonylphenol C6H4(OH)C9H192-Nonylphenolo-nonylphenol	C15H24O
+100	Alkylphenols (APs) & Alkylphenol Ethoxylates (APEOs)	Ethoxylated octylphenole2-[4-(2,4,4-Trimethylpentan-2-yl)phenoxy]ethanol	C16H26O2
+908	Textile Chemicals	Trans-isopropyl-3-[[(ethylamino)methoxyfosfinothioyl]oxy]crotonateIsopropyl 3-[[(ethylamino)me­ thoxyphosphinothioyl]oxy]iso­ crotonate	C10H20NO4PS
+915	Textile Chemicals	Quaternary ammoniumcompounds, bis(hydrogenatedallow alkyl)dimethyl, chlorides	\N
+214	 Isocyanates	Toluene-2,6-di-isocyanate4-Methyl-m-phenylene diisocyanate2,4-Diisocyanato-1-methylbenzene2,4-Toluene diisocyanate	C9H6N2O2
+215	 Isocyanates	4,4'-Methylenediphenyl diisocyanateDiphenylmethane-4,4'- diisocyanate	C15H10N2O2
+278	 Flame Retardants	Tris-(1,3-dichloro-2-propyl)phosphate (TDCPP)Tris[2-chloro-1-(chloromethyl)ethyl] phosphate	C9H15Cl6O4P
+279	 Flame Retardants	Tris-(1-chloro-2-propyl) phosphate (TCPP)Tris (2-chloro-1-methylethyl) phosphate	C9H18Cl3O4P
+354	Organophosphates 	O,O-Dimethyl O-4-nitrophenyl phosphorothioateParathion-methyl	C8H10NO5PS
+359	Organophosphates 	1,2-Bis(ethoxycarbonyl)ethyl O,O-dimethyl phosphorodi  thioate [containing   0,03 % isomal  athion]	C10H19O6PS2
+378	Textile chemicals	Butadiene-Acrylonitrile Copolymers2-Propenenitrile, polymer with 1,3-butadiene	(C4H6C3H3N)x-
+428	Textile chemicals	1,2-Benzenedicarboxylic acid,mono[2[[( heptadecafluorooctyl) sulfonyl]methylamino]ethyl] ester	\N
+439	Textile chemicals	1,2-Benzisothiazol-3(2H)-one1,2-Benzisothiazolin-3-one	C7H5NOS
+459	Textile chemicals	2-Bromo-2-nitropropane-1,3-dioI2-Bromo-2-nitro-1,3-propanediol	C3H6BrNO4
+463	Textile chemicals	Butane-1,2,4-triol1,2,4-Butantriol	C4H10O3
+489	Textile chemicals	Cesium sulfateCaesium sulphate	Cs.1/2H2O4S
+492	Textile chemicals	2-Chlor-(1,3)-butadiene polymer1,3-Butadiene, 2-chloro-, homopolymer	\N
+502	Textile chemicals	Sodium 4-chloro-3-methylphenolate 4-Chloro-3-methylphenole, sodium salt	C7H7ClO.Na
+506	Textile chemicals	2-(4-Chlorophenoxy)ethanol(2-Chlorophenoxy)ethanol	C8H9ClO2
+515	Textile chemicals	Cobalt monoxideCobalt(II) oxide	CoO
+521	Textile chemicals	Copper (II) SulfateCopper (II) Sulphate pentahydrated	Cu.H2O4S
+528	Textile chemicals	Cuprate(2-), [C,C-bis(chlorosulfonyl)-29H,31H-phthalocyanine- C,C-disulfonato(4-) -kN29,kN30,kN31,kN32]-,dihydrogenDihydrogen [bis(chlorosulphonyl)-29H,31H-phthalocyaninedisulphonato(4-)-N29,N30,N31,N32]cuprate(2-)	\N
+553	Textile chemicals	D-GlucitD-Glucitol	C6H14O6\n\n
+566	Textile chemicals	4,5-Dichloro-2-octyl-2H-isothiazol-3-one4,5-Dichloro-2-octylisothiazol-3(2H)-one4,5-Dichloro-2-octyl-3(2H)-isothiazolone	C11H17Cl2NOS
+603	KEMI Reports 	2,2-(1,4-Phenylene)bis((4H-3,1-benzoxazine-4-one)2,2'-p-Phenylene-bis-benzo[d][1,3]oxazin-4-one	C22H12N2O4
+643	Textile Chemicals	Bis(2-ethylhexyl) sebacateDecanedioic acid, bis(2-ethylhexyl) ester	C26H50O4
+681	Textile Chemicals	Galactomannan,Carboxymethyl derivative	\N
+715	Textile Chemicals	Alkanes, C7-10-iso-Naphtha (petroleum), light alkylateLow boiling point modified naphtha[A complex combination of hydrocarbons produced by distillation of the reaction products of isobutane with monoolefinic hydrocarbons usually ranging in carbon numbers from C3 through C5. It consists of predominantly	\N
+722	Textile Chemicals	Lignosulfonic acid, ammonium saltAmmonium lignosulfonate	\N
+756	Textile Chemicals	2,2'-[6-(Methylthio)-1,3,5 triazine-2,4-diyl]bis[5-methoxy]phenol	C18H17N3O4S
+757	Textile Chemicals	2,2'-[6-(Methylthio)-1,3,5 triazine-2,4-diyl]bis[5-propoxy] phenol	\N
+764	Textile Chemicals	2,7-Naphthalenedisulfonic acid, 5-(acetylamino)-3-[[4-(acetylamino) phenyI)azo)-4-hydroxy-,disodium salt	C20H18N4O9S2.2Na
+768	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(4-morpholinyl)-6-[(2,2,6,6 tetramethyl-4-piperidinyl)amino]-1,3,5- triazin-2-yl]amino]-	\N
+769	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(4-morpholinyl)-6-[(2,2,6,6 tetramethyl-4-piperidinyl) amino] 1,3,5- triazin-2-yl)amino]-, disodium salt	\N
+770	Textile Chemicals	1,5-Naphthalenedisulfonic acid, 3-[[4-(phenylamino)-6-[(2,2,6,6 tetramethyl-4-piperidinyl)amino) 1,3,5- triazin-2-yl] amino]-	\N
+834	Textile Chemicals	Naphtha (petroleum), heavy straight-runLow boiling point naphtha[A complex combination of hydrocarbons produced by distillation of crude oil. It consists of hydrocarbons having carbon numbers predominantly in the range of C6 through C12 and boiling in the range of approximately 65 °C to 230 °C (149 °F to 446 °F).]	\N
+836	Textile Chemicals	Phenol, 2,2'-[6-[2-[2-(2 ethoxyethoxy)ethoxy]ethoxy]1,3,5- triazine-2,4-diyl]bis[5- ethoxy	\N
+837	Textile Chemicals	Phenol, 2,2'-[6-[2-[2-(2 -ethoxyethoxy)ethoxy]ethoxy]-1,3,5-triazine-2,4-diyl]bis[5-methoxy	\N
+842	Textile Chemicals	Phenol,2,2'-[6-(2-methoxyethoxy)-1,3,5-triazine-2,4-diyl)bis[5-methoxy]	\N
+843	Textile Chemicals	Phenol, 2,2'-[6-(2-methoxyethoxy)-1,3,5-triazine,4-diyl)bis[5-propoxy]	\N
+847	Textile Chemicals	Phenol, 2,2'-[6-(2-Propoxyethoxy)-1,3,5-triazine-2,4- diyl)bis[5-ethoxy]	\N
+848	Textile Chemicals	Phenol, 2,2'-[6-(2-propoxyethoxy)-1,3,5-triazine-2,4-diyl)bis[5-methoxy]	\N
+852	Textile Chemicals	Orthophosphoric acidPhosphoric acid	 H3O4P
+857	Textile Chemicals	N-(5-chloro-2-methoxyphenyl)-3-hydroxy-4-[[2-methoxy-5 [(phenylamino)carbonyl]phenyl]azo]naphthalene-2-carboxamide	C32H25ClN4O5
+860	Textile Chemicals	2-MethyloxiraneOxirane, 2-methyl-, polymer with oxirane	(C3H6O.C2H4O)n
+906	Textile Chemicals	1- Propene, homopolymer,Isotactic	(C3-H6)n-
+921	Textile Chemicals	Silicic acidMetasilicic acid	H2O3Si
+932	Textile Chemicals	Sodium carbonateSodium carbonate, decahydrate	CH2O3.2Na
+974	Textile Chemicals	Solvent naphtha (petroleum), light arom.Low boiling point naphtha - unspecified[A complex combination of hydrocarbons obtained from distillation of aromatic streams. It consists predominantly of aromatic hydrocarbons having carbon numbers predominantly in the range of C8 through C10 and boiling in the range of approximately 135 °C to 210 °C (275 °F to 410 °F).]	\N
+975	Textile Chemicals	Distillates (petroleum), solvent-refined heavy paraffinicDistillates (petroleum), solvent- refined heavy paraffinicBaseoil- unspecified[A complex combination of hydrocarbons obtained as the raffinate from a solvent extraction process. It consists predominantly of saturated hydrocarbons having carbon numbers predominantly in the range of C20 through C50 and produces a finished oil with a viscosity of at least 100 SUS at 100 oF (19cSt at 40 oC).]	\N
+985	Textile Chemicals	Ceramic materials and wares, chemicalsSteatite ceramic	\N
+1036	Textile Chemicals	2,4,4'-Trichloro-2'-hydroxy-dip­ henyl-ether5-Chloro-2-(2,4-dichlorophe­ noxy)phenol	C12H7Cl3O2
+1045	Textile Chemicals	2,2,4-Trimethyl-1,3-pentanediol diisobutyrate1-Isopropyl-2,2-dimethyltrimethylene diisobutyrate	C16H30O4
+1048	Textile Chemicals	Tris (1-aziridinyl) phosphine oxideTri (aziridin-1-yl) phosphine oxide	C6H12N3OP
+1049	Textile Chemicals	Tris (bromoethyl) phosphateTris(2-bromoethyl) phosphate	\N
+1050	Textile Chemicals	Tris(1,3-dichloroisopropyl) phosphate (TDCP)Tris[2-chloro-1-(chloromethyl)ethyl] phosphate	C9H15Cl6O4P
+1067	Textile Chemicals	Zinc acetateZinc di(acetate)	C2H4O2.1/2Zn\n\n
+160	PesticidesandHerbicides	α-Cyano-4-fluoro-3-phenoxy­ benzyl-3-(2,2-dichlorovinyl)- 2,2-dimethylcyclopropanecar­ boxylate	C22H18Cl2FNO3\n\n
+163	PesticidesandHerbicides	(4-Chloro-2-methylphenoxy)acetic acid	C9H9ClO3
+165	PesticidesandHerbicides	2-(4-Chloro-2-methylphenoxy)propionic acid	C10H11ClO3
+166	PesticidesandHerbicides	O,S-Dimethyl phosphoramid­ othioate	C2H8NO2PS
+167	PesticidesandHerbicides	Dimethyl-1-methyl-2-(methyl­ carbamoyl)vinyl phosphate	C7H14NO5P
+168	PesticidesandHerbicides	2-Methoxycarbonyl-1- methylvinyl dimethyl phosphate	C7H13O6P
+169	PesticidesandHerbicides	Aldrin	C12H8Cl6
+170	PesticidesandHerbicides	Dieldrin	C12H8Cl6O
+171	PesticidesandHerbicides	Endrin	C12H8Cl6O
+172	PesticidesandHerbicides	Chlordane (cis- and trans-)	C10H6Cl8
+173	PesticidesandHerbicides	Chlordecone	C10Cl10O
+174	PesticidesandHerbicides	Endosulfan	C9H6Cl6O3S
+175	PesticidesandHerbicides	Endosulfan (alpha)	C9H6Cl6O3S
+176	PesticidesandHerbicides	Endosulfan (beta)	C9H6Cl6O3S
+177	PesticidesandHerbicides	Toxaphene	C10H8Cl8
+178	PesticidesandHerbicides	Dodecachloropentacyclo[5.2.1.0^2.6.0^3.9.0^5.8] decane	C10Cl12
+179	PesticidesandHerbicides	2,4,5-T	C8H5Cl3O3
+180	PesticidesandHerbicides	2,4-D	C8H6Cl2O3
+181	PesticidesandHerbicides	Prochloraz	C15H16Cl3N3O2
+182	PesticidesandHerbicides	1,1,1-Trichloro-2,2-bis(4-chloro  phenyl)ethane	C14H9Cl5
+183	PesticidesandHerbicides	2,2,2,o,p'-Pentachloroethylidenebisbenzene	C14H9Cl5
+185	PesticidesandHerbicides	1,1-Dichloro-2,2-bis(4-chlorophenyl) ethane	C14H10Cl4
+186	PesticidesandHerbicides	2,4'-2-(2-Chlorophenyl)-2-(4-chlorophenyl)-1,1-dichloroethene	C14H8Cl4
+144	PesticidesandHerbicides	(1α,4α,4aβ,5β,8β8aβ)-1,2,3,4,10,10-Hexachloro-1,4,4a,5,8,8a-hexahydro-1,4:5,8-dimethanonaphthalene1,2,3,4,10,10-hexachloro-1,4,4a,5,8,8a-Hexahydro-1,4:5,8-dimethanonaphthalene	C12H8Cl6
+145	PesticidesandHerbicides	Ethyl 5-(perchloro-5-hydroxy­ penta­ cyclo[5,3,0,02,6,03,9,04,8]decan- 5-yl)-4-oxopentanoateEthyl 5-(1,2,3,5,6,7,8,9,10,10- decachloro-4-hydroxypenta­ cyclo(5,2,1,02,6,03,9,05,8)dec-4- yl)-4-oxovalerate	C17H12Cl10O4
+149	PesticidesandHerbicides	Dichloro[(dichlorophenyl)methyl]methylbenzeneDichloro [(dichlorophe­ nyl)methyl]methylbenzene, reaction mass of isomers(Dichlorophenyl)(dichloroto­ lyl)methane, reaction mass of isomers	C14H10Cl4
+151	PesticidesandHerbicides	Bromobenzylbromotoluene, reaction mass of isomersA mixture of isomers of: bromobenzylbromotoluene	C14H12Br2
+161	PesticidesandHerbicides	2-(2,4-Dichlorophenoxy)propionic acid	C9H8Cl2O3
+164	PesticidesandHerbicides	4-(4-Chloro-o-tolyloxy) butyricacid	C11H13ClO3
+184	PesticidesandHerbicides	(2,4′-Dichlorodiphenyl)dichloroethane1-(2-Chlorophenyl)-1-(4-chlorophenyl)-2,2-dichloroethane	C14H10Cl4
+187	PesticidesandHerbicides	1,1-Dichloro-2,2-bis(4-chlorophenyl) ethene2,2-Bis(p-Chlorophenyl)-1,1-dichloroethylene	C14H8Cl4
+188	PesticidesandHerbicides	1,2,3,4,5,6-HexachlorocyclohexaneGamma-Hexachlorcyclohexan (gamma-HCH)	C6H6Cl6
+189	PesticidesandHerbicides	γ-HCH or γ-BHCγ-1,2,3,4,5,6-hexachlorocyclohexane	C6H6Cl6
+196	PesticidesandHerbicides	α,α,α-Trifluoro-2,6-dinitro-N,N- dipropyl-p-toluidine (containing < 0,5 ppm NPDA)2,6-Dinitro-N,N-dipropyl-4-trifluoromethylaniline (containing < 0,5 ppm NPDA)N,N-dipropyl-2,6-dinitro-4-trifluoromethylaniline (containing < 0,5 ppm NPDA)	C13H16F3N3O4
+197	PesticidesandHerbicides	A mixture of: α-cyano-3-phenoxybenzyl (Z)-(1R,3R)-[(S)-3-(2-chloro-3,3,3-trifluoro-prop-1-enyl)]-2,2-dimethylcyclopropanecarboxylate; α-cyano-3-phenoxybenzyl (Z)-(1S,3S)-[(R)-3-(2-chloro-3,3,3-trifluoro-prop-1-enyl)]-2,2-dimethylcyclopropanecarboxylateReaction mass of (S)-α-cyano-3- phenoxybenzyl(Z)-(1R)-cis-3-(2- chloro-3,3,3-trifluoropropenyl)- 2,2-dimethylcyclopropanecar  boxylate and (R)-α-cyano-3- phenoxybenzyl (Z)-(1S)-cis-3- (2-chloro-3,3,3-trifluor  opropenyl)-2,2-dimethylcyclo  propanecarboxylate (1:1)	\N
+199	PesticidesandHerbicides	α-cyano-3-phenoxybenzyl 3-(2-chloro-3,3,3-trifluoroprop-1-enyl)-2,2-dimethylcyclopropanecarboxylate↓Other names: Regulatory process names [3] IUPAC names [1]Print infocard	C23H19ClF3NO3\n\n
+201	PesticidesandHerbicides	Cypermethrin cis/trans +/- 40/60(RS)-α-cyano-3-phenoxybenzyl (1RS,3RS;1RS,3SR)-3-(2,2-dich lorovinyl)-2,2-dimethylcyclopro  panecarboxylateα-cypermethrin (ISO)Racemate comprising (R)-α-cyano-3-phenoxybenzyl (1S, 3S)-3-(2,2-dichlorovinyl)-2,2- dimethylcyclopropanecar  boxylate(S)-α-cyano-3-phenoxybenzyl (1R, 3R)-3-(2,2-dichlorovinyl)- 2,2-dimethylcyclopropanecar  boxylateCypermethrin cis/trans +/- 80/20(RS)-α-cyano-3-phenoxybenzyl (1RS; 3RS; 1RS, 3SR)-3-(2,2- dichlorovinyl)-2,2-dimethyl  cyclopropanecarboxylate	C22H19Cl2NO3
+202	PesticidesandHerbicides	α-Cyano-3-phenoxybenzyl [1R-[1α(S*),3α]]-3-(2,2-dibromovinyl)-2,2 dimethylcyclopropanecarboxylate(S)-α-cyano-3-phenoxybenzyl (1R, 3R)-3-(2,2-dibromovinyl)- 2,2-dimethylcyclopropanecar  boxylate	C22H19Br2NO3
+210	PesticidesandHerbicides	Methyl benzimidazol-2-ylcarbamate1H-Benzimidazol-2-ylcarbamic acid, methyl ester	C9H9N3O2
 \.
-
-
---
--- Name: substance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('substance_id_seq', 2, true);
 
 
 --
 -- Data for Name: substance_structure; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY substance_structure (id, subs_id, chem_type_id, chem_id, structure) FROM stdin;
+COPY public.substance_structure (id, subs_id, chem_type_id, chem_id, structure) FROM stdin;
 401	401	1	818	NCCO[S](O)(=O)=O
 402	402	1	820	[H+].[Cl-].CC(C)(N)CO
 403	403	1	822	CCCCCCCCCCCCCCCCCCN
@@ -107666,477 +107611,502 @@ COPY substance_structure (id, subs_id, chem_type_id, chem_id, structure) FROM st
 
 
 --
--- Name: additional_information_regulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chem_id_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY additional_information_regulation
+SELECT pg_catalog.setval('public.chem_id_id_seq', 1, true);
+
+
+--
+-- Name: chem_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.chem_type_id_seq', 1, true);
+
+
+--
+-- Name: name_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.name_type_id_seq', 1, true);
+
+
+--
+-- Name: other_names_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.other_names_id_seq', 1, true);
+
+
+--
+-- Name: substance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.substance_id_seq', 2, true);
+
+
+--
+-- Name: additional_information_regulation additional_information_regulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.additional_information_regulation
     ADD CONSTRAINT additional_information_regulation_pkey PRIMARY KEY (id);
 
 
 --
--- Name: analysis_:method_subtype_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method_subtype analysis_:method_subtype_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY analysis_method_subtype
+ALTER TABLE ONLY public.analysis_method_subtype
     ADD CONSTRAINT "analysis_:method_subtype_pkey" PRIMARY KEY (id);
 
 
 --
--- Name: analysis_method_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method analysis_method_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY analysis_method
+ALTER TABLE ONLY public.analysis_method
     ADD CONSTRAINT analysis_method_pkey PRIMARY KEY (id);
 
 
 --
--- Name: analysis_method_subtype_names_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method_subtype_names analysis_method_subtype_names_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY analysis_method_subtype_names
+ALTER TABLE ONLY public.analysis_method_subtype_names
     ADD CONSTRAINT analysis_method_subtype_names_pkey PRIMARY KEY (id);
 
 
 --
--- Name: analysis_method_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method_type analysis_method_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY analysis_method_type
+ALTER TABLE ONLY public.analysis_method_type
     ADD CONSTRAINT analysis_method_type_pkey PRIMARY KEY (id);
 
 
 --
--- Name: chem_id_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chem_id chem_id_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY chem_id
+ALTER TABLE ONLY public.chem_id
     ADD CONSTRAINT chem_id_pkey PRIMARY KEY (id);
 
 
 --
--- Name: chem_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chem_type chem_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY chem_type
+ALTER TABLE ONLY public.chem_type
     ADD CONSTRAINT chem_type_pkey PRIMARY KEY (id);
 
 
 --
--- Name: general_regulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: general_regulation general_regulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY general_regulation
+ALTER TABLE ONLY public.general_regulation
     ADD CONSTRAINT general_regulation_pkey PRIMARY KEY (id);
 
 
 --
--- Name: heh_classification_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: heh_classification heh_classification_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY heh_classification
+ALTER TABLE ONLY public.heh_classification
     ADD CONSTRAINT heh_classification_pkey PRIMARY KEY (id);
 
 
 --
--- Name: heh_name_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: heh_name heh_name_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY heh_name
+ALTER TABLE ONLY public.heh_name
     ADD CONSTRAINT heh_name_pkey PRIMARY KEY (id);
 
 
 --
--- Name: heh_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: heh heh_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY heh
+ALTER TABLE ONLY public.heh
     ADD CONSTRAINT heh_pkey PRIMARY KEY (id);
 
 
 --
--- Name: heh_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: heh_type heh_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY heh_type
+ALTER TABLE ONLY public.heh_type
     ADD CONSTRAINT heh_type_pkey PRIMARY KEY (id);
 
 
 --
--- Name: man_proc_name_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: man_proc_name man_proc_name_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY man_proc_name
+ALTER TABLE ONLY public.man_proc_name
     ADD CONSTRAINT man_proc_name_pkey PRIMARY KEY (id);
 
 
 --
--- Name: man_proc_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: man_proc_type man_proc_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY man_proc_type
+ALTER TABLE ONLY public.man_proc_type
     ADD CONSTRAINT man_proc_type_pkey PRIMARY KEY (id);
 
 
 --
--- Name: manufacturing_process_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: manufacturing_process manufacturing_process_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY manufacturing_process
+ALTER TABLE ONLY public.manufacturing_process
     ADD CONSTRAINT manufacturing_process_pkey PRIMARY KEY (id);
 
 
 --
--- Name: mrsl_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: mrsl mrsl_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY mrsl
+ALTER TABLE ONLY public.mrsl
     ADD CONSTRAINT mrsl_pkey PRIMARY KEY (id);
 
 
 --
--- Name: name_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: name_type name_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY name_type
+ALTER TABLE ONLY public.name_type
     ADD CONSTRAINT name_type_pkey PRIMARY KEY (id);
 
 
 --
--- Name: other_names_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chemical_names other_names_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY chemical_names
+ALTER TABLE ONLY public.chemical_names
     ADD CONSTRAINT other_names_pkey PRIMARY KEY (id);
 
 
 --
--- Name: regulation_country_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: regulation_country regulation_country_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulation_country
+ALTER TABLE ONLY public.regulation_country
     ADD CONSTRAINT regulation_country_pkey PRIMARY KEY (id);
 
 
 --
--- Name: regulation_names_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: regulation_names regulation_names_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulation_names
+ALTER TABLE ONLY public.regulation_names
     ADD CONSTRAINT regulation_names_pkey PRIMARY KEY (id);
 
 
 --
--- Name: regulation_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: regulation_type regulation_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulation_type
+ALTER TABLE ONLY public.regulation_type
     ADD CONSTRAINT regulation_type_pkey PRIMARY KEY (id);
 
 
 --
--- Name: regulations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: regulations regulations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulations
+ALTER TABLE ONLY public.regulations
     ADD CONSTRAINT regulations_pkey PRIMARY KEY (id);
 
 
 --
--- Name: special_cases_regulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: special_cases_regulation special_cases_regulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY special_cases_regulation
+ALTER TABLE ONLY public.special_cases_regulation
     ADD CONSTRAINT special_cases_regulation_pkey PRIMARY KEY (id);
 
 
 --
--- Name: specific_regulations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: specific_regulation specific_regulations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY specific_regulation
+ALTER TABLE ONLY public.specific_regulation
     ADD CONSTRAINT specific_regulations_pkey PRIMARY KEY (id);
 
 
 --
--- Name: subspecific_regulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: subspecific_regulation subspecific_regulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY subspecific_regulation
+ALTER TABLE ONLY public.subspecific_regulation
     ADD CONSTRAINT subspecific_regulation_pkey PRIMARY KEY (id);
 
 
 --
--- Name: substance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: substance substance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY substance
+ALTER TABLE ONLY public.substance
     ADD CONSTRAINT substance_pkey PRIMARY KEY (id);
 
 
 --
--- Name: substance_structure_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: substance_structure substance_structure_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY substance_structure
+ALTER TABLE ONLY public.substance_structure
     ADD CONSTRAINT substance_structure_pkey PRIMARY KEY (id);
 
 
 --
--- Name: additional_information_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: regulations additional_information_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT additional_information_id_fk FOREIGN KEY (additional_information_id) REFERENCES additional_information_regulation(id);
-
-
---
--- Name: an_met_name_an_met_subtype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY analysis_method_subtype_names
-    ADD CONSTRAINT an_met_name_an_met_subtype_id_fkey FOREIGN KEY (an_met_subtype_id) REFERENCES analysis_method_subtype(id);
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT additional_information_id_fk FOREIGN KEY (additional_information_id) REFERENCES public.additional_information_regulation(id);
 
 
 --
--- Name: an_met_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method_subtype_names an_met_name_an_met_subtype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY analysis_method
-    ADD CONSTRAINT an_met_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES substance(id);
-
-
---
--- Name: an_met_subtype_an_met_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY analysis_method_subtype
-    ADD CONSTRAINT an_met_subtype_an_met_type_id_fkey FOREIGN KEY (an_met_type_id) REFERENCES analysis_method_type(id);
+ALTER TABLE ONLY public.analysis_method_subtype_names
+    ADD CONSTRAINT an_met_name_an_met_subtype_id_fkey FOREIGN KEY (an_met_subtype_id) REFERENCES public.analysis_method_subtype(id);
 
 
 --
--- Name: an_met_subtype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method an_met_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY analysis_method
-    ADD CONSTRAINT an_met_subtype_id_fkey FOREIGN KEY (an_met_subtype_id) REFERENCES analysis_method_subtype(id);
-
-
---
--- Name: an_met_subtype_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY analysis_method
-    ADD CONSTRAINT an_met_subtype_name_id_fkey FOREIGN KEY (an_met_subtype_name_id) REFERENCES analysis_method_subtype_names(id);
+ALTER TABLE ONLY public.analysis_method
+    ADD CONSTRAINT an_met_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES public.substance(id);
 
 
 --
--- Name: an_met_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method_subtype an_met_subtype_an_met_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY analysis_method
-    ADD CONSTRAINT an_met_type_id_fkey FOREIGN KEY (an_met_type_id) REFERENCES analysis_method_type(id);
-
-
---
--- Name: chem_id_chem_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY chem_id
-    ADD CONSTRAINT chem_id_chem_type_id_fkey FOREIGN KEY (chem_type_id) REFERENCES chem_type(id);
+ALTER TABLE ONLY public.analysis_method_subtype
+    ADD CONSTRAINT an_met_subtype_an_met_type_id_fkey FOREIGN KEY (an_met_type_id) REFERENCES public.analysis_method_type(id);
 
 
 --
--- Name: chem_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method an_met_subtype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY substance_structure
-    ADD CONSTRAINT chem_id_fk FOREIGN KEY (chem_id) REFERENCES chem_id(id);
-
-
---
--- Name: chem_id_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY chem_id
-    ADD CONSTRAINT chem_id_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES substance(id);
+ALTER TABLE ONLY public.analysis_method
+    ADD CONSTRAINT an_met_subtype_id_fkey FOREIGN KEY (an_met_subtype_id) REFERENCES public.analysis_method_subtype(id);
 
 
 --
--- Name: chem_type_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method an_met_subtype_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY substance_structure
-    ADD CONSTRAINT chem_type_id_fk FOREIGN KEY (chem_type_id) REFERENCES chem_type(id);
-
-
---
--- Name: chem_type_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT chem_type_id_fk FOREIGN KEY (chem_type_id) REFERENCES chem_type(id);
+ALTER TABLE ONLY public.analysis_method
+    ADD CONSTRAINT an_met_subtype_name_id_fkey FOREIGN KEY (an_met_subtype_name_id) REFERENCES public.analysis_method_subtype_names(id);
 
 
 --
--- Name: chemical_names_name_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: analysis_method an_met_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY chemical_names
-    ADD CONSTRAINT chemical_names_name_type_id_fkey FOREIGN KEY (name_type_id) REFERENCES name_type(id);
-
-
---
--- Name: chemical_names_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY chemical_names
-    ADD CONSTRAINT chemical_names_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES substance(id);
+ALTER TABLE ONLY public.analysis_method
+    ADD CONSTRAINT an_met_type_id_fkey FOREIGN KEY (an_met_type_id) REFERENCES public.analysis_method_type(id);
 
 
 --
--- Name: gen_reg_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chem_id chem_id_chem_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT gen_reg_id_fk FOREIGN KEY (gen_reg_id) REFERENCES general_regulation(id);
-
-
---
--- Name: heh_classif_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY heh
-    ADD CONSTRAINT heh_classif_id_fk FOREIGN KEY (heh_classif_id) REFERENCES heh_classification(id);
+ALTER TABLE ONLY public.chem_id
+    ADD CONSTRAINT chem_id_chem_type_id_fkey FOREIGN KEY (chem_type_id) REFERENCES public.chem_type(id);
 
 
 --
--- Name: heh_name_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: substance_structure chem_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY heh
-    ADD CONSTRAINT heh_name_id_fk FOREIGN KEY (heh_name_id) REFERENCES heh_name(id);
-
-
---
--- Name: heh_type_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY heh
-    ADD CONSTRAINT heh_type_id_fk FOREIGN KEY (heh_type_id) REFERENCES heh_type(id);
+ALTER TABLE ONLY public.substance_structure
+    ADD CONSTRAINT chem_id_fk FOREIGN KEY (chem_id) REFERENCES public.chem_id(id);
 
 
 --
--- Name: man_proc_name_man_proc_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chem_id chem_id_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY man_proc_name
-    ADD CONSTRAINT man_proc_name_man_proc_type_id_fkey FOREIGN KEY (man_proc_type_id) REFERENCES man_proc_type(id);
-
-
---
--- Name: manufacturing_process_man_proc_name_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY manufacturing_process
-    ADD CONSTRAINT manufacturing_process_man_proc_name_id FOREIGN KEY (man_proc_name_id) REFERENCES man_proc_name(id);
+ALTER TABLE ONLY public.chem_id
+    ADD CONSTRAINT chem_id_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES public.substance(id);
 
 
 --
--- Name: manufacturing_process_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: substance_structure chem_type_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY manufacturing_process
-    ADD CONSTRAINT manufacturing_process_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES substance(id);
-
-
---
--- Name: mrsl_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY mrsl
-    ADD CONSTRAINT mrsl_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES substance(id);
+ALTER TABLE ONLY public.substance_structure
+    ADD CONSTRAINT chem_type_id_fk FOREIGN KEY (chem_type_id) REFERENCES public.chem_type(id);
 
 
 --
--- Name: reg_country_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: regulations chem_type_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT reg_country_id_fk FOREIGN KEY (reg_country_id) REFERENCES regulation_country(id);
-
-
---
--- Name: reg_type_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT reg_type_id_fk FOREIGN KEY (reg_type_id) REFERENCES regulation_type(id);
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT chem_type_id_fk FOREIGN KEY (chem_type_id) REFERENCES public.chem_type(id);
 
 
 --
--- Name: regulation_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chemical_names chemical_names_name_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT regulation_id_fk FOREIGN KEY (regulation_id) REFERENCES regulation_names(id);
-
-
---
--- Name: spec_reg_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT spec_reg_id_fk FOREIGN KEY (spec_reg_id) REFERENCES specific_regulation(id);
+ALTER TABLE ONLY public.chemical_names
+    ADD CONSTRAINT chemical_names_name_type_id_fkey FOREIGN KEY (name_type_id) REFERENCES public.name_type(id);
 
 
 --
--- Name: special_cases_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chemical_names chemical_names_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT special_cases_id_fk FOREIGN KEY (special_cases_id) REFERENCES special_cases_regulation(id);
-
-
---
--- Name: subs_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY heh
-    ADD CONSTRAINT subs_id_fk FOREIGN KEY (subs_id) REFERENCES substance(id);
+ALTER TABLE ONLY public.chemical_names
+    ADD CONSTRAINT chemical_names_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES public.substance(id);
 
 
 --
--- Name: subs_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: regulations gen_reg_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY substance_structure
-    ADD CONSTRAINT subs_id_fk FOREIGN KEY (subs_id) REFERENCES substance(id);
-
-
---
--- Name: subs_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT subs_id_fk FOREIGN KEY (subs_id) REFERENCES substance(id);
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT gen_reg_id_fk FOREIGN KEY (gen_reg_id) REFERENCES public.general_regulation(id);
 
 
 --
--- Name: subspec_reg_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: heh heh_classif_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY regulations
-    ADD CONSTRAINT subspec_reg_id_fk FOREIGN KEY (subspec_reg_id) REFERENCES subspecific_regulation(id);
+ALTER TABLE ONLY public.heh
+    ADD CONSTRAINT heh_classif_id_fk FOREIGN KEY (heh_classif_id) REFERENCES public.heh_classification(id);
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: postgres
+-- Name: heh heh_name_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
+ALTER TABLE ONLY public.heh
+    ADD CONSTRAINT heh_name_id_fk FOREIGN KEY (heh_name_id) REFERENCES public.heh_name(id);
+
+
+--
+-- Name: heh heh_type_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.heh
+    ADD CONSTRAINT heh_type_id_fk FOREIGN KEY (heh_type_id) REFERENCES public.heh_type(id);
+
+
+--
+-- Name: man_proc_name man_proc_name_man_proc_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.man_proc_name
+    ADD CONSTRAINT man_proc_name_man_proc_type_id_fkey FOREIGN KEY (man_proc_type_id) REFERENCES public.man_proc_type(id);
+
+
+--
+-- Name: manufacturing_process manufacturing_process_man_proc_name_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.manufacturing_process
+    ADD CONSTRAINT manufacturing_process_man_proc_name_id FOREIGN KEY (man_proc_name_id) REFERENCES public.man_proc_name(id);
+
+
+--
+-- Name: manufacturing_process manufacturing_process_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.manufacturing_process
+    ADD CONSTRAINT manufacturing_process_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES public.substance(id);
+
+
+--
+-- Name: mrsl mrsl_subs_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mrsl
+    ADD CONSTRAINT mrsl_subs_id_fkey FOREIGN KEY (subs_id) REFERENCES public.substance(id);
+
+
+--
+-- Name: regulations reg_country_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT reg_country_id_fk FOREIGN KEY (reg_country_id) REFERENCES public.regulation_country(id);
+
+
+--
+-- Name: regulations reg_type_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT reg_type_id_fk FOREIGN KEY (reg_type_id) REFERENCES public.regulation_type(id);
+
+
+--
+-- Name: regulations regulation_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT regulation_id_fk FOREIGN KEY (regulation_id) REFERENCES public.regulation_names(id);
+
+
+--
+-- Name: regulations spec_reg_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT spec_reg_id_fk FOREIGN KEY (spec_reg_id) REFERENCES public.specific_regulation(id);
+
+
+--
+-- Name: regulations special_cases_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT special_cases_id_fk FOREIGN KEY (special_cases_id) REFERENCES public.special_cases_regulation(id);
+
+
+--
+-- Name: heh subs_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.heh
+    ADD CONSTRAINT subs_id_fk FOREIGN KEY (subs_id) REFERENCES public.substance(id);
+
+
+--
+-- Name: substance_structure subs_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.substance_structure
+    ADD CONSTRAINT subs_id_fk FOREIGN KEY (subs_id) REFERENCES public.substance(id);
+
+
+--
+-- Name: regulations subs_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT subs_id_fk FOREIGN KEY (subs_id) REFERENCES public.substance(id);
+
+
+--
+-- Name: regulations subspec_reg_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regulations
+    ADD CONSTRAINT subspec_reg_id_fk FOREIGN KEY (subspec_reg_id) REFERENCES public.subspecific_regulation(id);
 
 
 --
