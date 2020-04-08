@@ -47,12 +47,16 @@ class Endpoint(Connector):
             :return substance_endpoint_annotations:
         """
 
-        for id_ in substances_id:
+        substance_endpoint_annotations = pd.DataFrame(index=range(len(substances_id)))
+       
+        for i, id_ in enumerate(substances_id):
+            substance_endpoint_annotations.loc[substance_endpoint_annotations.index == i, 'subs_id'] = id_
             for endpoint in endpoint_annotations.keys():
                 annotations = endpoint_annotations[endpoint]
-                # final_annotation = 
-                self.get_annotation_per_endpoint(id_, annotations)
-            break
+                final_annotation = self.get_annotation_per_endpoint(id_, annotations)
+                substance_endpoint_annotations.loc[substance_endpoint_annotations.index == i, endpoint] = final_annotation
+        
+        return substance_endpoint_annotations
 
     def get_annotation_per_endpoint(self, subs_id: int, annotations: list) -> str:
         """
@@ -67,10 +71,11 @@ class Endpoint(Connector):
         substance_annotations = self.check_presence_in_table(subs_id, annotations)
 
         if substance_annotations.empty:
-            print('No information')
+            final_annotation = 'No information'
         else:
-            print(substance_annotations)
+            final_annotation = self.check_source_of_annotation(substance_annotations)
 
+        return final_annotation
 
     def check_presence_in_table(self, subs_id: int, annotations: str) -> pd.DataFrame:
         """
@@ -103,3 +108,32 @@ class Endpoint(Connector):
         substance_annotations = pd.read_sql_query(query_, self.conn)
 
         return substance_annotations
+    
+    def check_source_of_annotation(self, substance_annotations: pd.DataFrame) -> str:
+        """
+            Checks which source the annotation comes from and assign either a YES or a Pending annotation
+            for the endpoint of interest.
+
+            :param substance_annotations:
+
+            :return final_annotation
+        """
+        
+        sources = substance_annotations[['general_regulation_name','specific_regulation_name','subspecific_regulation_name',
+        'special_cases_name','additional_information_name']].drop_duplicates()
+        
+        # if 'svhc' in sources['specific_regulation_name'].values:
+        #     final_annotation = 'YES'
+        # elif 'clp' in sources['general_regulation_name'].values and 'harmonised_c&l' in sources['specific_regulation_name'].values:
+        #     final_annotation = 'YES'
+        # elif 'pbt_vpvb' in sources['general_regulation_name'].values or 'endocrine_disruptors' in sources['general_regulation_name'].values
+
+        if not sources['general_regulation_name'].isin(['clp', 'pbt_vpvb', 'endocrine_disruptors']).empty:
+            final_annotation = 'YES'
+        elif not sources['specific_regulation_name'].isin(['svhc', 'harmonised_C&L']).empty:
+            final_annotation = 'YES'
+        else:
+            final_annotation = 'Pending'
+
+        return final_annotation
+
