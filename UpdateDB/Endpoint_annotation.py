@@ -77,7 +77,7 @@ class Endpoint(Connector):
 
         return final_annotation
 
-     def get_total_annotations_per_endpoint(self, substance_endpoint_annotations: pd.DataFrame) -> pd.DataFrame:
+    def get_total_annotations_per_endpoint(self, substance_endpoint_annotations: pd.DataFrame) -> pd.DataFrame:
         """
             Calculates the total number of annotations per endpoint in the input dataframe
 
@@ -98,7 +98,7 @@ class Endpoint(Connector):
             total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'YES'] = yes_count
             total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'Pending'] = pen_count
             total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'No information'] = no_count
-        
+
         return total_annotations_endpoint
 
     def check_presence_in_table(self, subs_id: int, annotations: str) -> pd.DataFrame:
