@@ -77,6 +77,30 @@ class Endpoint(Connector):
 
         return final_annotation
 
+     def get_total_annotations_per_endpoint(self, substance_endpoint_annotations: pd.DataFrame) -> pd.DataFrame:
+        """
+            Calculates the total number of annotations per endpoint in the input dataframe
+
+            :param substance_endpoint_annotations:
+
+            :return total_annotations_endpoint:
+        """
+
+        endpoints = substance_endpoint_annotations.columns[1:]
+        total_annotations_endpoint = pd.DataFrame(index=range(len(endpoints)))
+
+        for i, endpoint in enumerate(endpoints):
+            yes_count = len(substance_endpoint_annotations.loc[substance_endpoint_annotations[endpoint] == 'YES',endpoint])
+            pen_count = len(substance_endpoint_annotations.loc[substance_endpoint_annotations[endpoint] == 'Pending',endpoint])
+            no_count = len(substance_endpoint_annotations.loc[substance_endpoint_annotations[endpoint] == 'No information',endpoint])
+
+            total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'Endpoints'] = endpoint
+            total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'YES'] = yes_count
+            total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'Pending'] = pen_count
+            total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'No information'] = no_count
+        
+        return total_annotations_endpoint
+
     def check_presence_in_table(self, subs_id: int, annotations: str) -> pd.DataFrame:
         """
             Ask CII if there are annotations for the input substance
@@ -139,4 +163,3 @@ class Endpoint(Connector):
             final_annotation = 'Pending'
 
         return final_annotation
-
