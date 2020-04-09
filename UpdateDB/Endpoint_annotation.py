@@ -122,15 +122,18 @@ class Endpoint(Connector):
         sources = substance_annotations[['general_regulation_name','specific_regulation_name','subspecific_regulation_name',
         'special_cases_name','additional_information_name']].drop_duplicates()
         
-        # if 'svhc' in sources['specific_regulation_name'].values:
-        #     final_annotation = 'YES'
-        # elif 'clp' in sources['general_regulation_name'].values and 'harmonised_c&l' in sources['specific_regulation_name'].values:
-        #     final_annotation = 'YES'
-        # elif 'pbt_vpvb' in sources['general_regulation_name'].values or 'endocrine_disruptors' in sources['general_regulation_name'].values
+        # We use this lists to check the presence of annotations in these regulations,
+        # which are the ones that are used in the USC Workflow. 
+        # TODO: check other regulations or add new ones.
+        gen_regs = ['clp', 'pbt_vpvb', 'endocrine_disruptors']
+        spec_regs = ['svhc', 'harmonised_C&L']
 
-        if not sources['general_regulation_name'].isin(['clp', 'pbt_vpvb', 'endocrine_disruptors']).empty:
+        # These lists include terms that indicates no presence of annotation
+        no_presence = ['No Notification','No Registration Dossier','Not included','No information']
+
+        if not sources['general_regulation_name'].isin(gen_regs).empty:
             final_annotation = 'YES'
-        elif not sources['specific_regulation_name'].isin(['svhc', 'harmonised_C&L']).empty:
+        elif not sources['specific_regulation_name'].isin(spec_regs).empty:
             final_annotation = 'YES'
         else:
             final_annotation = 'Pending'
