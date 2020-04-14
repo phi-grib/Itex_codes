@@ -144,7 +144,7 @@ class Endpoint(Connector):
         """
         
         sources = substance_annotations[['general_regulation_name','specific_regulation_name','subspecific_regulation_name',
-        'special_cases_name','additional_information_name']].drop_duplicates()
+        'special_cases_name','additional_information_name','names']].drop_duplicates()
         
         # We use this lists to check the presence of annotations in these regulations,
         # which are the ones that are used in the USC Workflow. 
@@ -152,19 +152,34 @@ class Endpoint(Connector):
         gen_regs = ['clp', 'pbt_vpvb', 'endocrine_disruptors']
         spec_regs = ['svhc', 'harmonised_C&L']
 
-        # These lists include terms that indicates no presence of annotation
+        # Registration dossiers and notification. To decided whether to add Pending or not
+        reg_dos_not = ['registration_dossier','notification']
+
+        # These list include terms that indicates no presence of annotation
         no_presence = ['No Notification','No Registration Dossier','Not included','No information']
 
         if not sources['general_regulation_name'].isin(gen_regs).empty:
-            if sources['names'].isin(no_presence):
-                final_annotation = 'No information'
-            else:
+            reg_not_df = sources[(sources['general_regulation_name'].isin(gen_regs)) &
+                                  (sources['special_cases_name'].isin(reg_dos_not))]
+            no_pres_df = sources[(sources['general_regulation_name'].isin(gen_regs)) &
+                                 (sources['names'].isin(no_presence))]
+            if not reg_not_df.empty:
+                final_annotation = 'Pending'
+            elif no_pres_df.empty:
                 final_annotation = 'YES'
+            else:
+                final_annotation = 'No information'
         elif not sources['specific_regulation_name'].isin(spec_regs).empty:
-            if sources['names'].isin(no_presence):
-                final_annotation = 'No information'
-            else:
+            reg_not_df = sources[(sources['specific_regulation_name'].isin(gen_regs)) &
+                                  (sources['special_cases_name'].isin(reg_dos_not))]
+            no_pres_df = sources[(sources['specific_regulation_name'].isin(spec_regs)) &
+                                 (sources['names'].isin(no_presence))]
+            if not reg_not_df.empty:
+                final_annotation = 'Pending'
+            elif no_pres_df.empty:
                 final_annotation = 'YES'
+            else:
+                final_annotation = 'No information'
         else:
             final_annotation = 'Pending'
 
