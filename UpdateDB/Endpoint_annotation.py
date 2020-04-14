@@ -156,9 +156,15 @@ class Endpoint(Connector):
         no_presence = ['No Notification','No Registration Dossier','Not included','No information']
 
         if not sources['general_regulation_name'].isin(gen_regs).empty:
-            final_annotation = 'YES'
+            if sources['names'].isin(no_presence):
+                final_annotation = 'No information'
+            else:
+                final_annotation = 'YES'
         elif not sources['specific_regulation_name'].isin(spec_regs).empty:
-            final_annotation = 'YES'
+            if sources['names'].isin(no_presence):
+                final_annotation = 'No information'
+            else:
+                final_annotation = 'YES'
         else:
             final_annotation = 'Pending'
 
