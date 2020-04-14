@@ -160,23 +160,23 @@ class Endpoint(Connector):
 
         if not sources['general_regulation_name'].isin(gen_regs).empty:
             reg_not_df = sources[(sources['general_regulation_name'].isin(gen_regs)) &
-                                  (sources['special_cases_name'].isin(reg_dos_not))]
+                                 (sources['special_cases_name'].isin(reg_dos_not))]
             no_pres_df = sources[(sources['general_regulation_name'].isin(gen_regs)) &
                                  (sources['names'].isin(no_presence))]
-            if not reg_not_df.empty:
-                final_annotation = 'Pending'
-            elif no_pres_df.empty:
+            # if not reg_not_df.empty:
+            #     final_annotation = 'Pending'
+            if no_pres_df.empty:
                 final_annotation = 'YES'
             else:
                 final_annotation = 'No information'
         elif not sources['specific_regulation_name'].isin(spec_regs).empty:
             reg_not_df = sources[(sources['specific_regulation_name'].isin(gen_regs)) &
-                                  (sources['special_cases_name'].isin(reg_dos_not))]
+                                 (sources['special_cases_name'].isin(reg_dos_not))]
             no_pres_df = sources[(sources['specific_regulation_name'].isin(spec_regs)) &
                                  (sources['names'].isin(no_presence))]
-            if not reg_not_df.empty:
-                final_annotation = 'Pending'
-            elif no_pres_df.empty:
+            # if not reg_not_df.empty:
+            #     final_annotation = 'Pending'
+            if no_pres_df.empty:
                 final_annotation = 'YES'
             else:
                 final_annotation = 'No information'
