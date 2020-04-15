@@ -53,12 +53,12 @@ class Endpoint(Connector):
             substance_endpoint_annotations.loc[substance_endpoint_annotations.index == i, 'subs_id'] = id_
             for endpoint in endpoint_annotations.keys():
                 annotations = endpoint_annotations[endpoint]
-                final_annotation = self.get_annotation_per_endpoint(id_, annotations)
+                final_annotation = self.get_annotation_per_endpoint(id_, endpoint, annotations)
                 substance_endpoint_annotations.loc[substance_endpoint_annotations.index == i, endpoint] = final_annotation
         
         return substance_endpoint_annotations
 
-    def get_annotation_per_endpoint(self, subs_id: int, annotations: list) -> str:
+    def get_annotation_per_endpoint(self, subs_id: int, endpoint: str, annotations: list) -> str:
         """
             Checks if there are annotations for that substance id
 
@@ -73,7 +73,7 @@ class Endpoint(Connector):
         if substance_annotations.empty:
             final_annotation = 'No information'
         else:
-            final_annotation = self.check_source_of_annotation(substance_annotations)
+            final_annotation = self.check_source_of_annotation(endpoint, substance_annotations)
 
         return final_annotation
 
@@ -133,7 +133,7 @@ class Endpoint(Connector):
 
         return substance_annotations
     
-    def check_source_of_annotation(self, substance_annotations: pd.DataFrame) -> str:
+    def check_source_of_annotation(self, endpoint: str, substance_annotations: pd.DataFrame) -> str:
         """
             Checks which source the annotation comes from and assign either a YES or a Pending annotation
             for the endpoint of interest.
@@ -143,6 +143,10 @@ class Endpoint(Connector):
             :return final_annotation
         """
         
+        pbt = None
+        if endpoint in ['PBT', 'vPvB', 'Endocrine Disruptor']:
+            pbt = True
+
         sources = substance_annotations[['general_regulation_name','specific_regulation_name','subspecific_regulation_name',
         'special_cases_name','additional_information_name','names']].drop_duplicates()
         
@@ -161,40 +165,19 @@ class Endpoint(Connector):
         # These list include terms that indicates no presence of annotation
         no_presence = ['No Notification','No Registration Dossier','Not included','No information']
 
-        yes_ann = self.check_yes(sources, gen_regs, spec_regs, subspec_regs, no_presence)
-        if yes_ann:
-            final_annotation = 'YES'
-        elif yes_ann is None:
+        if pbt:
             pbt_endoc_ann = self.check_pbt_vpvb_endoc(sources, pbt_endoc, no_presence)
-            final_annotation = 'YES'
+            if pbt_endoc_ann:
+                final_annotation = 'YES'
+            else:
+                final_annotation = 'No information'
         else:
-            pending_ann = self.check_pending(sources,reg_dos_not,drafts,no_presence)
-            final_annotation = pending_ann
-        
-        # if not sources['general_regulation_name'].isin(gen_regs).empty:
-        #     reg_not_df = sources[(sources['general_regulation_name'].isin(gen_regs)) &
-        #                          (sources['special_cases_name'].isin(reg_dos_not))]
-        #     no_pres_df = sources[(sources['general_regulation_name'].isin(gen_regs)) &
-        #                          (sources['names'].isin(no_presence))]
-        #     # if not reg_not_df.empty:
-        #     #     final_annotation = 'Pending'
-        #     if no_pres_df.empty:
-        #         final_annotation = 'YES'
-        #     else:
-        #         final_annotation = 'No information'
-        # elif not sources['specific_regulation_name'].isin(spec_regs).empty:
-        #     reg_not_df = sources[(sources['specific_regulation_name'].isin(gen_regs)) &
-        #                          (sources['special_cases_name'].isin(reg_dos_not))]
-        #     no_pres_df = sources[(sources['specific_regulation_name'].isin(spec_regs)) &
-        #                          (sources['names'].isin(no_presence))]
-        #     # if not reg_not_df.empty:
-        #     #     final_annotation = 'Pending'
-        #     if no_pres_df.empty:
-        #         final_annotation = 'YES'
-        #     else:
-        #         final_annotation = 'No information'
-        # else:
-        #     final_annotation = 'Pending'
+            yes_ann = self.check_yes(sources, gen_regs, spec_regs, subspec_regs, no_presence)
+            if yes_ann:
+                final_annotation = 'YES'
+            else:
+                pending_ann = self.check_pending(sources,reg_dos_not,drafts,no_presence)
+                final_annotation = pending_ann
 
         return final_annotation
     
