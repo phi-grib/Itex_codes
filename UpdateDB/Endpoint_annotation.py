@@ -167,14 +167,11 @@ class Endpoint(Connector):
 
         if pbt:
             pbt_endoc_ann = self.check_pbt_vpvb_endoc(sources, pbt_endoc, no_presence)
-            if pbt_endoc_ann:
-                final_annotation = 'YES'
-            else:
-                final_annotation = 'No information'
+            final_annotation = pbt_endoc_ann
         else:
             yes_ann = self.check_yes(sources, gen_regs, spec_regs, subspec_regs, no_presence)
             if yes_ann:
-                final_annotation = 'YES'
+                final_annotation = yes_ann
             else:
                 pending_ann = self.check_pending(sources,reg_dos_not,drafts,no_presence)
                 final_annotation = pending_ann
@@ -206,7 +203,7 @@ class Endpoint(Connector):
         
         return annotation
 
-    def check_pbt_vpvb_endoc(self, sources_df: pd.DataFrame, pbt_vpvb_endoc_regs: list, no_presence: list) -> Optional[str]:
+    def check_pbt_vpvb_endoc(self, sources_df: pd.DataFrame, pbt_vpvb_endoc_regs: list, no_presence: list) -> str:
         """
             Checks regulations to get YES for PBT, vPvB and Endocrine Disruptors, which have specific regulations containing its
             hazard annotations
@@ -224,11 +221,11 @@ class Endpoint(Connector):
         if not pbt_vpvb_endoc_df.empty:
             annotation = 'YES'
         else:
-            annotation = None
+            annotation = 'No information'
         
         return annotation
 
-    def check_pending(self, sources_df: pd.DataFrame, spec_cases: list, drafts: list, no_presence:list) -> Optional[str]:
+    def check_pending(self, sources_df: pd.DataFrame, spec_cases: list, drafts: list, no_presence:list) -> str:
         """
             Checks regulations to get Pending if YES hasn't been annotated previously.
 
