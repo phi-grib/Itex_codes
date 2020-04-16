@@ -116,6 +116,24 @@ class Connector():
                                                 order by struc.subs_id ASC""", self.conn)
 
         return substance_structures
+    
+    def get_substances_with_endpoint_annotations_and_structure(self) -> pd.DataFrame:
+        """
+            Get substances with SMILES and endpoint annotations. The aim is to generate an sdf from 
+            the resulting dataframe
+
+            :return sub_ann_struc:
+        """
+
+        sub_ann_struc = pd.read_sql_query("""SELECT class_name, preferred_name, mol_formula, 
+                                            str."structure", ep.cmr, ep.pbt, ep.vpvb, 
+                                            ep.sensitiser, ep.endocrine_disruptor
+                                            FROM substance sub
+                                            left join substance_structure str on str.subs_id = sub.id
+                                            left join endpoint_annotation ep on ep.subs_id = sub.id 
+                                            order by sub.id ASC""", self.conn)
+        
+        return sub_ann_struc
 
     #### Chemical Identifier block (CAS/EC/Index)
     #### Functions that interact with chem id tables and extract them as dataframes
