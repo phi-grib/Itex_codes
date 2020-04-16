@@ -130,7 +130,8 @@ class Connector():
                                             ep.sensitiser, ep.endocrine_disruptor
                                             FROM substance sub
                                             left join substance_structure str on str.subs_id = sub.id
-                                            left join endpoint_annotation ep on ep.subs_id = sub.id 
+                                            left join endpoint_annotation ep on ep.subs_id = sub.id
+                                            where str."structure" is not null  
                                             order by sub.id ASC""", self.conn)
         
         return sub_ann_struc
