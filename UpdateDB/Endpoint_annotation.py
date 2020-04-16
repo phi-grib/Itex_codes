@@ -113,7 +113,7 @@ class Endpoint(Connector):
 
         query_ = """SELECT reg.id, reg.subs_id, rco.country, rt."type", rg.general_regulation_name, 
                     rspec.specific_regulation_name, rsub.subspecific_regulation_name, 
-                    rsc.special_cases_name, addr.additional_information_name, cid."name" as chemical_identifier, 
+                    rsc.special_cases_name, addr.additional_information_name, reg.chem_id_name as chemical_identifier, 
                     ct."type" as type_of_identifier, regn.names
                     FROM regulations reg
                     LEFT JOIN substance sub ON sub.id = reg.subs_id
@@ -124,8 +124,7 @@ class Endpoint(Connector):
                     LEFT JOIN subspecific_regulation rsub ON rsub.id = reg.subspec_reg_id
                     left join special_cases_regulation rsc on rsc.id = reg.special_cases_id
                     left join additional_information_regulation addr on addr.id = reg.additional_information_id
-                    LEFT JOIN chem_id cid ON cid.chem_type_id = reg.chem_type_id
-                    LEFT JOIN chem_type ct ON ct.id = cid.chem_type_id
+                    LEFT JOIN chem_type ct ON ct.id = reg.chem_type_id
                     LEFT JOIN regulation_names regn ON regn.id = reg.regulation_id 
                     WHERE reg.subs_id = {} and regn.names in {}""".format(subs_id, tuple(annotations))
         
