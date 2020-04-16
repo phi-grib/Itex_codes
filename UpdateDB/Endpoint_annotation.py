@@ -245,3 +245,23 @@ class Endpoint(Connector):
             annotation = 'No information'
         
         return annotation
+    
+    def add_annotations_to_database(self, substance_endpoint_annotations:pd.DataFrame):
+        """
+            Adds dataframe information to CII database.
+
+            :param substance_endpoint_annotations
+        """
+
+        for i, row in substance_endpoint_annotations.iterrows():
+            idx = i
+            subs_id = int(row['subs_id'])
+            cmr = row['CMR']
+            pbt = row['PBT']
+            vpvb = row['vPvB']
+            endoc = row['Endocrine Disruptor']
+            sens = row['Sensitiser']
+            query = """INSERT INTO public.endpoint_annotation (id, subs_id, cmr, pbt, vpvb, endocrine_disruptor, sensitiser)
+                        VALUES ({},{},'{}','{}','{}','{}','{}')""".format(idx,subs_id,cmr,pbt,vpvb,endoc,sens)
+            self.curs.execute(query)
+            self.conn.commit()
