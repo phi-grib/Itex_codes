@@ -22,6 +22,39 @@ class CR(Connector):
         """
 
         self.compoundDB_connection()
+        self.endpoint_dict = {'CMR':['Carc. 1 A',
+                            'Carc. 1A',
+                            'Carc. 1B',
+                            'Carc. 2',
+                            'Carcinogenic (Article 57a)',
+                            'Carcinogenicity','Effect on or via lactation','Forward gene mutation at the HPRT locus','Genotoxic','Harmonised classification for carcinogenicity',
+                            'Harmonised classification for mutagenicity',
+                            'Harmonised classification for reprotoxicity','Harmonised classification for effects on or via lactation','Histidine reverse gene mutation','Lact.',
+                            'Muta. 1A',
+                            'Muta. 1B',
+                            'Muta. 2',
+                            'Mutagenic (Article 57b)',
+                            'Mutagenicity','Repr. 1A',
+                            'Repr. 1B',
+                            'Repr. 2',
+                            'Repr.1B',
+                            'Reprotoxicity','Toxic for reproduction (Article 57c)','chromosome aberrations','Suspected carcinogen','Suspected mutagen','Suspected toxic for reproduction'],
+                            'PBT':['PBT','PBT (Article 57d)','Suspected bioaccumulative','Suspected persistent in the environment'],
+                            'vPvB':['vPvB','vPvB (Article 57e)','Suspected bioaccumulative','Suspected persistent in the environment'],
+                            'Sensitiser':['Resp. Sens. 1',
+                            'Resp. Sens. 1A',
+                            'Resp. Sens. 1B','Sensitiser','Skin Sens. 1',
+                            'Skin Sens. 1 A',
+                            'Skin Sens. 1 B',
+                            'Skin Sens. 1A',
+                            'Skin Sens. 1A; H317',
+                            'Skin Sens. 1B',
+                            'Skin Sens. 1B H317','Harmonised classification for respiratory sensitisation',
+                            'Harmonised classification for skin sensitisation','Respiratory sensitising properties (Article 57(f) - human health)','Suspected respiratory sensitiser',
+                            'Suspected skin sensitiser'],
+                            'Endocrine Disruptor':['ENDOCRINE - EFFECTS','Endocrine disrupting properties (Article 57(f) - environment)',
+                            'Endocrine disrupting properties (Article 57(f) - human health)',
+                            'Endocrine disruptor']}
     
     def get_annotations_per_CAS(self) -> pd.DataFrame:
         """
