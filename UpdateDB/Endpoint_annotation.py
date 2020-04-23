@@ -112,7 +112,7 @@ class Endpoint(Connector):
 
     def check_presence_in_table(self, subs_id: int, annotations: str) -> pd.DataFrame:
         """
-            Ask CII if there are annotations for the input substance
+            Ask CII/CR if there are annotations for the input substance
 
             :param subs_id:
             :param annotations:
@@ -120,24 +120,40 @@ class Endpoint(Connector):
             :return substance_annotations:
         """
 
-        query_ = """SELECT reg.id, reg.subs_id, rco.country, rt."type", rg.general_regulation_name, 
-                    rspec.specific_regulation_name, rsub.subspecific_regulation_name, 
-                    rsc.special_cases_name, addr.additional_information_name, reg.chem_id_name as chemical_identifier, 
-                    ct."type" as type_of_identifier, regn.names
-                    FROM regulations reg
-                    LEFT JOIN substance sub ON sub.id = reg.subs_id
-                    left join regulation_country rco on rco.id = reg.reg_country_id
-                    left join regulation_type rt on rt.id = reg.reg_type_id
-                    left join general_regulation rg on rg.id = reg.gen_reg_id
-                    left join specific_regulation rspec on rspec.id = reg.spec_reg_id
-                    LEFT JOIN subspecific_regulation rsub ON rsub.id = reg.subspec_reg_id
-                    left join special_cases_regulation rsc on rsc.id = reg.special_cases_id
-                    left join additional_information_regulation addr on addr.id = reg.additional_information_id
-                    LEFT JOIN chem_type ct ON ct.id = reg.chem_type_id
-                    LEFT JOIN regulation_names regn ON regn.id = reg.regulation_id 
-                    WHERE reg.subs_id = {} and regn.names in {}""".format(subs_id, tuple(annotations))
+        if self.db_tag == 'cii':
+            query_ = """SELECT reg.id, reg.subs_id, rco.country, rt."type", rg.general_regulation_name, 
+                        rspec.specific_regulation_name, rsub.subspecific_regulation_name, 
+                        rsc.special_cases_name, addr.additional_information_name, reg.chem_id_name as chemical_identifier, 
+                        ct."type" as type_of_identifier, regn.names
+                        FROM regulations reg
+                        LEFT JOIN substance sub ON sub.id = reg.subs_id
+                        left join regulation_country rco on rco.id = reg.reg_country_id
+                        left join regulation_type rt on rt.id = reg.reg_type_id
+                        left join general_regulation rg on rg.id = reg.gen_reg_id
+                        left join specific_regulation rspec on rspec.id = reg.spec_reg_id
+                        LEFT JOIN subspecific_regulation rsub ON rsub.id = reg.subspec_reg_id
+                        left join special_cases_regulation rsc on rsc.id = reg.special_cases_id
+                        left join additional_information_regulation addr on addr.id = reg.additional_information_id
+                        LEFT JOIN chem_type ct ON ct.id = reg.chem_type_id
+                        LEFT JOIN regulation_names regn ON regn.id = reg.regulation_id 
+                        WHERE reg.subs_id = {} and regn.names in {}""".format(subs_id, tuple(annotations))
+            
+            conn = self.conn
         
-        substance_annotations = pd.read_sql_query(query_, self.conn)
+        elif self.db_tag == 'cr':
+            query_ = """SELECT synonym.name as reg_number, source.name as source_name, 
+                        subs_ann.original_annotation, annotation.general, annotation.category
+                        FROM substance sub
+                        left join synonym on synonym.subsid = sub.id
+                        left join source on source.id = sub.sourceid
+                        left join subs_ann on subs_ann.subsid = sub.id
+                        left join annotation on annotation.id = subs_ann.annid
+                        where synonym.name = '{}'
+                        and subs_ann.original_annotation in {}""".format(subs_id,tuple(annotations))
+            
+            conn = self.compounddb_conn
+        
+        substance_annotations = pd.read_sql_query(query_, conn)
 
         return substance_annotations
     
@@ -278,6 +294,8 @@ class Endpoint(Connector):
     def get_sdf_files_from_endpoint_annotation(self):
         """
             Generates sdf files, both for train and test, from endpoint annotations table.
+
+            TODO: in process
         """
 
         # First we get the substances with annotations and structures and set all the molecule names to one column
