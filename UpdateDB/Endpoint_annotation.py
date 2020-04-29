@@ -83,6 +83,8 @@ class Endpoint(Connector):
         else:
             if self.db_tag == 'cii':
                 final_annotation = self.check_source_of_annotation(endpoint, substance_annotations)
+            elif self.db_tag == 'cr':
+                final_annotation = self.check_cr_source(endpoint, substance_annotations)
 
         return final_annotation
 
@@ -154,9 +156,43 @@ class Endpoint(Connector):
             conn = self.compounddb_conn
         
         substance_annotations = pd.read_sql_query(query_, conn)
+        substance_annotations.drop_duplicates(inplace=True)
 
         return substance_annotations
     
+    def check_cr_source(self, endpoint: str, substance_annotations: pd.DataFrame) -> str:
+        """
+            Checks which source the annotation comes from in CR database.
+
+            :param substance_annotations:
+
+            :return final_annotation:
+        """
+
+        sources = substance_annotations['source_name'].drop_duplicates()
+
+        # List of sources that should be checked. 
+        # Decision taken:
+        # - REACH Annex VI is considered as yes_source since is the one including Harmonised entries for CLP (Harmonised C&L)
+        # - EPA Genetox is considered yes_sources since it's a compendium of 3000 substances analyzed for genetic toxicology, currently outdated
+        # - CosmosDB, EFSA OpenFoodTox and Inditex related sources aren't considered since they don't have GHS hazard annotations
+
+        not_considered = ['CosmosDB', 'EFSA OpenFoodTox', 'Inditex',
+                          'Inditex MRSL for Parts Suppliers',
+                          'Inditex MRSL for Wet Processing Units']
+
+        yes_sources = ['SVHC','REACH Annex VI','EPA Genetox']
+        pending_sources = ['CLP Notification', 'REACH Registration','REACH Annex III']
+
+        yes_ann = self.check_yes(sources_df=sources, cr_source=yes_sources)
+        if yes_ann:
+            final_annotation = yes_ann
+        else:
+            pending_ann = self.check_pending(sources_df=sources,cr_source=pending_sources)
+            final_annotation = pending_ann
+
+        return final_annotation
+
     def check_source_of_annotation(self, endpoint: str, substance_annotations: pd.DataFrame) -> str:
         """
             Checks which source the annotation comes from and assign either a YES or a Pending annotation
@@ -182,7 +218,7 @@ class Endpoint(Connector):
         spec_regs = ['svhc', 'harmonised_C&L']
         subspec_regs = ['candidate_list','hazard_class']
 
-        # Registration dossiers and notification. To decided whether to add Pending or not
+        # Registration dossiers and notification. To decide whether to add Pending or not
         reg_dos_not = ['registration_dossier','notification']
         drafts = ['Submitted SVHC intentions','Withdrawn SVHC intentions and submissions','Amendment 2016/1179']
 
@@ -193,16 +229,17 @@ class Endpoint(Connector):
             pbt_endoc_ann = self.check_pbt_vpvb_endoc(sources, pbt_endoc, spec_regs)
             final_annotation = pbt_endoc_ann
         else:
-            yes_ann = self.check_yes(sources, gen_regs, spec_regs, subspec_regs)
+            yes_ann = self.check_yes(sources_df=sources, general_regs=gen_regs, specific_regs=spec_regs, subspec_regs=subspec_regs)
             if yes_ann:
                 final_annotation = yes_ann
             else:
-                pending_ann = self.check_pending(sources,reg_dos_not,drafts)
+                pending_ann = self.check_pending(sources_df=sources, spec_cases=reg_dos_not, drafts=drafts)
                 final_annotation = pending_ann
 
         return final_annotation
     
-    def check_yes(self, sources_df: pd.DataFrame, general_regs: list, specific_regs: list, subspec_regs: list) -> Optional[str]:
+    def check_yes(self, sources_df: pd.DataFrame, cr_source: list = None, general_regs: list = None, 
+                    specific_regs: list = None, subspec_regs: list = None) -> Optional[str]:
         """
             Checks regulations to get a YES
 
@@ -214,10 +251,13 @@ class Endpoint(Connector):
             :return annotation:
         """
 
-        yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) &
-                            (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
-                            (sources_df['specific_regulation_name'].isin(specific_regs)) &
-                            (sources_df['subspecific_regulation_name'].isin(subspec_regs)))]
+        if self.db_tag == 'cii':
+            yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) &
+                                (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
+                                (sources_df['specific_regulation_name'].isin(specific_regs)) &
+                                (sources_df['subspecific_regulation_name'].isin(subspec_regs)))]
+        elif self.db_tag == 'cr':
+            yes_df = sources_df.isin(cr_source)
         
         if not yes_df.empty:
             annotation = 'YES'
@@ -249,7 +289,8 @@ class Endpoint(Connector):
         
         return annotation
 
-    def check_pending(self, sources_df: pd.DataFrame, spec_cases: list, drafts: list) -> str:
+    def check_pending(self, sources_df: pd.DataFrame, cr_source: list = None, 
+                        spec_cases: list = None, drafts: list = None) -> str:
         """
             Checks regulations to get Pending if YES hasn't been annotated previously.
 
@@ -261,8 +302,11 @@ class Endpoint(Connector):
             :return annotation:
         """
 
-        pending_df = sources_df[(sources_df['special_cases_name'].isin(spec_cases)) |
-                               (sources_df['additional_information_name'].isin(drafts))]
+        if self.db_tag == 'cii':
+            pending_df = sources_df[(sources_df['special_cases_name'].isin(spec_cases)) |
+                                (sources_df['additional_information_name'].isin(drafts))]
+        elif self.db_tag == 'cr':
+            pending_df = sources_df.isin(cr_source)
         
         if not pending_df.empty:
             annotation = 'Pending'

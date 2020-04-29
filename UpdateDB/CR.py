@@ -63,7 +63,7 @@ class CR(Connector):
             :returns annotation_dataframe:
         """
 
-        annotation_dataframe = pd.read_sql_query("""SELECT synonym.type, synonym.name as reg_number, source.name as source_name, 
+        annotation_dataframe = pd.read_sql_query("""SELECT synonym.name as reg_number, source.name as source_name, 
                                                 subs_ann.original_annotation, annotation.annotation, annotation.general, annotation.category
                                                 FROM substance sub
                                                 left join synonym on synonym.subsid = sub.id
