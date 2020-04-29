@@ -343,7 +343,7 @@ class UpdateDB(Connector):
             insert_cmd = """INSERT INTO public.general_regulation (id, general_regulation_name)
                             VALUES ('{}','{}')"""
             sourceID_number = self.insert_in_database(max_id_cmd, insert_cmd, format_sourcename)
-            sourceID = [sourceID_number,'general_regulation']
+            sourceID = [(sourceID_number,'general_regulation')]
 
         elif 'annex' in sourceName.lower():
             reach_, annex = sourceName.lower().split(' ',1)
@@ -439,7 +439,7 @@ class UpdateDB(Connector):
         """
         
         sources_dict = {'check_query':[],'insert_query':[],'id':[]}
-        
+
         for i, source in enumerate(sources):
             if 'general_regulation' in source[1]:
                 gen_reg_id = source[0]
@@ -476,7 +476,7 @@ class UpdateDB(Connector):
                 sources_dict['check_query'].append(check_query)
                 sources_dict['insert_query'].append(insert_query)
                 sources_dict['id'].append(special_cases_id)
-        
+
         return sources_dict
 
     #### Check presence in database. If ID is returned, then is used to update DB for the new compound.
