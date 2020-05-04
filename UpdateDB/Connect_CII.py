@@ -117,6 +117,19 @@ class Connector():
 
         return substance_structures
     
+    def get_endpoints(self) -> pd.DataFrame:
+        """
+            Gets all the content from endpoint_annotation table
+
+            :return endpoint_annotation:
+        """
+
+        endpoint_annotation = pd.read_sql_query("""SELECT *
+                                                FROM endpoint_annotation  
+                                                order by id ASC""", self.conn)
+        
+        return endpoint_annotation
+        
     def get_substances_with_endpoint_annotations_and_structure(self) -> pd.DataFrame:
         """
             Get substances with SMILES and endpoint annotations. The aim is to generate an sdf from 
