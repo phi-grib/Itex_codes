@@ -225,6 +225,29 @@ class UpdateDB(Connector):
                 sourceID = None
             else:
                 sourceID = self.add_regulation(sourceName)
+    
+    def add_annotation_from_dataframe(self, dataframe: pd.DataFrame, annotation_field: str):
+        """
+            Adds annotations from dataframe if not present in CII
+
+            :param dataframe:
+            :param annotation_field:
+        """
+
+        for idx, row in dataframe.iterrows():
+
+            # Annotation processing
+
+            try:
+                annotation = self.process_string_or_list_from_pandas(row[annotation_field])
+            except AttributeError:
+                annotation = None
+
+            if isinstance(annotation, list):
+                for ann in annotation:
+                    annotationID = self.add_annotation(ann)
+            elif isinstance(annotation, str):
+                annotationID = self.add_annotation(annotation)
 
     #### Input string processing
 
