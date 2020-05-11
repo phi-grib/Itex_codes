@@ -18,8 +18,6 @@ class UpdateDB(Connector):
 
         Main functions iterate through the input dataframe
         and updates CII records depending on what we want to add:
-            - only sources (TODO)
-            - only annotations (TODO)
     """
 
     def __init__(self, host: str, dbname: str, user: str, password: str):
