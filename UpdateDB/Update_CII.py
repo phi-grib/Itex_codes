@@ -212,8 +212,19 @@ class UpdateDB(Connector):
             :param dataframe:
             :param sourceName_field:
         """
-
         
+        for idx, row in dataframe.iterrows():
+
+            sourceName = row[sourceName_field]
+            if 'Inditex' in str(sourceName):
+                continue
+        
+            # Source Name processing
+
+            if isinstance(sourceName,float):
+                sourceID = None
+            else:
+                sourceID = self.add_regulation(sourceName)
 
     #### Input string processing
 
