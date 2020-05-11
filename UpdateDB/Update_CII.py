@@ -18,10 +18,6 @@ class UpdateDB(Connector):
 
         Main functions iterate through the input dataframe
         and updates CII records depending on what we want to add:
-            - all the information (done)
-            - only the substances (TODO)
-            - only chemical identifiers (TODO)
-            - only structures (TODO)
             - only sources (TODO)
             - only annotations (TODO)
     """
@@ -208,6 +204,16 @@ class UpdateDB(Connector):
                 smi_id = self.add_structure_from_smiles(smiles, chem_id, substance_id)
             elif substance_id and chem_id:
                 self.add_structure(substance_id, chem_id, chem_identifier)
+
+    def add_source_from_dataframe(self, dataframe: pd.DataFrame, sourceName_field: str):
+        """
+            Adds source if not present.
+
+            :param dataframe:
+            :param sourceName_field:
+        """
+
+        
 
     #### Input string processing
 
