@@ -43,7 +43,8 @@ class UpdateDB(Connector):
     #### Main functions
 
     def add_all_information_from_dataframe(self, dataframe: pd.DataFrame, preferred_name_field: str, chem_id_field: str, 
-                                    chem_id_type: str, sourceName_field: str, regulation_field: str, class_name_field: Optional[str] = None):
+                                    chem_id_type: str, sourceName_field: str, regulation_field: str, class_name_field: Optional[str] = None,
+                                    smiles_field: Optional[str] = None):
         """
             Extracts the information from a Pandas Dataframe and adds it into the database.
 
@@ -81,7 +82,12 @@ class UpdateDB(Connector):
             if not substance_id:
                 substance_id = self.add_substance(class_name,preferred_name)
 
-            if substance_id and chem_id:
+            # Structure SMILES processing
+            
+            if smiles_field:
+                smiles = row[smiles_field]
+                smi_id = self.add_structure_from_smiles(smiles, chem_id, substance_id)
+            elif substance_id and chem_id:
                 self.add_structure(substance_id, chem_id, chem_identifier)
 
             # Source Name processing
@@ -134,6 +140,8 @@ class UpdateDB(Connector):
             Adds new chemical identifiers (CAS/EC/Index) from dataframe
 
             :param dataframe:
+            :param preferred_name_field:
+            :param class_name_field:
             :param chem_id_field:
             :param chem_id_type:
         """
@@ -158,6 +166,48 @@ class UpdateDB(Connector):
 
             if not substance_id:
                 substance_id = self.add_substance(class_name,preferred_name)
+        
+    def add_structure_from_dataframe(self, dataframe: pd.DataFrame, chem_id_field: str, chem_id_type: str, preferred_name_field: str,
+                                    smiles_field: str = None, class_name_field: Optional[str] = None):
+        """
+            Adds SMILES if not present. If no SMILES is passed, calculates structure from substance and chemical id and adds it into DB.
+
+            :param dataframe:
+            :param smiles_field:
+            :param preferred_name_field:
+            :param class_name_field:
+            :param chem_id_field:
+            :param chem_id_type:
+        """
+
+        for idx, row in dataframe.iterrows():
+
+            # Substance names and CAS/EC/Index numbers processing
+
+            if class_name_field:
+                class_name = row[class_name_field]
+            else:
+                class_name = None
+
+            preferred_name = row[preferred_name_field]
+
+            chem_identifier = self.process_string_or_list_from_pandas(row[chem_id_field])
+            
+            if self.match_chemical_identifier_pattern(chem_identifier, chem_id_type):
+                chem_id, substance_id = self.add_substance_chemical_identifier(class_name,preferred_name,chem_identifier, chem_id_type)
+            else:
+                chem_id = substance_id = None
+
+            if not substance_id:
+                substance_id = self.add_substance(class_name,preferred_name)
+
+            # Structure SMILES processing
+
+            if smiles_field:
+                smiles = row[smiles_field]
+                smi_id = self.add_structure_from_smiles(smiles, chem_id, substance_id)
+            elif substance_id and chem_id:
+                self.add_structure(substance_id, chem_id, chem_identifier)
 
     #### Input string processing
 
@@ -258,7 +308,7 @@ class UpdateDB(Connector):
 
         cmd = "SELECT id FROM substance WHERE preferred_name = '{}';".format(preferred_name)
         substanceID = self.check_presence_or_absence(cmd)
-
+    
         if not substanceID:
             # check on substance table using name
             max_id_cmd = """select max(id) from substance"""
@@ -291,6 +341,26 @@ class UpdateDB(Connector):
                 insert_cmd = """INSERT INTO public.substance_structure (id, subs_id, chem_type_id, chem_id, structure)
                                 VALUES({}, {}, {}, {}, '{}');"""
                 structureID = self.insert_in_database(max_id_cmd, insert_cmd, subs_id, 1, chem_id, structure)
+
+    def add_structure_from_smiles(self, structure: str, chem_id: str, substance_identifier: str) -> int:
+        """
+            Checks if SMILES is present. If not, it adds it
+
+            :param structure:
+            :param chemical_identifier:
+            :param substance_identifier:
+        """
+
+        smi_cmd = "SELECT id FROM substance_structure WHERE structure = '{}'".format(structure)
+        smi_id = self.check_presence_or_absence(smi_cmd)
+        
+        if not smi_id:
+            max_id_cmd = """SELECT max(id) from substance_structure"""
+            insert_cmd = """INSERT INTO substance_structure (id, subs_id, chem_type_id, chem_id, structure) 
+                            VALUES ({}, {}, {}, {}, '{}');"""
+            smi_id = self.insert_in_database(max_id_cmd, insert_cmd, substance_identifier, 1, chem_id, structure)
+
+        return smi_id
 
     def calculate_structure(self, chemical_identifier:str) -> str:
         """
