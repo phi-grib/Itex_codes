@@ -12,5 +12,5 @@ setup(
    author='Eric March Vila',
    author_email='eric.march@upf.edu',
    url='https://github.com/phi-grib/Itex_codes',
-   packages=['CreateDB','UpdateDB','USCwf']
+   packages=['CreateDB','UpdateDB']
 )
