@@ -86,6 +86,17 @@ class Connector():
         substances_df = pd.read_sql_query("""SELECT id, class_name, preferred_name, mol_formula FROM public.substance;""",self.conn)
 
         return substances_df
+    
+    def get_curated_substances(self) -> pd.DataFrame:
+        """
+            Get curated substances from database
+
+            :return curated_substances_df:
+        """
+
+        curated_substances_df = pd.read_sql_query("""SELECT id, class_name_curated, preferred_name_curated, mol_formula_curated FROM public.substance;""",self.conn)
+
+        return curated_substances_df
         
     def get_substances_with_chemical_identifiers(self) -> pd.DataFrame:
         """
