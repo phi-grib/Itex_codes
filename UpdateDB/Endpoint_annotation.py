@@ -35,7 +35,7 @@ class Endpoint(Connector):
             :param password:
         """
 
-        if dbname.lower() in ['cii','inventory','cii_v0']:
+        if dbname.lower() in ['CII_v2','cii_devel']:
             super().__init__(host, dbname, user, password)
             super().open_connection()
             self.db_tag = 'cii'
