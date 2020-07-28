@@ -319,9 +319,10 @@ class Connector():
                                                     LEFT JOIN subspecific_regulation rsub ON rsub.id = reg.subspec_reg_id
                                                     left join special_cases_regulation rsc on rsc.id = reg.special_cases_id
                                                     left join additional_information_regulation addr on addr.id = reg.additional_information_id
-                                                    LEFT JOIN chem_id cid ON cid.chem_type_id = reg.chem_type_id
+                                                    LEFT JOIN chem_id cid ON cid.subs_id = sub.id
                                                     LEFT JOIN chem_type ct ON ct.id = cid.chem_type_id
-                                                    LEFT JOIN regulation_names regn ON regn.id = reg.regulation_id""",self.conn)
+                                                    LEFT JOIN regulation_names regn ON regn.id = reg.regulation_id
+                                                    order by reg.id asc""",self.conn)
 
         return regulations_per_substance
     
