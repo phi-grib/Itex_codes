@@ -444,7 +444,7 @@ class UpdateDB(Connector):
         """
 
         sourceID = self.check_presence_or_absence_of_regulation(sourceName)
-
+        
         if not sourceID:
             format_sourcename = sourceName.lower()
             max_id_cmd = """select max(id) from general_regulation"""
@@ -631,9 +631,9 @@ class UpdateDB(Connector):
         
         for reg_type, dataframe in regulations_dict.items():
             for idx, row in dataframe.iterrows():
-                for element in row:
-                    if str(element) in format_reg:
-                        source_id_list.append((row['id'],reg_type))
+                db_source = row[1]
+                if str(db_source) in format_reg:
+                    source_id_list.append((row['id'],reg_type))
 
         # gen_reg_cmd = "SELECT id FROM general_regulation WHERE general_regulation_name in ('{}')".format(format_reg)
         # spec_reg_cmd = "SELECT id FROM specific_regulation WHERE specific_regulation_name in ('{}')".format(format_reg)
