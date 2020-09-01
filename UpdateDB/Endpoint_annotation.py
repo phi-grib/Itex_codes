@@ -35,7 +35,7 @@ class Endpoint(Connector):
             :param password:
         """
 
-        if 'cii' in dbname.lower():
+        if 'cii' in dbname.lower() or 'inventory' in dbname.lower():
             super().__init__(host, dbname, user, password)
             super().open_connection()
             self.db_tag = 'cii'
@@ -77,7 +77,7 @@ class Endpoint(Connector):
         """
 
         substance_annotations = self.check_presence_in_table(subs_id, annotations)
-
+       
         if substance_annotations.empty:
             final_annotation = 'No information'
         else:
@@ -206,17 +206,17 @@ class Endpoint(Connector):
         pbt = None
         if endpoint in ['PBT', 'vPvB', 'Endocrine Disruptor']:
             pbt = True
-
+        
         sources = substance_annotations[['general_regulation_name','specific_regulation_name','subspecific_regulation_name',
         'special_cases_name','additional_information_name','names']].drop_duplicates()
         
         # We use this lists to check the presence of annotations in these regulations,
         # which are the ones that are used in the USC Workflow. 
         # TODO: check other regulations or add new ones.
-        gen_regs = ['clp']
+        gen_regs = ['clp', 'source1']
         pbt_endoc = ['pbt_vpvb', 'endocrine_disruptors']
-        spec_regs = ['svhc', 'harmonised_C&L']
-        subspec_regs = ['candidate_list','hazard_class']
+        spec_regs = ['svhc', 'harmonised_C&L','source3']
+        subspec_regs = ['candidate_list','hazard_class','source2']
 
         # Registration dossiers and notification. To decide whether to add Pending or not
         reg_dos_not = ['registration_dossier','notification']
@@ -252,10 +252,17 @@ class Endpoint(Connector):
         """
 
         if self.db_tag == 'cii':
-            yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) &
-                                (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
-                                (sources_df['specific_regulation_name'].isin(specific_regs)) &
+            # yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) &
+            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
+            #                     (sources_df['specific_regulation_name'].isin(specific_regs)) &
+            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
+            #                     (sources_df['general_regulation_name'].isin(general_regs)) | 
+            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
+            #                     (sources_df['specific_regulation_name'].isin(specific_regs)))]
+            yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) |
+                                (sources_df['specific_regulation_name'].isin(specific_regs)) |
                                 (sources_df['subspecific_regulation_name'].isin(subspec_regs)))]
+
         elif self.db_tag == 'cr':
             yes_df = sources_df.isin(cr_source)
         
@@ -274,7 +281,6 @@ class Endpoint(Connector):
             :param sources_df:
             :param pbt_vpvb_endoc_regs:
             :param spec_regs:
-            :param no_presence:
 
             :return annotation:
         """
@@ -297,7 +303,6 @@ class Endpoint(Connector):
             :param sources_df:
             :param spec_cases: general regulations list
             :param drafts: specific regulations list
-            :param no_presence: annotations that indicate no presence of hazard annotation
 
             :return annotation:
         """

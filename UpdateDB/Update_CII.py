@@ -518,7 +518,6 @@ class UpdateDB(Connector):
        
         new_cmd = """SELECT id FROM public.regulations where subs_id = {} {} and regulation_id = {}""".format(subs_id,
                                                                                             ' '.join(sources_dict_query['check_query']), ann_id)
-        
         reg_id = self.check_presence_or_absence(new_cmd)
 
         if not reg_id:
@@ -558,6 +557,15 @@ class UpdateDB(Connector):
                 sources_dict['insert_query'].append(insert_query)
                 sources_dict['id'].append(gen_reg_id)
 
+            elif 'subspecific_regulation' in source[1]:
+                subspec_reg_id = source[0]
+                check_query = 'and subspec_reg_id = {}'.format(subspec_reg_id)
+                insert_query = 'subspec_reg_id,'
+                
+                sources_dict['check_query'].append(check_query)
+                sources_dict['insert_query'].append(insert_query)
+                sources_dict['id'].append(subspec_reg_id)
+
             elif 'specific_regulation' in source[1]:
                 spec_reg_id = source[0]
                 check_query = 'and spec_reg_id = {}'.format(spec_reg_id)
@@ -567,15 +575,6 @@ class UpdateDB(Connector):
                 sources_dict['insert_query'].append(insert_query)
                 sources_dict['id'].append(spec_reg_id)
 
-            elif 'subspecific_regulation' in source[1]:
-                subspec_reg_id = source[0]
-                check_query = 'and subspec_reg_id = {}'.format(subspec_reg_id)
-                insert_query = 'subspec_reg_id,'
-                
-                sources_dict['check_query'].append(check_query)
-                sources_dict['insert_query'].append(insert_query)
-                sources_dict['id'].append(subspec_reg_id)
-    
             elif 'special_cases_names' in source[1]:
                 special_cases_id = source[0]
                 check_query = 'and special_cases_id = {}'.format(special_cases_id)
