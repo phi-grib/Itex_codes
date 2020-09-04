@@ -203,9 +203,9 @@ class Endpoint(Connector):
             :return final_annotation
         """
         
-        pbt = None
-        if endpoint in ['PBT', 'vPvB', 'Endocrine Disruptor']:
-            pbt = True
+        # pbt = None
+        # if endpoint in ['PBT', 'vPvB', 'Endocrine Disruptor']:
+        #     pbt = True
         
         sources = substance_annotations[['general_regulation_name','specific_regulation_name','subspecific_regulation_name',
         'special_cases_name','additional_information_name','names']].drop_duplicates()
@@ -213,8 +213,8 @@ class Endpoint(Connector):
         # We use this lists to check the presence of annotations in these regulations,
         # which are the ones that are used in the USC Workflow. 
         # TODO: check other regulations or add new ones.
-        gen_regs = ['clp', 'source1']
-        pbt_endoc = ['pbt_vpvb', 'endocrine_disruptors']
+        gen_regs = ['clp', 'pbt_vpvb', 'endocrine_disruptors', 'source1']
+        # pbt_endoc = ['pbt_vpvb', 'endocrine_disruptors']
         spec_regs = ['svhc', 'harmonised_C&L','annex_vi','source3']
         subspec_regs = ['candidate_list','hazard_class','source2']
 
@@ -225,18 +225,18 @@ class Endpoint(Connector):
         # These list include terms that indicates no presence of annotation
         # no_presence = ['No Notification','No Registration Dossier','Not included','No information']
 
-        if pbt:
-            pbt_endoc_ann = self.check_pbt_vpvb_endoc(sources, pbt_endoc, spec_regs)
-            final_annotation = pbt_endoc_ann
-        else:
+        # if pbt:
+        #     pbt_endoc_ann = self.check_pbt_vpvb_endoc(sources, pbt_endoc, spec_regs)
+        #     final_annotation = pbt_endoc_ann
+        # else:
             
-            yes_ann = self.check_yes(sources_df=sources, general_regs=gen_regs, specific_regs=spec_regs, subspec_regs=subspec_regs,
-            spec_cases=reg_dos_not, drafts=drafts)
-            if yes_ann:
-                final_annotation = yes_ann
-            else:
-                pending_ann = self.check_pending(sources_df=sources, spec_cases=reg_dos_not, drafts=drafts)
-                final_annotation = pending_ann
+        yes_ann = self.check_yes(sources_df=sources, general_regs=gen_regs, specific_regs=spec_regs, subspec_regs=subspec_regs,
+        spec_cases=reg_dos_not, drafts=drafts)
+        if yes_ann:
+            final_annotation = yes_ann
+        else:
+            pending_ann = self.check_pending(sources_df=sources, spec_cases=reg_dos_not, drafts=drafts)
+            final_annotation = pending_ann
 
         return final_annotation
     
@@ -273,7 +273,7 @@ class Endpoint(Connector):
                     (sources_df['subspecific_regulation_name'].isin(subspec_regs))) &
                     ~(sources_df['special_cases_name'].isin(spec_cases)) &
                     ~(sources_df['additional_information_name'].isin(drafts)))]
-
+            
         elif self.db_tag == 'cr':
             yes_df = sources_df.isin(cr_source)
         
