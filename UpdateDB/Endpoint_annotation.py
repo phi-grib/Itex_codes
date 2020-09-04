@@ -215,7 +215,7 @@ class Endpoint(Connector):
         # TODO: check other regulations or add new ones.
         gen_regs = ['clp', 'source1']
         pbt_endoc = ['pbt_vpvb', 'endocrine_disruptors']
-        spec_regs = ['svhc', 'harmonised_C&L','source3']
+        spec_regs = ['svhc', 'harmonised_C&L','annex_vi','source3']
         subspec_regs = ['candidate_list','hazard_class','source2']
 
         # Registration dossiers and notification. To decide whether to add Pending or not
@@ -229,7 +229,9 @@ class Endpoint(Connector):
             pbt_endoc_ann = self.check_pbt_vpvb_endoc(sources, pbt_endoc, spec_regs)
             final_annotation = pbt_endoc_ann
         else:
-            yes_ann = self.check_yes(sources_df=sources, general_regs=gen_regs, specific_regs=spec_regs, subspec_regs=subspec_regs)
+            
+            yes_ann = self.check_yes(sources_df=sources, general_regs=gen_regs, specific_regs=spec_regs, subspec_regs=subspec_regs,
+            spec_cases=reg_dos_not, drafts=drafts)
             if yes_ann:
                 final_annotation = yes_ann
             else:
@@ -239,7 +241,7 @@ class Endpoint(Connector):
         return final_annotation
     
     def check_yes(self, sources_df: pd.DataFrame, cr_source: list = None, general_regs: list = None, 
-                    specific_regs: list = None, subspec_regs: list = None) -> Optional[str]:
+                    specific_regs: list = None, subspec_regs: list = None, spec_cases: list = None, drafts: list = None) -> Optional[str]:
         """
             Checks regulations to get a YES
 
@@ -255,13 +257,22 @@ class Endpoint(Connector):
             # yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) &
             #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
             #                     (sources_df['specific_regulation_name'].isin(specific_regs)) &
+            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)))]
+            # yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) &
+            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
+            #                     (sources_df['specific_regulation_name'].isin(specific_regs)) &
             #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
             #                     (sources_df['general_regulation_name'].isin(general_regs)) | 
             #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
             #                     (sources_df['specific_regulation_name'].isin(specific_regs)))]
-            yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) |
-                                (sources_df['specific_regulation_name'].isin(specific_regs)) |
-                                (sources_df['subspecific_regulation_name'].isin(subspec_regs)))]
+            # yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) |
+            #                     (sources_df['specific_regulation_name'].isin(specific_regs)) |
+            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)))]
+            yes_df = sources_df[(((sources_df['general_regulation_name'].isin(general_regs)) |
+                    (sources_df['specific_regulation_name'].isin(specific_regs)) |
+                    (sources_df['subspecific_regulation_name'].isin(subspec_regs))) &
+                    ~(sources_df['special_cases_name'].isin(spec_cases)) &
+                    ~(sources_df['additional_information_name'].isin(drafts)))]
 
         elif self.db_tag == 'cr':
             yes_df = sources_df.isin(cr_source)
