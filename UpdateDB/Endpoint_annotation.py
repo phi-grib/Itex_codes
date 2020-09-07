@@ -353,7 +353,6 @@ class Endpoint(UpdateDB):
             Checks if there is already one and updates it if necessary
 
             :param subs_id:
-            :param idx:
             :param cmr:
             :param pbt:
             :parab vpvb:
