@@ -284,27 +284,27 @@ class Endpoint(Connector):
         
         return annotation
 
-    def check_pbt_vpvb_endoc(self, sources_df: pd.DataFrame, pbt_vpvb_endoc_regs: list, spec_regs:list) -> str:
-        """
-            Checks regulations to get YES for PBT, vPvB and Endocrine Disruptors, which have specific regulations containing its
-            hazard annotations
+    # def check_pbt_vpvb_endoc(self, sources_df: pd.DataFrame, pbt_vpvb_endoc_regs: list, spec_regs:list) -> str:
+    #     """
+    #         Checks regulations to get YES for PBT, vPvB and Endocrine Disruptors, which have specific regulations containing its
+    #         hazard annotations
 
-            :param sources_df:
-            :param pbt_vpvb_endoc_regs:
-            :param spec_regs:
+    #         :param sources_df:
+    #         :param pbt_vpvb_endoc_regs:
+    #         :param spec_regs:
 
-            :return annotation:
-        """
+    #         :return annotation:
+    #     """
 
-        pbt_vpvb_endoc_df = sources_df[((sources_df['general_regulation_name'].isin(pbt_vpvb_endoc_regs)) |
-                                        (sources_df['specific_regulation_name'].isin(spec_regs)))]
+    #     pbt_vpvb_endoc_df = sources_df[((sources_df['general_regulation_name'].isin(pbt_vpvb_endoc_regs)) |
+    #                                     (sources_df['specific_regulation_name'].isin(spec_regs)))]
         
-        if not pbt_vpvb_endoc_df.empty:
-            annotation = 'YES'
-        else:
-            annotation = 'No information'
+    #     if not pbt_vpvb_endoc_df.empty:
+    #         annotation = 'YES'
+    #     else:
+    #         annotation = 'No information'
         
-        return annotation
+    #     return annotation
 
     def check_pending(self, sources_df: pd.DataFrame, cr_source: list = None, 
                         spec_cases: list = None, drafts: list = None) -> str:
