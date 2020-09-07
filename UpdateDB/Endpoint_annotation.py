@@ -10,9 +10,9 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import PandasTools
 from typing import Union, Optional
-from UpdateDB.Connect_CII import Connector
+from UpdateDB.Update_CII import UpdateDB
 
-class Endpoint(Connector):
+class Endpoint(UpdateDB):
     """
         Child class of Connector. Uses Conenctor functions to interact with CII.
         This class aims to check in CII the presence of hazard annotations for each substance and generate 
@@ -331,7 +331,7 @@ class Endpoint(Connector):
         
         return annotation
     
-    def add_annotations_to_database(self, substance_endpoint_annotations:pd.DataFrame):
+    def add_endpoint_annotations_to_database(self, substance_endpoint_annotations:pd.DataFrame):
         """
             Adds dataframe information to CII database.
 
@@ -339,18 +339,81 @@ class Endpoint(Connector):
         """
 
         for i, row in substance_endpoint_annotations.iterrows():
-            idx = i
             subs_id = int(row['subs_id'])
             cmr = row['CMR']
             pbt = row['PBT']
             vpvb = row['vPvB']
             endoc = row['Endocrine Disruptor']
-            sens = row['Sensitiser']
-            query = """INSERT INTO public.endpoint_annotation (id, subs_id, cmr, pbt, vpvb, endocrine_disruptor, sensitiser)
-                        VALUES ({},{},'{}','{}','{}','{}','{}')""".format(idx,subs_id,cmr,pbt,vpvb,endoc,sens)
-            self.curs.execute(query)
-            self.conn.commit()
+            
+            self.add_annotation(subs_id,cmr,pbt,vpvb,endoc)
     
+    def add_annotation(self, subs_id: int, cmr: str, pbt: str, vpvb: str, endoc: str):
+        """
+            Adds new annotation into database.
+            Checks if there is already one and updates it if necessary
+
+            :param subs_id:
+            :param idx:
+            :param cmr:
+            :param pbt:
+            :parab vpvb:
+            :param endoc:
+        """
+
+        ep_cmd = "SELECT * FROM endpoint_annotation WHERE subs_id = '{}';".format(subs_id)
+        ep_list = self.check_presence_or_absence_endpoint(ep_cmd)
+        
+        if ep_list:
+            cmr_db = ep_list[2]
+            pbt_db = ep_list[3]
+            vpvb_db = ep_list[4]
+            endoc_db = ep_list[5]
+            self.update_annotations('cmr',cmr_db,cmr,subs_id)
+            self.update_annotations('pbt',pbt_db,pbt,subs_id)
+            self.update_annotations('vpvb',vpvb_db,vpvb,subs_id)
+            self.update_annotations('endocrine_disruptor',endoc_db,endoc,subs_id)
+        else:
+            max_id_cmd = """SELECT max(id) from endpoint_annotation"""
+            insert_query = """INSERT INTO public.endpoint_annotation (id, subs_id, cmr, pbt, vpvb, endocrine_disruptor)
+                             VALUES ({},{},'{}','{}','{}','{}')"""
+            self.insert_in_database(max_id_cmd, insert_query,subs_id,cmr,pbt,vpvb,endoc)
+
+    def update_annotations(self, endpoint: str, old_endpoint_annotation: str, new_endpoint_annotation: str, subs_id: int):
+        """
+            Updates old annotations with new ones if those are different from each other.
+
+            :param endpoint: endpoint to update (CMR, PBT, vPvB, Endocrine disruptor)
+            :param old_endpoint_annotation: annotation in database
+            :param new_endpoint_annotation: annotation assigned after algorithm
+            :param subs_id: substance id of the compound in the database
+        """
+
+        if old_endpoint_annotation == 'YES' or old_endpoint_annotation == new_endpoint_annotation:
+            pass
+        else:
+            update_query = """UPDATE endpoint_annotation SET {} = '{}' WHERE subs_id = '{}';""".format(endpoint, new_endpoint_annotation,subs_id)
+            self.curs.execute(update_query)
+            self.conn.commit()
+
+    def check_presence_or_absence_endpoint(self, query: str) -> list:
+        """
+            Checks if the desired input is already in DB and returns the list of endpoints
+
+            :param query: query to check
+
+            :return endpoints_:
+        """
+
+        self.curs.execute(query)
+        try:
+            endpoints_ = self.curs.fetchall()[0]
+            self.conn.commit()
+        except (TypeError, IndexError):
+            endpoints_ = None
+        
+        return endpoints_   
+
+
     def get_sdf_files_from_endpoint_annotation(self):
         """
             Generates sdf files, both for train and test, from endpoint annotations table.

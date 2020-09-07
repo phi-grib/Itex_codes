@@ -276,6 +276,8 @@ class UpdateDB(Connector):
             Adds new CAS/EC/Index number in the database.
             If it's already there, just gets chemical identifier id.
 
+            :param class_name:
+            :param preferred_name:
             :param chem_id_to_add:
             :param chem_id_type:
 
