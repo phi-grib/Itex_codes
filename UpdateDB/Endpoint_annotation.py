@@ -14,7 +14,8 @@ from UpdateDB.Update_CII import UpdateDB
 
 class Endpoint(UpdateDB):
     """
-        Child class of Connector. Uses Conenctor functions to interact with CII.
+        Child class of UpdateDB. Uses Conenctor functions to interact with CII and UpdateDB functions to
+        insert into CII new annotations if needed.
         This class aims to check in CII the presence of hazard annotations for each substance and generate 
         a new annotation for a given endpoint related to a certain hazard.
         The theoretical background comes from the USC Workflow to generate the endpoint annotations.
@@ -22,7 +23,7 @@ class Endpoint(UpdateDB):
         Example:
         Formaldehyde has Carc. 2 hazard annotation. This means is positive for CMR, then we will have a YES annotation
         for formaldehyde in CMR.
-        If no annotation is found, then No information is given.
+        If no annotation is found, then No information is returned.
     """
 
     def __init__(self, host: str = None, dbname: str = None, user: str = None, password: str = None):
