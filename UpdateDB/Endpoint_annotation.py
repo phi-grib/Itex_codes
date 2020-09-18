@@ -104,12 +104,14 @@ class Endpoint(UpdateDB):
         for i, endpoint in enumerate(endpoints):
             yes_count = len(substance_endpoint_annotations.loc[substance_endpoint_annotations[endpoint] == 'YES',endpoint])
             pen_count = len(substance_endpoint_annotations.loc[substance_endpoint_annotations[endpoint] == 'Pending',endpoint])
-            no_count = len(substance_endpoint_annotations.loc[substance_endpoint_annotations[endpoint] == 'No information',endpoint])
+            no_count = len(substance_endpoint_annotations.loc[substance_endpoint_annotations[endpoint] == 'NO',endpoint])
+            no_info_count = len(substance_endpoint_annotations.loc[substance_endpoint_annotations[endpoint] == 'No information',endpoint])
 
             total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'Endpoints'] = endpoint
             total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'YES'] = yes_count
             total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'Pending'] = pen_count
-            total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'No information'] = no_count
+            total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'NO'] = no_count
+            total_annotations_endpoint.loc[total_annotations_endpoint.index == i, 'No information'] = no_info_count
 
         return total_annotations_endpoint
 
@@ -185,7 +187,7 @@ class Endpoint(UpdateDB):
         yes_sources = ['SVHC','REACH Annex VI','EPA Genetox']
         pending_sources = ['CLP Notification', 'REACH Registration','REACH Annex III']
 
-        yes_ann = self.check_yes(sources_df=sources, cr_source=yes_sources)
+        yes_ann = self.check_yes_or_no(sources_df=sources, cr_source=yes_sources)
         if yes_ann:
             final_annotation = yes_ann
         else:
@@ -213,36 +215,37 @@ class Endpoint(UpdateDB):
         
         # We use this lists to check the presence of annotations in these regulations,
         # which are the ones that are used in the USC Workflow. 
-        # TODO: check other regulations or add new ones.
-        gen_regs = ['clp', 'pbt_vpvb', 'endocrine_disruptors', 'source1']
+        
+        gen_regs = ['clp', 'pbt_vpvb', 'endocrine_disruptors']
         # pbt_endoc = ['pbt_vpvb', 'endocrine_disruptors']
-        spec_regs = ['svhc', 'harmonised_C&L','annex_vi','source3']
-        subspec_regs = ['candidate_list','hazard_class','source2']
+        spec_regs = ['svhc', 'harmonised_C&L','annex_vi']
+        subspec_regs = ['candidate_list','hazard_class']
 
         # Registration dossiers and notification. To decide whether to add Pending or not
         reg_dos_not = ['registration_dossier','notification']
         drafts = ['Submitted SVHC intentions','Withdrawn SVHC intentions and submissions','Amendment 2016/1179']
 
-        # These list include terms that indicates no presence of annotation
-        # no_presence = ['No Notification','No Registration Dossier','Not included','No information']
+        # These list include terms that indicates a negative endpoint (NO)
+        Negative_endpoint = ['Not PBT', 'Not vPvB']
 
         # if pbt:
         #     pbt_endoc_ann = self.check_pbt_vpvb_endoc(sources, pbt_endoc, spec_regs)
         #     final_annotation = pbt_endoc_ann
         # else:
             
-        yes_ann = self.check_yes(sources_df=sources, general_regs=gen_regs, specific_regs=spec_regs, subspec_regs=subspec_regs,
-        spec_cases=reg_dos_not, drafts=drafts)
-        if yes_ann:
-            final_annotation = yes_ann
+        yes_or_no_ann = self.check_yes_or_no(sources_df=sources, general_regs=gen_regs, specific_regs=spec_regs, subspec_regs=subspec_regs,
+        spec_cases=reg_dos_not, drafts=drafts, neg_ans=Negative_endpoint)
+        if yes_or_no_ann:
+            final_annotation = yes_or_no_ann
         else:
             pending_ann = self.check_pending(sources_df=sources, spec_cases=reg_dos_not, drafts=drafts)
             final_annotation = pending_ann
 
         return final_annotation
     
-    def check_yes(self, sources_df: pd.DataFrame, cr_source: list = None, general_regs: list = None, 
-                    specific_regs: list = None, subspec_regs: list = None, spec_cases: list = None, drafts: list = None) -> Optional[str]:
+    def check_yes_or_no(self, sources_df: pd.DataFrame, cr_source: list = None, general_regs: list = None, 
+                    specific_regs: list = None, subspec_regs: list = None, spec_cases: list = None, 
+                    drafts: list = None, neg_ans: list = None) -> Optional[str]:
         """
             Checks regulations to get a YES
 
@@ -255,57 +258,25 @@ class Endpoint(UpdateDB):
         """
 
         if self.db_tag == 'cii':
-            # yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) &
-            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
-            #                     (sources_df['specific_regulation_name'].isin(specific_regs)) &
-            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)))]
-            # yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) &
-            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
-            #                     (sources_df['specific_regulation_name'].isin(specific_regs)) &
-            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
-            #                     (sources_df['general_regulation_name'].isin(general_regs)) | 
-            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)) |
-            #                     (sources_df['specific_regulation_name'].isin(specific_regs)))]
-            # yes_df = sources_df[((sources_df['general_regulation_name'].isin(general_regs)) |
-            #                     (sources_df['specific_regulation_name'].isin(specific_regs)) |
-            #                     (sources_df['subspecific_regulation_name'].isin(subspec_regs)))]
             yes_df = sources_df[(((sources_df['general_regulation_name'].isin(general_regs)) |
                     (sources_df['specific_regulation_name'].isin(specific_regs)) |
                     (sources_df['subspecific_regulation_name'].isin(subspec_regs))) &
                     ~(sources_df['special_cases_name'].isin(spec_cases)) &
                     ~(sources_df['additional_information_name'].isin(drafts)))]
             
+            no_df = sources_df[sources_df['names'].isin(neg_ans)]
+            
         elif self.db_tag == 'cr':
             yes_df = sources_df.isin(cr_source)
         
-        if not yes_df.empty:
+        if not no_df.empty:
+            annotation = 'NO'
+        elif not yes_df.empty:
             annotation = 'YES'
         else:
             annotation = None
         
         return annotation
-
-    # def check_pbt_vpvb_endoc(self, sources_df: pd.DataFrame, pbt_vpvb_endoc_regs: list, spec_regs:list) -> str:
-    #     """
-    #         Checks regulations to get YES for PBT, vPvB and Endocrine Disruptors, which have specific regulations containing its
-    #         hazard annotations
-
-    #         :param sources_df:
-    #         :param pbt_vpvb_endoc_regs:
-    #         :param spec_regs:
-
-    #         :return annotation:
-    #     """
-
-    #     pbt_vpvb_endoc_df = sources_df[((sources_df['general_regulation_name'].isin(pbt_vpvb_endoc_regs)) |
-    #                                     (sources_df['specific_regulation_name'].isin(spec_regs)))]
-        
-    #     if not pbt_vpvb_endoc_df.empty:
-    #         annotation = 'YES'
-    #     else:
-    #         annotation = 'No information'
-        
-    #     return annotation
 
     def check_pending(self, sources_df: pd.DataFrame, cr_source: list = None, 
                         spec_cases: list = None, drafts: list = None) -> str:
