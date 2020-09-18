@@ -206,10 +206,6 @@ class Endpoint(UpdateDB):
             :return final_annotation
         """
         
-        # pbt = None
-        # if endpoint in ['PBT', 'vPvB', 'Endocrine Disruptor']:
-        #     pbt = True
-        
         sources = substance_annotations[['general_regulation_name','specific_regulation_name','subspecific_regulation_name',
         'special_cases_name','additional_information_name','names']].drop_duplicates()
         
@@ -217,7 +213,6 @@ class Endpoint(UpdateDB):
         # which are the ones that are used in the USC Workflow. 
         
         gen_regs = ['clp', 'pbt_vpvb', 'endocrine_disruptors']
-        # pbt_endoc = ['pbt_vpvb', 'endocrine_disruptors']
         spec_regs = ['svhc', 'harmonised_C&L','annex_vi']
         subspec_regs = ['candidate_list','hazard_class']
 
@@ -227,11 +222,6 @@ class Endpoint(UpdateDB):
 
         # These list include terms that indicates a negative endpoint (NO)
         Negative_endpoint = ['Not PBT', 'Not vPvB']
-
-        # if pbt:
-        #     pbt_endoc_ann = self.check_pbt_vpvb_endoc(sources, pbt_endoc, spec_regs)
-        #     final_annotation = pbt_endoc_ann
-        # else:
             
         yes_or_no_ann = self.check_yes_or_no(sources_df=sources, general_regs=gen_regs, specific_regs=spec_regs, subspec_regs=subspec_regs,
         spec_cases=reg_dos_not, drafts=drafts, neg_ans=Negative_endpoint)
