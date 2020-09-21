@@ -10,6 +10,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import PandasTools
 from typing import Union, Optional
+
 from UpdateDB.Update_CII import UpdateDB
 
 class Endpoint(UpdateDB):

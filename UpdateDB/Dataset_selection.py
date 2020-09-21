@@ -11,13 +11,12 @@ from rdkit.Chem import PandasTools
 from sklearn.model_selection import train_test_split
 from typing import Union, Optional, Tuple
 
-from imbalance_correction import imb_cor_functions as imbcor
+from .imbalance_correction import imb_cor_functions as imbcor
 
 class Selection(object):
     """
         This object aims to authomatise the dataset selection from CII database to build the models.
-        It also includes the imbalance correction, which is applied if the user needs to
-
+        It also includes the imbalance correction, which is applied if the user needs to.
     """
 
     def __init__(self, dataframe: pd.DataFrame, train_prop: float, test_prop: float, imbalance_algorithm: str = None):
