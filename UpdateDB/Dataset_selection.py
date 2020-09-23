@@ -52,9 +52,9 @@ class Selection(object):
 
         if self.imbalance_algorithm:
             if self.imbalance_algorithm.lower() == 'oversampling':
-                train_set, test_set = self.random_oversampler(train_set,test_set)
+                train_set, test_set = self.random_oversampler_subsampler(train_set,test_set, 'oversampling')
             elif self.imbalance_algorithm.lower() == 'subsampling':
-                train_set, test_set = self.random_subsampler(train_set, test_set)
+                train_set, test_set = self.random_oversampler_subsampler(train_set, test_set, 'subsampling')
             elif self.imbalance_algorithm.lower == 'smoteen':
                 train_set, test_set = self.smoteen_resample_sets(train_set, test_set)
 
@@ -86,52 +86,27 @@ class Selection(object):
     
     ### Imbalance correction
 
-    def random_subsampler(self, train_: pd.DataFrame, test_: pd.DataFrame) -> pd.DataFrame:
+    def random_oversampler_subsampler(self, train_: pd.DataFrame, test_: pd.DataFrame, algorithm: str) -> pd.DataFrame:
         """
+            This function applies either Random Subsampling or Random Oversampling.
+
             Random Undersampling
             https://imbalanced-learn.readthedocs.io/en/stable/under_sampling.html
 
-            :param train_:
-            :param test_: 
-
-            :return resampled_train_set, resampled_test_set:
-        """
-
-        rus = RandomUnderSampler(random_state=0)
-        
-        y_train = train_['activity']
-        x_train = train_.drop(columns='activity')
-
-        y_test = test_['activity']
-        x_test = test_.drop(columns='activity')
-        
-        regular_cols = x_train.columns
-        
-        x_train_resampled, y_train_resampled = rus.fit_resample(x_train, y_train)
-        x_test_resampled, y_test_resampled = rus.fit_resample(x_test, y_test)
-        
-        resampled_train_set = pd.DataFrame(data=x_train_resampled, columns=regular_cols)
-        resampled_train_set.loc[:,'activity'] = y_train_resampled
-        
-        resampled_test_set = pd.DataFrame(data=x_test_resampled, columns=regular_cols)
-        resampled_test_set.loc[:,'activity'] = y_test_resampled
-        
-        return resampled_train_set, resampled_test_set
-
-    ### Random oversampler
-
-    def random_oversampler(self, train_: pd.DataFrame, test_: pd.DataFrame) -> pd.DataFrame:
-        """
             Random Oversampling
             https://imbalanced-learn.readthedocs.io/en/stable/over_sampling.html
 
             :param train_:
             :param test_:
+            :param algorithm: this can either be 'oversampling' or 'subsampling'
 
             :return resampled_train_set, resampled_test_set:
         """
 
-        ros = RandomOverSampler(random_state=0)
+        if algorithm == 'oversampling':
+            sampler = RandomOverSampler(random_state=0)
+        elif algorithm == 'subsampling':
+            sampler = RandomUnderSampler(random_state=0)
         
         y_train = train_['activity']
         x_train = train_.drop(columns='activity')
@@ -141,8 +116,8 @@ class Selection(object):
         
         regular_cols = x_train.columns
         
-        x_train_resampled, y_train_resampled = ros.fit_resample(x_train, y_train)
-        x_test_resampled, y_test_resampled = ros.fit_resample(x_test, y_test)
+        x_train_resampled, y_train_resampled = sampler.fit_resample(x_train, y_train)
+        x_test_resampled, y_test_resampled = sampler.fit_resample(x_test, y_test)
         
         resampled_train_set = pd.DataFrame(data=x_train_resampled, columns=regular_cols)
         resampled_train_set.loc[:,'activity'] = y_train_resampled
@@ -151,6 +126,23 @@ class Selection(object):
         resampled_test_set.loc[:,'activity'] = y_test_resampled
         
         return resampled_train_set, resampled_test_set
+
+    #### Double positive condition
+
+    def double_positive_condition(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+            This function doubles the rows of the positive condition compounds.
+            Is a simple way of oversampling
+
+            :param df:
+
+            :return doubled_df:
+        """
+
+        pos_cond = df[df['activity'] == 1]
+        doubled_df = pd.concat([df,pos_cond], ignore_index=True, axis=0)
+        
+        return doubled_df
 
     #### SMOTEEN part
 
