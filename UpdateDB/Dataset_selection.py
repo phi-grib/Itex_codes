@@ -136,13 +136,30 @@ class Selection(object):
 
             :param df:
 
-            :return doubled_df:
+            :return positive_doubled_df:
         """
 
         pos_cond = df[df['activity'] == 1]
-        doubled_df = pd.concat([df,pos_cond], ignore_index=True, axis=0)
+        positive_doubled_df = pd.concat([df,pos_cond], ignore_index=True, axis=0)
         
-        return doubled_df
+        return positive_doubled_df
+
+    #### Double negative condition
+
+    def double_negative_condition(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+            This functions doubles the rows of the negative condition compounds.
+            Simple way of oversampling.
+
+            :param df:
+
+            :return doubled_df:
+        """
+
+        neg_cond = df[df['activity'] == 0]
+        negative_doubled_df = pd.concat([df,neg_cond], ignore_index=True, axis=0)
+        
+        return negative_doubled_df
 
     #### SMOTEEN part
 
