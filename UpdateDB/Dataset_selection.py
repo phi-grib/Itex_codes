@@ -196,6 +196,28 @@ class Selection(object):
         
         return negative_doubled_df
 
+    #### Triple condition
+
+    def triple_condition(self, df: pd.DataFrame, condition: str) -> pd.DataFrame:
+        """
+            This function triplicates the selected contidion (positive or negative).
+            Simple way of oversampling.
+
+            :param df:
+            :param condtion: a string that can either be 'positive' or 'negative'
+
+            :return triple_cond_df
+        """
+
+        if condition == 'positive':
+            cond_df = df[df['activity'] == 1]
+        elif condition == 'negative':
+            cond_df = df[df['activity'] == 0]
+
+        triple_cond_df = pd.concat([df, cond_df, cond_df], ignore_index=True, axis=0)
+
+        return triple_cond_df
+
     #### SMOTEEN part
 
     def process_datasets(self, dataset: pd.DataFrame) -> Tuple[np.ndarray, pd.DataFrame]:
