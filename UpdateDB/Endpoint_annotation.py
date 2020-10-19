@@ -259,7 +259,7 @@ class Endpoint(UpdateDB):
             
         elif self.db_tag == 'cr':
             yes_df = sources_df.isin(cr_source)
-        
+
         if not no_df.empty:
             annotation = 'NO'
         elif not yes_df.empty:
