@@ -141,7 +141,22 @@ class Connector():
                                                 order by id ASC""", self.conn)
         
         return endpoint_annotation
-        
+    
+    def get_endpoints_with_substance_names(self) -> pd.DataFrame:
+        """
+            Returns endpoint annotation and substance names.
+
+            :return endpoint_annotation:
+        """
+
+        endpoint_annotation = pd.read_sql_query("""SELECT ea.subs_id, sub.class_name, sub.class_name_curated, sub.preferred_name,
+                                                sub.preferred_name_curated, ea.cmr, ea.pbt, ea.vpvb, ea.endocrine_disruptor
+                                                FROM endpoint_annotation ea
+                                                left join substance sub on sub.id = ea.subs_id
+                                                order by ea.id ASC""", self.conn)
+
+        return endpoint_annotation
+
     def get_substances_with_endpoint_annotations_and_structure(self) -> pd.DataFrame:
         """
             Get substances with SMILES and endpoint annotations. The aim is to generate an sdf from 
@@ -150,13 +165,15 @@ class Connector():
             :return sub_ann_struc:
         """
 
-        sub_ann_struc = pd.read_sql_query("""SELECT class_name, preferred_name, mol_formula, 
-                                            str."structure", ep.cmr, ep.pbt, ep.vpvb, 
-                                            ep.sensitiser, ep.endocrine_disruptor
+        sub_ann_struc = pd.read_sql_query("""SELECT class_name, class_name_curated, preferred_name, preferred_name_curated, ci."name",
+                                            mol_formula, 
+                                            str."structure", ep.cmr, ep.pbt, ep.vpvb, ep.endocrine_disruptor
                                             FROM substance sub
                                             left join substance_structure str on str.subs_id = sub.id
                                             left join endpoint_annotation ep on ep.subs_id = sub.id
-                                            where str."structure" is not null  
+                                            left join chem_id ci on ci.id = str.chem_id
+                                            where str."structure" is not null 
+                                            and ci.chem_type_id = 1
                                             order by sub.id ASC""", self.conn)
         
         return sub_ann_struc
