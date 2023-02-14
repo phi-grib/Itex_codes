@@ -52,7 +52,7 @@ class Connector():
             :return self.compounddb_conn:
         """
 
-        self.compounddb_conn = it.openconnection(host='gea', password='DBAdmin')
+        self.compounddb_conn = it.openconnection(host='172.20.16.74', password='DBAdmin')
 
     def nan_to_null(self, f, _NULL: str =AsIs('NULL'), _NaN: np.nan =np.NaN, _Float: float =Float) -> Union[float,str]:
         """
